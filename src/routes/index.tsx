@@ -1,24 +1,52 @@
-import { createFileRoute } from "@tanstack/react-router";
+import { createFileRoute, Link } from "@tanstack/react-router";
+import { Logo } from "@/components/Logo";
+import { Button } from "@/components/ui/button";
 
-// No head() here: the home route inherits title/description/og/twitter from
-// __root.tsx, and ships no og:image so serve-time hosting can inject the
-// project's social preview (explicit og:image or latest screenshot).
 export const Route = createFileRoute("/")({
+  head: () => ({
+    meta: [
+      { title: "Lawtrack — Rastreamento de funis em tempo real" },
+      { name: "description", content: "Veja cada visitante avançando pelo seu funil, ao vivo, com origem TikTok Ads." },
+      { property: "og:title", content: "Lawtrack — Rastreamento de funis em tempo real" },
+      { property: "og:description", content: "Veja cada visitante avançando pelo seu funil, ao vivo." },
+      { property: "og:type", content: "website" },
+      { name: "twitter:card", content: "summary_large_image" },
+    ],
+  }),
   component: Index,
 });
 
-// IMPORTANT: Replace this placeholder. See ./README.md for routing conventions.
 function Index() {
   return (
-    <div
-      className="flex min-h-screen items-center justify-center"
-      style={{ backgroundColor: "#fcfbf8" }}
-    >
-      <img
-        data-lovable-blank-page-placeholder="REMOVE_THIS"
-        src="https://cdn.gpteng.co/blank-app-v1.svg"
-        alt="Your app will live here!"
-      />
-    </div>
+    <main className="flex min-h-screen flex-col">
+      <header className="flex items-center justify-between px-8 py-6">
+        <Logo />
+        <Button asChild variant="outline" size="sm">
+          <Link to="/auth">Entrar</Link>
+        </Button>
+      </header>
+      <section className="mx-auto flex max-w-3xl flex-1 flex-col justify-center px-8 pb-24">
+        <p className="mb-6 text-xs uppercase tracking-[0.3em] text-primary">
+          <span className="pulse-dot mr-2 inline-block h-2 w-2 rounded-full bg-primary" />
+          Observação contínua
+        </p>
+        <h1 className="font-display text-6xl leading-[1.05] text-foreground md:text-7xl">
+          Todo visitante deixa um <em className="text-primary">rastro</em>.
+        </h1>
+        <p className="mt-6 max-w-xl text-muted-foreground">
+          Acompanhe quem entra no seu funil, em qual etapa está, de qual campanha veio e quando converte — sem
+          recarregar a página.
+        </p>
+        <div className="mt-10">
+          <Button asChild size="lg" className="glow">
+            <Link to="/auth">Abrir o caderno</Link>
+          </Button>
+        </div>
+      </section>
+      <footer className="px-8 py-6 text-xs text-muted-foreground">
+        {/* easter egg */}
+        <span title="Os shinigamis adoram maçãs.">🍎 L.</span>
+      </footer>
+    </main>
   );
 }

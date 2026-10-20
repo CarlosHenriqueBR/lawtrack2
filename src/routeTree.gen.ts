@@ -10,33 +10,146 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as AuthenticatedRouteRouteImport } from './routes/_authenticated/route'
+import { Route as AuthRouteImport } from './routes/auth'
+import { Route as AuthenticatedDashboardRouteImport } from './routes/_authenticated/dashboard'
+import { Route as AuthenticatedLiveRouteImport } from './routes/_authenticated/live'
+import { Route as AuthenticatedFunnelsIndexRouteImport } from './routes/_authenticated/funnels.index'
+import { Route as AuthenticatedFunnelsIdRouteImport } from './routes/_authenticated/funnels.$id'
+import { Route as AuthenticatedJourneySessionIdRouteImport } from './routes/_authenticated/journey.$sessionId'
+import { Route as ApiPublicTrackRouteImport } from './routes/api/public/track'
+import { Route as ApiPublicTrackerDotjsRouteImport } from './routes/api/public/tracker[.]js'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AuthenticatedRouteRoute = AuthenticatedRouteRouteImport.update({
+  id: '/_authenticated',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AuthRoute = AuthRouteImport.update({
+  id: '/auth',
+  path: '/auth',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AuthenticatedDashboardRoute = AuthenticatedDashboardRouteImport.update({
+  id: '/dashboard',
+  path: '/dashboard',
+  getParentRoute: () => AuthenticatedRouteRoute,
+} as any)
+const AuthenticatedLiveRoute = AuthenticatedLiveRouteImport.update({
+  id: '/live',
+  path: '/live',
+  getParentRoute: () => AuthenticatedRouteRoute,
+} as any)
+const AuthenticatedFunnelsIndexRoute =
+  AuthenticatedFunnelsIndexRouteImport.update({
+    id: '/funnels/',
+    path: '/funnels/',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
+const AuthenticatedFunnelsIdRoute = AuthenticatedFunnelsIdRouteImport.update({
+  id: '/funnels/$id',
+  path: '/funnels/$id',
+  getParentRoute: () => AuthenticatedRouteRoute,
+} as any)
+const AuthenticatedJourneySessionIdRoute =
+  AuthenticatedJourneySessionIdRouteImport.update({
+    id: '/journey/$sessionId',
+    path: '/journey/$sessionId',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
+const ApiPublicTrackRoute = ApiPublicTrackRouteImport.update({
+  id: '/api/public/track',
+  path: '/api/public/track',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ApiPublicTrackerDotjsRoute = ApiPublicTrackerDotjsRouteImport.update({
+  id: '/api/public/tracker.js',
+  path: '/api/public/tracker.js',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/auth': typeof AuthRoute
+  '/dashboard': typeof AuthenticatedDashboardRoute
+  '/live': typeof AuthenticatedLiveRoute
+  '/funnels/$id': typeof AuthenticatedFunnelsIdRoute
+  '/journey/$sessionId': typeof AuthenticatedJourneySessionIdRoute
+  '/api/public/track': typeof ApiPublicTrackRoute
+  '/api/public/tracker.js': typeof ApiPublicTrackerDotjsRoute
+  '/funnels/': typeof AuthenticatedFunnelsIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/auth': typeof AuthRoute
+  '/dashboard': typeof AuthenticatedDashboardRoute
+  '/live': typeof AuthenticatedLiveRoute
+  '/funnels/$id': typeof AuthenticatedFunnelsIdRoute
+  '/journey/$sessionId': typeof AuthenticatedJourneySessionIdRoute
+  '/api/public/track': typeof ApiPublicTrackRoute
+  '/api/public/tracker.js': typeof ApiPublicTrackerDotjsRoute
+  '/funnels': typeof AuthenticatedFunnelsIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/_authenticated': typeof AuthenticatedRouteRouteWithChildren
+  '/auth': typeof AuthRoute
+  '/_authenticated/dashboard': typeof AuthenticatedDashboardRoute
+  '/_authenticated/live': typeof AuthenticatedLiveRoute
+  '/_authenticated/funnels/$id': typeof AuthenticatedFunnelsIdRoute
+  '/_authenticated/journey/$sessionId': typeof AuthenticatedJourneySessionIdRoute
+  '/api/public/track': typeof ApiPublicTrackRoute
+  '/api/public/tracker.js': typeof ApiPublicTrackerDotjsRoute
+  '/_authenticated/funnels/': typeof AuthenticatedFunnelsIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/'
+  fullPaths:
+    | '/'
+    | '/auth'
+    | '/dashboard'
+    | '/live'
+    | '/funnels/$id'
+    | '/journey/$sessionId'
+    | '/api/public/track'
+    | '/api/public/tracker.js'
+    | '/funnels/'
   fileRoutesByTo: FileRoutesByTo
-  to: '/'
-  id: '__root__' | '/'
+  to:
+    | '/'
+    | '/auth'
+    | '/dashboard'
+    | '/live'
+    | '/funnels/$id'
+    | '/journey/$sessionId'
+    | '/api/public/track'
+    | '/api/public/tracker.js'
+    | '/funnels'
+  id:
+    | '__root__'
+    | '/'
+    | '/_authenticated'
+    | '/auth'
+    | '/_authenticated/dashboard'
+    | '/_authenticated/live'
+    | '/_authenticated/funnels/$id'
+    | '/_authenticated/journey/$sessionId'
+    | '/api/public/track'
+    | '/api/public/tracker.js'
+    | '/_authenticated/funnels/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  AuthenticatedRouteRoute: typeof AuthenticatedRouteRouteWithChildren
+  AuthRoute: typeof AuthRoute
+  ApiPublicTrackRoute: typeof ApiPublicTrackRoute
+  ApiPublicTrackerDotjsRoute: typeof ApiPublicTrackerDotjsRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -48,11 +161,97 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/_authenticated': {
+      id: '/_authenticated'
+      path: ''
+      fullPath: '/'
+      preLoaderRoute: typeof AuthenticatedRouteRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/auth': {
+      id: '/auth'
+      path: '/auth'
+      fullPath: '/auth'
+      preLoaderRoute: typeof AuthRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/_authenticated/dashboard': {
+      id: '/_authenticated/dashboard'
+      path: '/dashboard'
+      fullPath: '/dashboard'
+      preLoaderRoute: typeof AuthenticatedDashboardRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/live': {
+      id: '/_authenticated/live'
+      path: '/live'
+      fullPath: '/live'
+      preLoaderRoute: typeof AuthenticatedLiveRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/funnels/': {
+      id: '/_authenticated/funnels/'
+      path: '/funnels'
+      fullPath: '/funnels/'
+      preLoaderRoute: typeof AuthenticatedFunnelsIndexRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/funnels/$id': {
+      id: '/_authenticated/funnels/$id'
+      path: '/funnels/$id'
+      fullPath: '/funnels/$id'
+      preLoaderRoute: typeof AuthenticatedFunnelsIdRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/journey/$sessionId': {
+      id: '/_authenticated/journey/$sessionId'
+      path: '/journey/$sessionId'
+      fullPath: '/journey/$sessionId'
+      preLoaderRoute: typeof AuthenticatedJourneySessionIdRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/api/public/track': {
+      id: '/api/public/track'
+      path: '/api/public/track'
+      fullPath: '/api/public/track'
+      preLoaderRoute: typeof ApiPublicTrackRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/api/public/tracker.js': {
+      id: '/api/public/tracker.js'
+      path: '/api/public/tracker.js'
+      fullPath: '/api/public/tracker.js'
+      preLoaderRoute: typeof ApiPublicTrackerDotjsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
+interface AuthenticatedRouteRouteChildren {
+  AuthenticatedDashboardRoute: typeof AuthenticatedDashboardRoute
+  AuthenticatedLiveRoute: typeof AuthenticatedLiveRoute
+  AuthenticatedFunnelsIdRoute: typeof AuthenticatedFunnelsIdRoute
+  AuthenticatedJourneySessionIdRoute: typeof AuthenticatedJourneySessionIdRoute
+  AuthenticatedFunnelsIndexRoute: typeof AuthenticatedFunnelsIndexRoute
+}
+
+const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
+  AuthenticatedDashboardRoute: AuthenticatedDashboardRoute,
+  AuthenticatedLiveRoute: AuthenticatedLiveRoute,
+  AuthenticatedFunnelsIdRoute: AuthenticatedFunnelsIdRoute,
+  AuthenticatedJourneySessionIdRoute: AuthenticatedJourneySessionIdRoute,
+  AuthenticatedFunnelsIndexRoute: AuthenticatedFunnelsIndexRoute,
+}
+
+const AuthenticatedRouteRouteWithChildren =
+  AuthenticatedRouteRoute._addFileChildren(AuthenticatedRouteRouteChildren)
+
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  AuthenticatedRouteRoute: AuthenticatedRouteRouteWithChildren,
+  AuthRoute: AuthRoute,
+  ApiPublicTrackRoute: ApiPublicTrackRoute,
+  ApiPublicTrackerDotjsRoute: ApiPublicTrackerDotjsRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
