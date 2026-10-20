@@ -48,7 +48,7 @@ function FunnelDetail() {
       .from("funnels")
       .update({ ...form, updated_at: new Date().toISOString() })
       .eq("id", id);
-    if (error) return toast.error(error.message);
+    if (error) { toast.error(error.message); return; }
     toast.success("Funil salvo");
     refresh();
   }
@@ -56,7 +56,7 @@ function FunnelDetail() {
     e.preventDefault();
     const order = (steps.at(-1)?.step_order ?? 0) + 1;
     const { error } = await supabase.from("funnel_steps").insert({ ...newStep, funnel_id: id, step_order: order });
-    if (error) return toast.error(error.message);
+    if (error) { toast.error(error.message); return; }
     setNewStep({ name: "", url_pattern: "" });
     refresh();
   }

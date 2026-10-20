@@ -21,7 +21,7 @@ function Funnels() {
   async function create(e: React.FormEvent) {
     e.preventDefault();
     const { data, error } = await supabase.from("funnels").insert({ name }).select("id").single();
-    if (error) return toast.error(error.message);
+    if (error) { toast.error(error.message); return; }
     navigate({ to: "/funnels/$id", params: { id: data.id } });
   }
 

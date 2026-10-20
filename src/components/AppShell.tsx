@@ -65,7 +65,7 @@ export function AppShell() {
   );
 }
 
-export function PageHeader({ title, sub, children }: { title: string; sub?: string; children?: React.ReactNode }) {
+export function PageHeader({ title, sub, children }: { title: string; sub?: string | undefined; children?: React.ReactNode }) {
   return (
     <div className="mb-8 flex flex-wrap items-end justify-between gap-4">
       <div>

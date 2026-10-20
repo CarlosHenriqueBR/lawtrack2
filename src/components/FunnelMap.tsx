@@ -6,7 +6,7 @@ export function FunnelMap({ steps, sessions }: { steps: Step[]; sessions: Sessio
   return (
     <div className="space-y-1">
       {steps.map((s, i) => {
-        const c = counts[i];
+        const c = counts[i] ?? 0;
         const next = counts[i + 1];
         const pct = (c / top) * 100;
         return (

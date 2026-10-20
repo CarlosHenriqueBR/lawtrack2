@@ -8,7 +8,12 @@ const CORS = {
   "Access-Control-Allow-Headers": "Content-Type",
 };
 
-const s = (n: number) => z.string().max(n).optional().nullable();
+const s = (n: number) =>
+  z
+    .string()
+    .max(n)
+    .nullish()
+    .transform((v) => v ?? null);
 const Body = z.object({
   funnel_id: z.string().uuid(),
   visitor_id: z.string().min(6).max(64).regex(/^[A-Za-z0-9_-]+$/),
