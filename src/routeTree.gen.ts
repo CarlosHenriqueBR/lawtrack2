@@ -10,33 +10,53 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as ApiPublicTrackRouteImport } from './routes/api/public/track'
+import { Route as ApiPublicTrackerDotjsRouteImport } from './routes/api/public/tracker[.]js'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ApiPublicTrackRoute = ApiPublicTrackRouteImport.update({
+  id: '/api/public/track',
+  path: '/api/public/track',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ApiPublicTrackerDotjsRoute = ApiPublicTrackerDotjsRouteImport.update({
+  id: '/api/public/tracker.js',
+  path: '/api/public/tracker.js',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/api/public/track': typeof ApiPublicTrackRoute
+  '/api/public/tracker.js': typeof ApiPublicTrackerDotjsRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/api/public/track': typeof ApiPublicTrackRoute
+  '/api/public/tracker.js': typeof ApiPublicTrackerDotjsRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/api/public/track': typeof ApiPublicTrackRoute
+  '/api/public/tracker.js': typeof ApiPublicTrackerDotjsRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/'
+  fullPaths: '/' | '/api/public/track' | '/api/public/tracker.js'
   fileRoutesByTo: FileRoutesByTo
-  to: '/'
-  id: '__root__' | '/'
+  to: '/' | '/api/public/track' | '/api/public/tracker.js'
+  id: '__root__' | '/' | '/api/public/track' | '/api/public/tracker.js'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  ApiPublicTrackRoute: typeof ApiPublicTrackRoute
+  ApiPublicTrackerDotjsRoute: typeof ApiPublicTrackerDotjsRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -48,11 +68,27 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/api/public/track': {
+      id: '/api/public/track'
+      path: '/api/public/track'
+      fullPath: '/api/public/track'
+      preLoaderRoute: typeof ApiPublicTrackRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/api/public/tracker.js': {
+      id: '/api/public/tracker.js'
+      path: '/api/public/tracker.js'
+      fullPath: '/api/public/tracker.js'
+      preLoaderRoute: typeof ApiPublicTrackerDotjsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  ApiPublicTrackRoute: ApiPublicTrackRoute,
+  ApiPublicTrackerDotjsRoute: ApiPublicTrackerDotjsRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
