@@ -15,6 +15,20 @@
       "when": 1792527856352,
       "tag": "0001_migration",
       "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "7",
+      "when": 1792528011508,
+      "tag": "0002_platform_modules",
+      "breakpoints": true
+    },
+    {
+      "idx": 3,
+      "version": "7",
+      "when": 1792528344510,
+      "tag": "0003_initial_super_admins",
+      "breakpoints": true
     }
   ]
 }

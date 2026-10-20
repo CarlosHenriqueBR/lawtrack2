@@ -12,13 +12,24 @@ import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as AuthenticatedRouteRouteImport } from './routes/_authenticated/route'
 import { Route as AuthRouteImport } from './routes/auth'
+import { Route as ResetPasswordRouteImport } from './routes/reset-password'
+import { Route as AuthenticatedConversionsRouteImport } from './routes/_authenticated/conversions'
 import { Route as AuthenticatedDashboardRouteImport } from './routes/_authenticated/dashboard'
+import { Route as AuthenticatedHealthRouteImport } from './routes/_authenticated/health'
+import { Route as AuthenticatedIntegrationsRouteImport } from './routes/_authenticated/integrations'
 import { Route as AuthenticatedLiveRouteImport } from './routes/_authenticated/live'
+import { Route as AuthenticatedLogsRouteImport } from './routes/_authenticated/logs'
+import { Route as AuthenticatedReportsRouteImport } from './routes/_authenticated/reports'
+import { Route as AuthenticatedSearchRouteImport } from './routes/_authenticated/search'
+import { Route as AuthenticatedUsersRouteImport } from './routes/_authenticated/users'
 import { Route as AuthenticatedFunnelsIndexRouteImport } from './routes/_authenticated/funnels.index'
 import { Route as AuthenticatedFunnelsIdRouteImport } from './routes/_authenticated/funnels.$id'
 import { Route as AuthenticatedJourneySessionIdRouteImport } from './routes/_authenticated/journey.$sessionId'
+import { Route as ApiPublicHealthRouteImport } from './routes/api/public/health'
 import { Route as ApiPublicTrackRouteImport } from './routes/api/public/track'
 import { Route as ApiPublicTrackerDotjsRouteImport } from './routes/api/public/tracker[.]js'
+import { Route as ApiPublicJobsProcessQueueRouteImport } from './routes/api/public/jobs/process-queue'
+import { Route as ApiPublicWebhooksDigistore24RouteImport } from './routes/api/public/webhooks/digistore24'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
@@ -34,14 +45,56 @@ const AuthRoute = AuthRouteImport.update({
   path: '/auth',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ResetPasswordRoute = ResetPasswordRouteImport.update({
+  id: '/reset-password',
+  path: '/reset-password',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AuthenticatedConversionsRoute =
+  AuthenticatedConversionsRouteImport.update({
+    id: '/conversions',
+    path: '/conversions',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
 const AuthenticatedDashboardRoute = AuthenticatedDashboardRouteImport.update({
   id: '/dashboard',
   path: '/dashboard',
   getParentRoute: () => AuthenticatedRouteRoute,
 } as any)
+const AuthenticatedHealthRoute = AuthenticatedHealthRouteImport.update({
+  id: '/health',
+  path: '/health',
+  getParentRoute: () => AuthenticatedRouteRoute,
+} as any)
+const AuthenticatedIntegrationsRoute =
+  AuthenticatedIntegrationsRouteImport.update({
+    id: '/integrations',
+    path: '/integrations',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
 const AuthenticatedLiveRoute = AuthenticatedLiveRouteImport.update({
   id: '/live',
   path: '/live',
+  getParentRoute: () => AuthenticatedRouteRoute,
+} as any)
+const AuthenticatedLogsRoute = AuthenticatedLogsRouteImport.update({
+  id: '/logs',
+  path: '/logs',
+  getParentRoute: () => AuthenticatedRouteRoute,
+} as any)
+const AuthenticatedReportsRoute = AuthenticatedReportsRouteImport.update({
+  id: '/reports',
+  path: '/reports',
+  getParentRoute: () => AuthenticatedRouteRoute,
+} as any)
+const AuthenticatedSearchRoute = AuthenticatedSearchRouteImport.update({
+  id: '/search',
+  path: '/search',
+  getParentRoute: () => AuthenticatedRouteRoute,
+} as any)
+const AuthenticatedUsersRoute = AuthenticatedUsersRouteImport.update({
+  id: '/users',
+  path: '/users',
   getParentRoute: () => AuthenticatedRouteRoute,
 } as any)
 const AuthenticatedFunnelsIndexRoute =
@@ -61,6 +114,11 @@ const AuthenticatedJourneySessionIdRoute =
     path: '/journey/$sessionId',
     getParentRoute: () => AuthenticatedRouteRoute,
   } as any)
+const ApiPublicHealthRoute = ApiPublicHealthRouteImport.update({
+  id: '/api/public/health',
+  path: '/api/public/health',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const ApiPublicTrackRoute = ApiPublicTrackRouteImport.update({
   id: '/api/public/track',
   path: '/api/public/track',
@@ -71,85 +129,167 @@ const ApiPublicTrackerDotjsRoute = ApiPublicTrackerDotjsRouteImport.update({
   path: '/api/public/tracker.js',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ApiPublicJobsProcessQueueRoute =
+  ApiPublicJobsProcessQueueRouteImport.update({
+    id: '/api/public/jobs/process-queue',
+    path: '/api/public/jobs/process-queue',
+    getParentRoute: () => rootRouteImport,
+  } as any)
+const ApiPublicWebhooksDigistore24Route =
+  ApiPublicWebhooksDigistore24RouteImport.update({
+    id: '/api/public/webhooks/digistore24',
+    path: '/api/public/webhooks/digistore24',
+    getParentRoute: () => rootRouteImport,
+  } as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/auth': typeof AuthRoute
+  '/reset-password': typeof ResetPasswordRoute
+  '/conversions': typeof AuthenticatedConversionsRoute
   '/dashboard': typeof AuthenticatedDashboardRoute
+  '/health': typeof AuthenticatedHealthRoute
+  '/integrations': typeof AuthenticatedIntegrationsRoute
   '/live': typeof AuthenticatedLiveRoute
+  '/logs': typeof AuthenticatedLogsRoute
+  '/reports': typeof AuthenticatedReportsRoute
+  '/search': typeof AuthenticatedSearchRoute
+  '/users': typeof AuthenticatedUsersRoute
   '/funnels/$id': typeof AuthenticatedFunnelsIdRoute
   '/journey/$sessionId': typeof AuthenticatedJourneySessionIdRoute
+  '/api/public/health': typeof ApiPublicHealthRoute
   '/api/public/track': typeof ApiPublicTrackRoute
   '/api/public/tracker.js': typeof ApiPublicTrackerDotjsRoute
   '/funnels/': typeof AuthenticatedFunnelsIndexRoute
+  '/api/public/jobs/process-queue': typeof ApiPublicJobsProcessQueueRoute
+  '/api/public/webhooks/digistore24': typeof ApiPublicWebhooksDigistore24Route
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/auth': typeof AuthRoute
+  '/reset-password': typeof ResetPasswordRoute
+  '/conversions': typeof AuthenticatedConversionsRoute
   '/dashboard': typeof AuthenticatedDashboardRoute
+  '/health': typeof AuthenticatedHealthRoute
+  '/integrations': typeof AuthenticatedIntegrationsRoute
   '/live': typeof AuthenticatedLiveRoute
+  '/logs': typeof AuthenticatedLogsRoute
+  '/reports': typeof AuthenticatedReportsRoute
+  '/search': typeof AuthenticatedSearchRoute
+  '/users': typeof AuthenticatedUsersRoute
   '/funnels/$id': typeof AuthenticatedFunnelsIdRoute
   '/journey/$sessionId': typeof AuthenticatedJourneySessionIdRoute
+  '/api/public/health': typeof ApiPublicHealthRoute
   '/api/public/track': typeof ApiPublicTrackRoute
   '/api/public/tracker.js': typeof ApiPublicTrackerDotjsRoute
   '/funnels': typeof AuthenticatedFunnelsIndexRoute
+  '/api/public/jobs/process-queue': typeof ApiPublicJobsProcessQueueRoute
+  '/api/public/webhooks/digistore24': typeof ApiPublicWebhooksDigistore24Route
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/_authenticated': typeof AuthenticatedRouteRouteWithChildren
   '/auth': typeof AuthRoute
+  '/reset-password': typeof ResetPasswordRoute
+  '/_authenticated/conversions': typeof AuthenticatedConversionsRoute
   '/_authenticated/dashboard': typeof AuthenticatedDashboardRoute
+  '/_authenticated/health': typeof AuthenticatedHealthRoute
+  '/_authenticated/integrations': typeof AuthenticatedIntegrationsRoute
   '/_authenticated/live': typeof AuthenticatedLiveRoute
+  '/_authenticated/logs': typeof AuthenticatedLogsRoute
+  '/_authenticated/reports': typeof AuthenticatedReportsRoute
+  '/_authenticated/search': typeof AuthenticatedSearchRoute
+  '/_authenticated/users': typeof AuthenticatedUsersRoute
   '/_authenticated/funnels/$id': typeof AuthenticatedFunnelsIdRoute
   '/_authenticated/journey/$sessionId': typeof AuthenticatedJourneySessionIdRoute
+  '/api/public/health': typeof ApiPublicHealthRoute
   '/api/public/track': typeof ApiPublicTrackRoute
   '/api/public/tracker.js': typeof ApiPublicTrackerDotjsRoute
   '/_authenticated/funnels/': typeof AuthenticatedFunnelsIndexRoute
+  '/api/public/jobs/process-queue': typeof ApiPublicJobsProcessQueueRoute
+  '/api/public/webhooks/digistore24': typeof ApiPublicWebhooksDigistore24Route
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | '/'
     | '/auth'
+    | '/reset-password'
+    | '/conversions'
     | '/dashboard'
+    | '/health'
+    | '/integrations'
     | '/live'
+    | '/logs'
+    | '/reports'
+    | '/search'
+    | '/users'
     | '/funnels/$id'
     | '/journey/$sessionId'
+    | '/api/public/health'
     | '/api/public/track'
     | '/api/public/tracker.js'
     | '/funnels/'
+    | '/api/public/jobs/process-queue'
+    | '/api/public/webhooks/digistore24'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
     | '/auth'
+    | '/reset-password'
+    | '/conversions'
     | '/dashboard'
+    | '/health'
+    | '/integrations'
     | '/live'
+    | '/logs'
+    | '/reports'
+    | '/search'
+    | '/users'
     | '/funnels/$id'
     | '/journey/$sessionId'
+    | '/api/public/health'
     | '/api/public/track'
     | '/api/public/tracker.js'
     | '/funnels'
+    | '/api/public/jobs/process-queue'
+    | '/api/public/webhooks/digistore24'
   id:
     | '__root__'
     | '/'
     | '/_authenticated'
     | '/auth'
+    | '/reset-password'
+    | '/_authenticated/conversions'
     | '/_authenticated/dashboard'
+    | '/_authenticated/health'
+    | '/_authenticated/integrations'
     | '/_authenticated/live'
+    | '/_authenticated/logs'
+    | '/_authenticated/reports'
+    | '/_authenticated/search'
+    | '/_authenticated/users'
     | '/_authenticated/funnels/$id'
     | '/_authenticated/journey/$sessionId'
+    | '/api/public/health'
     | '/api/public/track'
     | '/api/public/tracker.js'
     | '/_authenticated/funnels/'
+    | '/api/public/jobs/process-queue'
+    | '/api/public/webhooks/digistore24'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AuthenticatedRouteRoute: typeof AuthenticatedRouteRouteWithChildren
   AuthRoute: typeof AuthRoute
+  ResetPasswordRoute: typeof ResetPasswordRoute
+  ApiPublicHealthRoute: typeof ApiPublicHealthRoute
   ApiPublicTrackRoute: typeof ApiPublicTrackRoute
   ApiPublicTrackerDotjsRoute: typeof ApiPublicTrackerDotjsRoute
+  ApiPublicJobsProcessQueueRoute: typeof ApiPublicJobsProcessQueueRoute
+  ApiPublicWebhooksDigistore24Route: typeof ApiPublicWebhooksDigistore24Route
 }
 
 declare module '@tanstack/react-router' {
@@ -175,6 +315,20 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/reset-password': {
+      id: '/reset-password'
+      path: '/reset-password'
+      fullPath: '/reset-password'
+      preLoaderRoute: typeof ResetPasswordRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/_authenticated/conversions': {
+      id: '/_authenticated/conversions'
+      path: '/conversions'
+      fullPath: '/conversions'
+      preLoaderRoute: typeof AuthenticatedConversionsRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
     '/_authenticated/dashboard': {
       id: '/_authenticated/dashboard'
       path: '/dashboard'
@@ -182,11 +336,53 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedDashboardRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
+    '/_authenticated/health': {
+      id: '/_authenticated/health'
+      path: '/health'
+      fullPath: '/health'
+      preLoaderRoute: typeof AuthenticatedHealthRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/integrations': {
+      id: '/_authenticated/integrations'
+      path: '/integrations'
+      fullPath: '/integrations'
+      preLoaderRoute: typeof AuthenticatedIntegrationsRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
     '/_authenticated/live': {
       id: '/_authenticated/live'
       path: '/live'
       fullPath: '/live'
       preLoaderRoute: typeof AuthenticatedLiveRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/logs': {
+      id: '/_authenticated/logs'
+      path: '/logs'
+      fullPath: '/logs'
+      preLoaderRoute: typeof AuthenticatedLogsRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/reports': {
+      id: '/_authenticated/reports'
+      path: '/reports'
+      fullPath: '/reports'
+      preLoaderRoute: typeof AuthenticatedReportsRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/search': {
+      id: '/_authenticated/search'
+      path: '/search'
+      fullPath: '/search'
+      preLoaderRoute: typeof AuthenticatedSearchRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/users': {
+      id: '/_authenticated/users'
+      path: '/users'
+      fullPath: '/users'
+      preLoaderRoute: typeof AuthenticatedUsersRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
     '/_authenticated/funnels/': {
@@ -210,6 +406,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedJourneySessionIdRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
+    '/api/public/health': {
+      id: '/api/public/health'
+      path: '/api/public/health'
+      fullPath: '/api/public/health'
+      preLoaderRoute: typeof ApiPublicHealthRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/api/public/track': {
       id: '/api/public/track'
       path: '/api/public/track'
@@ -224,20 +427,48 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ApiPublicTrackerDotjsRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/api/public/jobs/process-queue': {
+      id: '/api/public/jobs/process-queue'
+      path: '/api/public/jobs/process-queue'
+      fullPath: '/api/public/jobs/process-queue'
+      preLoaderRoute: typeof ApiPublicJobsProcessQueueRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/api/public/webhooks/digistore24': {
+      id: '/api/public/webhooks/digistore24'
+      path: '/api/public/webhooks/digistore24'
+      fullPath: '/api/public/webhooks/digistore24'
+      preLoaderRoute: typeof ApiPublicWebhooksDigistore24RouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
 interface AuthenticatedRouteRouteChildren {
+  AuthenticatedConversionsRoute: typeof AuthenticatedConversionsRoute
   AuthenticatedDashboardRoute: typeof AuthenticatedDashboardRoute
+  AuthenticatedHealthRoute: typeof AuthenticatedHealthRoute
+  AuthenticatedIntegrationsRoute: typeof AuthenticatedIntegrationsRoute
   AuthenticatedLiveRoute: typeof AuthenticatedLiveRoute
+  AuthenticatedLogsRoute: typeof AuthenticatedLogsRoute
+  AuthenticatedReportsRoute: typeof AuthenticatedReportsRoute
+  AuthenticatedSearchRoute: typeof AuthenticatedSearchRoute
+  AuthenticatedUsersRoute: typeof AuthenticatedUsersRoute
   AuthenticatedFunnelsIdRoute: typeof AuthenticatedFunnelsIdRoute
   AuthenticatedJourneySessionIdRoute: typeof AuthenticatedJourneySessionIdRoute
   AuthenticatedFunnelsIndexRoute: typeof AuthenticatedFunnelsIndexRoute
 }
 
 const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
+  AuthenticatedConversionsRoute: AuthenticatedConversionsRoute,
   AuthenticatedDashboardRoute: AuthenticatedDashboardRoute,
+  AuthenticatedHealthRoute: AuthenticatedHealthRoute,
+  AuthenticatedIntegrationsRoute: AuthenticatedIntegrationsRoute,
   AuthenticatedLiveRoute: AuthenticatedLiveRoute,
+  AuthenticatedLogsRoute: AuthenticatedLogsRoute,
+  AuthenticatedReportsRoute: AuthenticatedReportsRoute,
+  AuthenticatedSearchRoute: AuthenticatedSearchRoute,
+  AuthenticatedUsersRoute: AuthenticatedUsersRoute,
   AuthenticatedFunnelsIdRoute: AuthenticatedFunnelsIdRoute,
   AuthenticatedJourneySessionIdRoute: AuthenticatedJourneySessionIdRoute,
   AuthenticatedFunnelsIndexRoute: AuthenticatedFunnelsIndexRoute,
@@ -250,8 +481,12 @@ const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AuthenticatedRouteRoute: AuthenticatedRouteRouteWithChildren,
   AuthRoute: AuthRoute,
+  ResetPasswordRoute: ResetPasswordRoute,
+  ApiPublicHealthRoute: ApiPublicHealthRoute,
   ApiPublicTrackRoute: ApiPublicTrackRoute,
   ApiPublicTrackerDotjsRoute: ApiPublicTrackerDotjsRoute,
+  ApiPublicJobsProcessQueueRoute: ApiPublicJobsProcessQueueRoute,
+  ApiPublicWebhooksDigistore24Route: ApiPublicWebhooksDigistore24Route,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

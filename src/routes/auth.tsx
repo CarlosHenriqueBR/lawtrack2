@@ -36,9 +36,10 @@ function AuthPage() {
     e.preventDefault();
     setBusy(true);
     if (mode === "in") {
-      const { error } = await supabase.auth.signInWithPassword({ email, password });
+      const { data: signed, error } = await supabase.auth.signInWithPassword({ email, password });
       setBusy(false);
-      if (error) { toast.error(error.message); return; }
+      if (error) { toast.error("Email ou senha inválidos."); return; }
+      await supabase.from("audit_logs").insert({ action: "login", actor_id: signed.user.id, actor_email: signed.user.email ?? null });
       navigate({ to: "/dashboard", replace: true });
     } else {
       const { data, error } = await supabase.auth.signUp({

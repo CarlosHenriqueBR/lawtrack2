@@ -14,6 +14,112 @@ export type Database = {
   }
   public: {
     Tables: {
+      audit_logs: {
+        Row: {
+          action: string
+          actor_email: string | null
+          actor_id: string | null
+          created_at: string
+          details: Json | null
+          id: string
+          target: string | null
+        }
+        Insert: {
+          action: string
+          actor_email?: string | null
+          actor_id?: string | null
+          created_at?: string
+          details?: Json | null
+          id?: string
+          target?: string | null
+        }
+        Update: {
+          action?: string
+          actor_email?: string | null
+          actor_id?: string | null
+          created_at?: string
+          details?: Json | null
+          id?: string
+          target?: string | null
+        }
+        Relationships: []
+      }
+      event_queue: {
+        Row: {
+          attempts: number
+          created_at: string
+          destination: string
+          event_id: string
+          event_name: string
+          funnel_id: string | null
+          id: string
+          last_error: string | null
+          last_status_code: number | null
+          next_attempt_at: string
+          payload: Json
+          session_id: string | null
+          status: string
+          transaction_id: string | null
+          updated_at: string
+        }
+        Insert: {
+          attempts?: number
+          created_at?: string
+          destination?: string
+          event_id: string
+          event_name: string
+          funnel_id?: string | null
+          id?: string
+          last_error?: string | null
+          last_status_code?: number | null
+          next_attempt_at?: string
+          payload: Json
+          session_id?: string | null
+          status?: string
+          transaction_id?: string | null
+          updated_at?: string
+        }
+        Update: {
+          attempts?: number
+          created_at?: string
+          destination?: string
+          event_id?: string
+          event_name?: string
+          funnel_id?: string | null
+          id?: string
+          last_error?: string | null
+          last_status_code?: number | null
+          next_attempt_at?: string
+          payload?: Json
+          session_id?: string | null
+          status?: string
+          transaction_id?: string | null
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "event_queue_funnel_id_fkey"
+            columns: ["funnel_id"]
+            isOneToOne: false
+            referencedRelation: "funnels"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "event_queue_session_id_fkey"
+            columns: ["session_id"]
+            isOneToOne: false
+            referencedRelation: "sessions"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "event_queue_transaction_id_fkey"
+            columns: ["transaction_id"]
+            isOneToOne: false
+            referencedRelation: "transactions"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       events: {
         Row: {
           created_at: string
@@ -143,6 +249,83 @@ export type Database = {
         }
         Relationships: []
       }
+      integration_secrets: {
+        Row: {
+          key: string
+          updated_at: string
+          value: string
+        }
+        Insert: {
+          key: string
+          updated_at?: string
+          value: string
+        }
+        Update: {
+          key?: string
+          updated_at?: string
+          value?: string
+        }
+        Relationships: []
+      }
+      integrations: {
+        Row: {
+          funnel_id: string
+          id: string
+          tiktok_advertiser_id: string | null
+          tiktok_enabled: boolean
+          tiktok_test_event_code: string | null
+          tiktok_test_mode: boolean
+          token_hint: string | null
+          updated_at: string
+        }
+        Insert: {
+          funnel_id: string
+          id?: string
+          tiktok_advertiser_id?: string | null
+          tiktok_enabled?: boolean
+          tiktok_test_event_code?: string | null
+          tiktok_test_mode?: boolean
+          token_hint?: string | null
+          updated_at?: string
+        }
+        Update: {
+          funnel_id?: string
+          id?: string
+          tiktok_advertiser_id?: string | null
+          tiktok_enabled?: boolean
+          tiktok_test_event_code?: string | null
+          tiktok_test_mode?: boolean
+          token_hint?: string | null
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "integrations_funnel_id_fkey"
+            columns: ["funnel_id"]
+            isOneToOne: true
+            referencedRelation: "funnels"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      rate_limits: {
+        Row: {
+          bucket: string
+          hits: number
+          window_start: string
+        }
+        Insert: {
+          bucket: string
+          hits?: number
+          window_start: string
+        }
+        Update: {
+          bucket?: string
+          hits?: number
+          window_start?: string
+        }
+        Relationships: []
+      }
       sessions: {
         Row: {
           browser: string | null
@@ -263,6 +446,129 @@ export type Database = {
           },
         ]
       }
+      system_logs: {
+        Row: {
+          attempt: number | null
+          created_at: string
+          details: Json | null
+          duration_ms: number | null
+          endpoint: string | null
+          event_name: string | null
+          funnel_id: string | null
+          id: string
+          level: string
+          message: string
+          session_id: string | null
+          source: string
+          status_code: number | null
+          visitor_id: string | null
+        }
+        Insert: {
+          attempt?: number | null
+          created_at?: string
+          details?: Json | null
+          duration_ms?: number | null
+          endpoint?: string | null
+          event_name?: string | null
+          funnel_id?: string | null
+          id?: string
+          level: string
+          message: string
+          session_id?: string | null
+          source: string
+          status_code?: number | null
+          visitor_id?: string | null
+        }
+        Update: {
+          attempt?: number | null
+          created_at?: string
+          details?: Json | null
+          duration_ms?: number | null
+          endpoint?: string | null
+          event_name?: string | null
+          funnel_id?: string | null
+          id?: string
+          level?: string
+          message?: string
+          session_id?: string | null
+          source?: string
+          status_code?: number | null
+          visitor_id?: string | null
+        }
+        Relationships: []
+      }
+      transactions: {
+        Row: {
+          amount: number | null
+          campaign: string | null
+          created_at: string
+          currency: string | null
+          funnel_id: string | null
+          id: string
+          occurred_at: string
+          order_id: string
+          product: string | null
+          provider: string
+          session_id: string | null
+          status: string
+          transaction_id: string | null
+          ttclid: string | null
+          updated_at: string
+          visitor_id: string | null
+        }
+        Insert: {
+          amount?: number | null
+          campaign?: string | null
+          created_at?: string
+          currency?: string | null
+          funnel_id?: string | null
+          id?: string
+          occurred_at?: string
+          order_id: string
+          product?: string | null
+          provider?: string
+          session_id?: string | null
+          status: string
+          transaction_id?: string | null
+          ttclid?: string | null
+          updated_at?: string
+          visitor_id?: string | null
+        }
+        Update: {
+          amount?: number | null
+          campaign?: string | null
+          created_at?: string
+          currency?: string | null
+          funnel_id?: string | null
+          id?: string
+          occurred_at?: string
+          order_id?: string
+          product?: string | null
+          provider?: string
+          session_id?: string | null
+          status?: string
+          transaction_id?: string | null
+          ttclid?: string | null
+          updated_at?: string
+          visitor_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "transactions_funnel_id_fkey"
+            columns: ["funnel_id"]
+            isOneToOne: false
+            referencedRelation: "funnels"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "transactions_session_id_fkey"
+            columns: ["session_id"]
+            isOneToOne: false
+            referencedRelation: "sessions"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       user_roles: {
         Row: {
           id: string
@@ -281,11 +587,46 @@ export type Database = {
         }
         Relationships: []
       }
+      webhook_events: {
+        Row: {
+          created_at: string
+          dedupe_key: string
+          error: string | null
+          event_type: string | null
+          id: string
+          payload: Json
+          provider: string
+          status: string
+        }
+        Insert: {
+          created_at?: string
+          dedupe_key: string
+          error?: string | null
+          event_type?: string | null
+          id?: string
+          payload: Json
+          provider: string
+          status?: string
+        }
+        Update: {
+          created_at?: string
+          dedupe_key?: string
+          error?: string | null
+          event_type?: string | null
+          id?: string
+          payload?: Json
+          provider?: string
+          status?: string
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
     }
     Functions: {
+      can_manage: { Args: { _uid: string }; Returns: boolean }
+      can_view: { Args: { _uid: string }; Returns: boolean }
       has_role: {
         Args: {
           _role: Database["public"]["Enums"]["app_role"]
@@ -293,9 +634,14 @@ export type Database = {
         }
         Returns: boolean
       }
+      hit_rate_limit: {
+        Args: { _bucket: string; _max: number; _window_seconds: number }
+        Returns: boolean
+      }
+      user_role_level: { Args: { _uid: string }; Returns: number }
     }
     Enums: {
-      app_role: "admin" | "user"
+      app_role: "admin" | "user" | "super_admin" | "analyst" | "viewer"
     }
     CompositeTypes: {
       [_ in never]: never
@@ -423,7 +769,7 @@ export type CompositeTypes<
 export const Constants = {
   public: {
     Enums: {
-      app_role: ["admin", "user"],
+      app_role: ["admin", "user", "super_admin", "analyst", "viewer"],
     },
   },
 } as const

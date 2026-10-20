@@ -53,10 +53,13 @@ export const Route = createFileRoute("/api/public/track")({
         const d = parsed.data;
 
         const { supabaseAdmin: db } = await import("@/integrations/supabase/client.server");
+        const { rateLimited } = await import("@/lib/server/ops");
+        const ip = request.headers.get("cf-connecting-ip") ?? "unknown";
+        if (await rateLimited(db, `track:${ip}`, 60, 240)) return json({ error: "rate limited" }, 429);
 
         const { data: funnel } = await db
           .from("funnels")
-          .select("id, status, funnel_steps(id, url_pattern, step_order)")
+          .select("id, status, funnel_steps(id, name, url_pattern, step_order)")
           .eq("id", d.funnel_id)
           .maybeSingle();
         if (!funnel || funnel.status !== "active") return json({ error: "unknown funnel" }, 404);
@@ -148,6 +151,47 @@ export const Route = createFileRoute("/api/public/track")({
           },
           { onConflict: "event_id", ignoreDuplicates: true },
         );
+
+        const ops = await import("@/lib/server/ops");
+        const prevOrder = existing?.max_step_order ?? 0;
+        if (step && step.step_order > prevOrder) {
+          let path = d.url;
+          try {
+            const u = new URL(d.url);
+            path = u.host + u.pathname;
+          } catch {
+            /* raw */
+          }
+          await ops.logSystem(db, {
+            level: "INFO",
+            source: "tracking",
+            message: existing ? `Visitor avançou para ${step.name} (${path})` : `Visitor entrou em ${step.name} (${path})`,
+            funnel_id: d.funnel_id,
+            session_id: sessionId,
+            visitor_id: d.visitor_id,
+            event_name: "page_view",
+            endpoint: "/api/public/track",
+          });
+          // Checkout reached for the first time → real InitiateCheckout for TikTok.
+          if (/checkout/i.test(step.name)) {
+            const qid = await ops.enqueueTikTok(db, {
+              funnel_id: d.funnel_id,
+              event_name: "InitiateCheckout",
+              event_id: `LT_EVT_IC_${d.session_key}`,
+              session_id: sessionId,
+              payload: {
+                event_time: Math.floor(Date.now() / 1000),
+                user: {
+                  ttclid: d.ttclid ?? undefined,
+                  ip: request.headers.get("cf-connecting-ip") ?? undefined,
+                  user_agent: request.headers.get("user-agent") ?? undefined,
+                },
+                page: { url: d.url, referrer: d.referrer ?? undefined },
+              },
+            });
+            if (qid) await ops.processQueue(db, { ids: [qid] });
+          }
+        }
 
         return json({ ok: true, step: step?.step_order ?? null });
       },
