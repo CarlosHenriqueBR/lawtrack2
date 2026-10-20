@@ -14,16 +14,288 @@ export type Database = {
   }
   public: {
     Tables: {
-      [_ in never]: never
+      events: {
+        Row: {
+          created_at: string
+          event_id: string
+          funnel_id: string
+          id: string
+          session_id: string
+          step_id: string | null
+          type: string
+          url: string | null
+        }
+        Insert: {
+          created_at?: string
+          event_id: string
+          funnel_id: string
+          id?: string
+          session_id: string
+          step_id?: string | null
+          type: string
+          url?: string | null
+        }
+        Update: {
+          created_at?: string
+          event_id?: string
+          funnel_id?: string
+          id?: string
+          session_id?: string
+          step_id?: string | null
+          type?: string
+          url?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "events_funnel_id_fkey"
+            columns: ["funnel_id"]
+            isOneToOne: false
+            referencedRelation: "funnels"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "events_session_id_fkey"
+            columns: ["session_id"]
+            isOneToOne: false
+            referencedRelation: "sessions"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "events_step_id_fkey"
+            columns: ["step_id"]
+            isOneToOne: false
+            referencedRelation: "funnel_steps"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      funnel_steps: {
+        Row: {
+          created_at: string
+          funnel_id: string
+          id: string
+          name: string
+          step_order: number
+          url_pattern: string
+        }
+        Insert: {
+          created_at?: string
+          funnel_id: string
+          id?: string
+          name: string
+          step_order: number
+          url_pattern: string
+        }
+        Update: {
+          created_at?: string
+          funnel_id?: string
+          id?: string
+          name?: string
+          step_order?: number
+          url_pattern?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "funnel_steps_funnel_id_fkey"
+            columns: ["funnel_id"]
+            isOneToOne: false
+            referencedRelation: "funnels"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      funnels: {
+        Row: {
+          base_url: string | null
+          created_at: string
+          description: string | null
+          domain: string | null
+          id: string
+          name: string
+          status: string
+          tiktok_pixel_id: string | null
+          tracking_params: Json
+          updated_at: string
+        }
+        Insert: {
+          base_url?: string | null
+          created_at?: string
+          description?: string | null
+          domain?: string | null
+          id?: string
+          name: string
+          status?: string
+          tiktok_pixel_id?: string | null
+          tracking_params?: Json
+          updated_at?: string
+        }
+        Update: {
+          base_url?: string | null
+          created_at?: string
+          description?: string | null
+          domain?: string | null
+          id?: string
+          name?: string
+          status?: string
+          tiktok_pixel_id?: string | null
+          tracking_params?: Json
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      sessions: {
+        Row: {
+          browser: string | null
+          city: string | null
+          converted: boolean
+          country: string | null
+          current_step_id: string | null
+          current_url: string | null
+          device: string | null
+          funnel_id: string
+          id: string
+          is_returning: boolean
+          landing_url: string | null
+          language: string | null
+          last_seen_at: string
+          max_step_order: number
+          os: string | null
+          page_views: number
+          previous_url: string | null
+          referrer: string | null
+          region: string | null
+          screen: string | null
+          session_key: string
+          started_at: string
+          tt_ad: string | null
+          tt_adset: string | null
+          tt_campaign: string | null
+          ttclid: string | null
+          utm_campaign: string | null
+          utm_content: string | null
+          utm_medium: string | null
+          utm_source: string | null
+          utm_term: string | null
+          visitor_id: string
+        }
+        Insert: {
+          browser?: string | null
+          city?: string | null
+          converted?: boolean
+          country?: string | null
+          current_step_id?: string | null
+          current_url?: string | null
+          device?: string | null
+          funnel_id: string
+          id?: string
+          is_returning?: boolean
+          landing_url?: string | null
+          language?: string | null
+          last_seen_at?: string
+          max_step_order?: number
+          os?: string | null
+          page_views?: number
+          previous_url?: string | null
+          referrer?: string | null
+          region?: string | null
+          screen?: string | null
+          session_key: string
+          started_at?: string
+          tt_ad?: string | null
+          tt_adset?: string | null
+          tt_campaign?: string | null
+          ttclid?: string | null
+          utm_campaign?: string | null
+          utm_content?: string | null
+          utm_medium?: string | null
+          utm_source?: string | null
+          utm_term?: string | null
+          visitor_id: string
+        }
+        Update: {
+          browser?: string | null
+          city?: string | null
+          converted?: boolean
+          country?: string | null
+          current_step_id?: string | null
+          current_url?: string | null
+          device?: string | null
+          funnel_id?: string
+          id?: string
+          is_returning?: boolean
+          landing_url?: string | null
+          language?: string | null
+          last_seen_at?: string
+          max_step_order?: number
+          os?: string | null
+          page_views?: number
+          previous_url?: string | null
+          referrer?: string | null
+          region?: string | null
+          screen?: string | null
+          session_key?: string
+          started_at?: string
+          tt_ad?: string | null
+          tt_adset?: string | null
+          tt_campaign?: string | null
+          ttclid?: string | null
+          utm_campaign?: string | null
+          utm_content?: string | null
+          utm_medium?: string | null
+          utm_source?: string | null
+          utm_term?: string | null
+          visitor_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "sessions_current_step_id_fkey"
+            columns: ["current_step_id"]
+            isOneToOne: false
+            referencedRelation: "funnel_steps"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "sessions_funnel_id_fkey"
+            columns: ["funnel_id"]
+            isOneToOne: false
+            referencedRelation: "funnels"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      user_roles: {
+        Row: {
+          id: string
+          role: Database["public"]["Enums"]["app_role"]
+          user_id: string
+        }
+        Insert: {
+          id?: string
+          role: Database["public"]["Enums"]["app_role"]
+          user_id: string
+        }
+        Update: {
+          id?: string
+          role?: Database["public"]["Enums"]["app_role"]
+          user_id?: string
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
     }
     Functions: {
-      [_ in never]: never
+      has_role: {
+        Args: {
+          _role: Database["public"]["Enums"]["app_role"]
+          _user_id: string
+        }
+        Returns: boolean
+      }
     }
     Enums: {
-      [_ in never]: never
+      app_role: "admin" | "user"
     }
     CompositeTypes: {
       [_ in never]: never
@@ -150,6 +422,8 @@ export type CompositeTypes<
 
 export const Constants = {
   public: {
-    Enums: {},
+    Enums: {
+      app_role: ["admin", "user"],
+    },
   },
 } as const
