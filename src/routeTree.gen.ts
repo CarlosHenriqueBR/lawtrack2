@@ -14,6 +14,8 @@ import { Route as AuthenticatedRouteRouteImport } from './routes/_authenticated/
 import { Route as AuthRouteImport } from './routes/auth'
 import { Route as AuthenticatedDashboardRouteImport } from './routes/_authenticated/dashboard'
 import { Route as AuthenticatedLiveRouteImport } from './routes/_authenticated/live'
+import { Route as AuthenticatedFunnelsIndexRouteImport } from './routes/_authenticated/funnels.index'
+import { Route as AuthenticatedFunnelsIdRouteImport } from './routes/_authenticated/funnels.$id'
 import { Route as AuthenticatedJourneySessionIdRouteImport } from './routes/_authenticated/journey.$sessionId'
 import { Route as ApiPublicTrackRouteImport } from './routes/api/public/track'
 import { Route as ApiPublicTrackerDotjsRouteImport } from './routes/api/public/tracker[.]js'
@@ -42,6 +44,17 @@ const AuthenticatedLiveRoute = AuthenticatedLiveRouteImport.update({
   path: '/live',
   getParentRoute: () => AuthenticatedRouteRoute,
 } as any)
+const AuthenticatedFunnelsIndexRoute =
+  AuthenticatedFunnelsIndexRouteImport.update({
+    id: '/funnels/',
+    path: '/funnels/',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
+const AuthenticatedFunnelsIdRoute = AuthenticatedFunnelsIdRouteImport.update({
+  id: '/funnels/$id',
+  path: '/funnels/$id',
+  getParentRoute: () => AuthenticatedRouteRoute,
+} as any)
 const AuthenticatedJourneySessionIdRoute =
   AuthenticatedJourneySessionIdRouteImport.update({
     id: '/journey/$sessionId',
@@ -64,18 +77,22 @@ export interface FileRoutesByFullPath {
   '/auth': typeof AuthRoute
   '/dashboard': typeof AuthenticatedDashboardRoute
   '/live': typeof AuthenticatedLiveRoute
+  '/funnels/$id': typeof AuthenticatedFunnelsIdRoute
   '/journey/$sessionId': typeof AuthenticatedJourneySessionIdRoute
   '/api/public/track': typeof ApiPublicTrackRoute
   '/api/public/tracker.js': typeof ApiPublicTrackerDotjsRoute
+  '/funnels/': typeof AuthenticatedFunnelsIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/auth': typeof AuthRoute
   '/dashboard': typeof AuthenticatedDashboardRoute
   '/live': typeof AuthenticatedLiveRoute
+  '/funnels/$id': typeof AuthenticatedFunnelsIdRoute
   '/journey/$sessionId': typeof AuthenticatedJourneySessionIdRoute
   '/api/public/track': typeof ApiPublicTrackRoute
   '/api/public/tracker.js': typeof ApiPublicTrackerDotjsRoute
+  '/funnels': typeof AuthenticatedFunnelsIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -84,9 +101,11 @@ export interface FileRoutesById {
   '/auth': typeof AuthRoute
   '/_authenticated/dashboard': typeof AuthenticatedDashboardRoute
   '/_authenticated/live': typeof AuthenticatedLiveRoute
+  '/_authenticated/funnels/$id': typeof AuthenticatedFunnelsIdRoute
   '/_authenticated/journey/$sessionId': typeof AuthenticatedJourneySessionIdRoute
   '/api/public/track': typeof ApiPublicTrackRoute
   '/api/public/tracker.js': typeof ApiPublicTrackerDotjsRoute
+  '/_authenticated/funnels/': typeof AuthenticatedFunnelsIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -95,18 +114,22 @@ export interface FileRouteTypes {
     | '/auth'
     | '/dashboard'
     | '/live'
+    | '/funnels/$id'
     | '/journey/$sessionId'
     | '/api/public/track'
     | '/api/public/tracker.js'
+    | '/funnels/'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
     | '/auth'
     | '/dashboard'
     | '/live'
+    | '/funnels/$id'
     | '/journey/$sessionId'
     | '/api/public/track'
     | '/api/public/tracker.js'
+    | '/funnels'
   id:
     | '__root__'
     | '/'
@@ -114,9 +137,11 @@ export interface FileRouteTypes {
     | '/auth'
     | '/_authenticated/dashboard'
     | '/_authenticated/live'
+    | '/_authenticated/funnels/$id'
     | '/_authenticated/journey/$sessionId'
     | '/api/public/track'
     | '/api/public/tracker.js'
+    | '/_authenticated/funnels/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -164,6 +189,20 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedLiveRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
+    '/_authenticated/funnels/': {
+      id: '/_authenticated/funnels/'
+      path: '/funnels'
+      fullPath: '/funnels/'
+      preLoaderRoute: typeof AuthenticatedFunnelsIndexRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/funnels/$id': {
+      id: '/_authenticated/funnels/$id'
+      path: '/funnels/$id'
+      fullPath: '/funnels/$id'
+      preLoaderRoute: typeof AuthenticatedFunnelsIdRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
     '/_authenticated/journey/$sessionId': {
       id: '/_authenticated/journey/$sessionId'
       path: '/journey/$sessionId'
@@ -191,13 +230,17 @@ declare module '@tanstack/react-router' {
 interface AuthenticatedRouteRouteChildren {
   AuthenticatedDashboardRoute: typeof AuthenticatedDashboardRoute
   AuthenticatedLiveRoute: typeof AuthenticatedLiveRoute
+  AuthenticatedFunnelsIdRoute: typeof AuthenticatedFunnelsIdRoute
   AuthenticatedJourneySessionIdRoute: typeof AuthenticatedJourneySessionIdRoute
+  AuthenticatedFunnelsIndexRoute: typeof AuthenticatedFunnelsIndexRoute
 }
 
 const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
   AuthenticatedDashboardRoute: AuthenticatedDashboardRoute,
   AuthenticatedLiveRoute: AuthenticatedLiveRoute,
+  AuthenticatedFunnelsIdRoute: AuthenticatedFunnelsIdRoute,
   AuthenticatedJourneySessionIdRoute: AuthenticatedJourneySessionIdRoute,
+  AuthenticatedFunnelsIndexRoute: AuthenticatedFunnelsIndexRoute,
 }
 
 const AuthenticatedRouteRouteWithChildren =
