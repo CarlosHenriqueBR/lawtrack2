@@ -1,5 +1,9 @@
 # Lawtrack roadmap
-- [x] Fase 1: login admin, funis/etapas, script tracker, Live Funnel, Dashboard, Visitor Journey
-- [ ] Webhook Digistore24 + vendas (receita, ticket médio)
-- [ ] Fila TikTok Events API com retry/dead letter e deduplicação
-- [ ] System Logs + auditoria
+- [x] Fase 1: login, funis/etapas, script tracker, Live Funnel, Dashboard, Visitor Journey
+- [x] Webhook Digistore24 + vendas (receita, ticket médio), deduplicação
+- [x] Fila TikTok Events API com retry/backoff/dead letter
+- [x] System Logs, Event Explorer, Auditoria, System Health, alertas
+- [x] Usuários + perfis (Super Admin/Admin/Analista/Viewer), convites, bloqueio
+- [x] Relatórios com CSV, Pesquisa, rate limit
+- [ ] API REST /api/v1 + OpenAPI (aguarda definição de uso / chaves de API)
+- [ ] MFA opcional
