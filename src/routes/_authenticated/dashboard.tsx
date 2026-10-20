@@ -5,8 +5,8 @@ import { Area, AreaChart, CartesianGrid, ResponsiveContainer, Tooltip, XAxis, YA
 import { supabase } from "@/integrations/supabase/client";
 import { PageHeader } from "@/components/AppShell";
 import { FunnelMap } from "@/components/FunnelMap";
-import { fetchFunnels, periodRange, useNow, useRealtimeInvalidate, type Period } from "@/lib/data";
-import { sessionStatus, trafficSource } from "@/lib/tracking";
+import { fetchFunnels, periodRange, useRealtimeInvalidate, type Period } from "@/lib/data";
+import { trafficSource } from "@/lib/tracking";
 
 export const Route = createFileRoute("/_authenticated/dashboard")({
   head: () => ({ meta: [{ title: "Dashboard — Lawtrack" }, { name: "description", content: "Visão geral dos funis." }] }),
@@ -23,7 +23,6 @@ const PERIODS: { id: Period; label: string }[] = [
 function Dashboard() {
   const [period, setPeriod] = useState<Period>("today");
   const [funnelId, setFunnelId] = useState<string>("");
-  const now = useNow(5000);
   const funnels = useQuery({ queryKey: ["funnels"], queryFn: fetchFunnels });
   const funnel = funnels.data?.find((f) => f.id === funnelId) ?? funnels.data?.[0];
   const [from, to] = periodRange(period);
@@ -94,8 +93,6 @@ function Dashboard() {
     { l: "Receita", v: "—", hint: "Ativa com o webhook Digistore24" },
     { l: "Ticket médio", v: "—", hint: "Ativa com o webhook Digistore24" },
   ];
-  void now;
-  void sessionStatus;
 
   return (
     <div>

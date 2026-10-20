@@ -10,6 +10,11 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as AuthenticatedRouteRouteImport } from './routes/_authenticated/route'
+import { Route as AuthRouteImport } from './routes/auth'
+import { Route as AuthenticatedDashboardRouteImport } from './routes/_authenticated/dashboard'
+import { Route as AuthenticatedLiveRouteImport } from './routes/_authenticated/live'
+import { Route as AuthenticatedJourneySessionIdRouteImport } from './routes/_authenticated/journey.$sessionId'
 import { Route as ApiPublicTrackRouteImport } from './routes/api/public/track'
 import { Route as ApiPublicTrackerDotjsRouteImport } from './routes/api/public/tracker[.]js'
 
@@ -18,6 +23,31 @@ const IndexRoute = IndexRouteImport.update({
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AuthenticatedRouteRoute = AuthenticatedRouteRouteImport.update({
+  id: '/_authenticated',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AuthRoute = AuthRouteImport.update({
+  id: '/auth',
+  path: '/auth',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AuthenticatedDashboardRoute = AuthenticatedDashboardRouteImport.update({
+  id: '/dashboard',
+  path: '/dashboard',
+  getParentRoute: () => AuthenticatedRouteRoute,
+} as any)
+const AuthenticatedLiveRoute = AuthenticatedLiveRouteImport.update({
+  id: '/live',
+  path: '/live',
+  getParentRoute: () => AuthenticatedRouteRoute,
+} as any)
+const AuthenticatedJourneySessionIdRoute =
+  AuthenticatedJourneySessionIdRouteImport.update({
+    id: '/journey/$sessionId',
+    path: '/journey/$sessionId',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
 const ApiPublicTrackRoute = ApiPublicTrackRouteImport.update({
   id: '/api/public/track',
   path: '/api/public/track',
@@ -31,30 +61,68 @@ const ApiPublicTrackerDotjsRoute = ApiPublicTrackerDotjsRouteImport.update({
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/auth': typeof AuthRoute
+  '/dashboard': typeof AuthenticatedDashboardRoute
+  '/live': typeof AuthenticatedLiveRoute
+  '/journey/$sessionId': typeof AuthenticatedJourneySessionIdRoute
   '/api/public/track': typeof ApiPublicTrackRoute
   '/api/public/tracker.js': typeof ApiPublicTrackerDotjsRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/auth': typeof AuthRoute
+  '/dashboard': typeof AuthenticatedDashboardRoute
+  '/live': typeof AuthenticatedLiveRoute
+  '/journey/$sessionId': typeof AuthenticatedJourneySessionIdRoute
   '/api/public/track': typeof ApiPublicTrackRoute
   '/api/public/tracker.js': typeof ApiPublicTrackerDotjsRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/_authenticated': typeof AuthenticatedRouteRouteWithChildren
+  '/auth': typeof AuthRoute
+  '/_authenticated/dashboard': typeof AuthenticatedDashboardRoute
+  '/_authenticated/live': typeof AuthenticatedLiveRoute
+  '/_authenticated/journey/$sessionId': typeof AuthenticatedJourneySessionIdRoute
   '/api/public/track': typeof ApiPublicTrackRoute
   '/api/public/tracker.js': typeof ApiPublicTrackerDotjsRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/api/public/track' | '/api/public/tracker.js'
+  fullPaths:
+    | '/'
+    | '/auth'
+    | '/dashboard'
+    | '/live'
+    | '/journey/$sessionId'
+    | '/api/public/track'
+    | '/api/public/tracker.js'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/api/public/track' | '/api/public/tracker.js'
-  id: '__root__' | '/' | '/api/public/track' | '/api/public/tracker.js'
+  to:
+    | '/'
+    | '/auth'
+    | '/dashboard'
+    | '/live'
+    | '/journey/$sessionId'
+    | '/api/public/track'
+    | '/api/public/tracker.js'
+  id:
+    | '__root__'
+    | '/'
+    | '/_authenticated'
+    | '/auth'
+    | '/_authenticated/dashboard'
+    | '/_authenticated/live'
+    | '/_authenticated/journey/$sessionId'
+    | '/api/public/track'
+    | '/api/public/tracker.js'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  AuthenticatedRouteRoute: typeof AuthenticatedRouteRouteWithChildren
+  AuthRoute: typeof AuthRoute
   ApiPublicTrackRoute: typeof ApiPublicTrackRoute
   ApiPublicTrackerDotjsRoute: typeof ApiPublicTrackerDotjsRoute
 }
@@ -67,6 +135,41 @@ declare module '@tanstack/react-router' {
       fullPath: '/'
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
+    }
+    '/_authenticated': {
+      id: '/_authenticated'
+      path: ''
+      fullPath: '/'
+      preLoaderRoute: typeof AuthenticatedRouteRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/auth': {
+      id: '/auth'
+      path: '/auth'
+      fullPath: '/auth'
+      preLoaderRoute: typeof AuthRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/_authenticated/dashboard': {
+      id: '/_authenticated/dashboard'
+      path: '/dashboard'
+      fullPath: '/dashboard'
+      preLoaderRoute: typeof AuthenticatedDashboardRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/live': {
+      id: '/_authenticated/live'
+      path: '/live'
+      fullPath: '/live'
+      preLoaderRoute: typeof AuthenticatedLiveRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/journey/$sessionId': {
+      id: '/_authenticated/journey/$sessionId'
+      path: '/journey/$sessionId'
+      fullPath: '/journey/$sessionId'
+      preLoaderRoute: typeof AuthenticatedJourneySessionIdRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
     }
     '/api/public/track': {
       id: '/api/public/track'
@@ -85,8 +188,25 @@ declare module '@tanstack/react-router' {
   }
 }
 
+interface AuthenticatedRouteRouteChildren {
+  AuthenticatedDashboardRoute: typeof AuthenticatedDashboardRoute
+  AuthenticatedLiveRoute: typeof AuthenticatedLiveRoute
+  AuthenticatedJourneySessionIdRoute: typeof AuthenticatedJourneySessionIdRoute
+}
+
+const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
+  AuthenticatedDashboardRoute: AuthenticatedDashboardRoute,
+  AuthenticatedLiveRoute: AuthenticatedLiveRoute,
+  AuthenticatedJourneySessionIdRoute: AuthenticatedJourneySessionIdRoute,
+}
+
+const AuthenticatedRouteRouteWithChildren =
+  AuthenticatedRouteRoute._addFileChildren(AuthenticatedRouteRouteChildren)
+
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  AuthenticatedRouteRoute: AuthenticatedRouteRouteWithChildren,
+  AuthRoute: AuthRoute,
   ApiPublicTrackRoute: ApiPublicTrackRoute,
   ApiPublicTrackerDotjsRoute: ApiPublicTrackerDotjsRoute,
 }
