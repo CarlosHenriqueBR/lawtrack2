@@ -57,14 +57,31 @@ function Dashboard() {
     },
     refetchInterval: 15_000,
   });
-  useRealtimeInvalidate([["sessions"], ["online"]]);
+  const sales = useQuery({
+    queryKey: ["sales", funnel?.id, period],
+    enabled: !!funnel,
+    queryFn: async () => {
+      const { data } = await supabase
+        .from("transactions")
+        .select("amount, occurred_at")
+        .eq("funnel_id", funnel!.id)
+        .eq("status", "approved")
+        .gte("occurred_at", from.toISOString())
+        .lt("occurred_at", to.toISOString());
+      return data ?? [];
+    },
+  });
+  useRealtimeInvalidate([["sessions"], ["online"], ["sales"]]);
 
   const list = sessions.data ?? [];
   const steps = funnel?.funnel_steps ?? [];
   const checkoutOrder = steps.find((s) => /checkout/i.test(s.name))?.step_order ?? steps.at(-2)?.step_order ?? 99;
   const views = list.reduce((a, s) => a + s.page_views, 0);
   const checkouts = list.filter((s) => s.max_step_order >= checkoutOrder).length;
-  const buys = list.filter((s) => s.converted).length;
+  const saleRows = sales.data ?? [];
+  const buys = saleRows.length || list.filter((s) => s.converted).length;
+  const revenue = saleRows.reduce((a, r) => a + Number(r.amount ?? 0), 0);
+  const money = (n: number) => n.toLocaleString("pt-BR", { maximumFractionDigits: 2 });
 
   const chart = useMemo(() => {
     const byHour = period === "today" || period === "yesterday";
@@ -90,8 +107,8 @@ function Dashboard() {
     { l: "Checkout iniciado", v: checkouts },
     { l: "Compras", v: buys },
     { l: "Conversão", v: list.length ? `${((buys / list.length) * 100).toFixed(1)}%` : "0%" },
-    { l: "Receita", v: "—", hint: "Ativa com o webhook Digistore24" },
-    { l: "Ticket médio", v: "—", hint: "Ativa com o webhook Digistore24" },
+    { l: "Receita", v: saleRows.length ? money(revenue) : "—", hint: "Vendas aprovadas pela Digistore24" },
+    { l: "Ticket médio", v: saleRows.length ? money(revenue / saleRows.length) : "—", hint: "Vendas aprovadas pela Digistore24" },
   ];
 
   return (
