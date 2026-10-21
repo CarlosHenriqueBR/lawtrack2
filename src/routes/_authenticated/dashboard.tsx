@@ -9,7 +9,7 @@ import { fetchFunnels, periodRange, useRealtimeInvalidate, type Period } from "@
 import { trafficSource } from "@/lib/tracking";
 
 export const Route = createFileRoute("/_authenticated/dashboard")({
-  head: () => ({ meta: [{ title: "Dashboard — Lawtrack" }, { name: "description", content: "Visão geral dos funis." }] }),
+  head: () => ({ meta: [{ title: "Dashboard — Lawtrack" }, { name: "description", content: "Visão geral dos funis." }, { property: "og:title", content: "Dashboard — Lawtrack" }, { property: "og:description", content: "Visão geral dos funis." }, { property: "og:type", content: "website" }, { name: "twitter:card", content: "summary" }] }),
   component: Dashboard,
 });
 

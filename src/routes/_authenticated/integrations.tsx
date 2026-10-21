@@ -13,7 +13,7 @@ import { fetchFunnels } from "@/lib/data";
 import { getIntegrationSecrets, retryQueueItems, saveIntegrationSecret } from "@/lib/admin.functions";
 
 export const Route = createFileRoute("/_authenticated/integrations")({
-  head: () => ({ meta: [{ title: "Integrações — Lawtrack" }, { name: "description", content: "TikTok Ads e Digistore24." }] }),
+  head: () => ({ meta: [{ title: "Integrações — Lawtrack" }, { name: "description", content: "TikTok Ads e Digistore24." }, { property: "og:title", content: "Integrações — Lawtrack" }, { property: "og:description", content: "TikTok Ads e Digistore24." }, { property: "og:type", content: "website" }, { name: "twitter:card", content: "summary" }] }),
   component: Integrations,
 });
 

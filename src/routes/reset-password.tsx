@@ -14,6 +14,8 @@ export const Route = createFileRoute("/reset-password")({
       { name: "description", content: "Crie sua senha de acesso à Lawtrack." },
       { property: "og:title", content: "Definir senha — Lawtrack" },
       { property: "og:description", content: "Crie sua senha de acesso à Lawtrack." },
+      { property: "og:type", content: "website" },
+      { name: "twitter:card", content: "summary" },
     ],
   }),
   component: ResetPassword,

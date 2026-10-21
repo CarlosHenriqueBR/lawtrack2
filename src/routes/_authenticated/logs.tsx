@@ -8,7 +8,7 @@ import { Input } from "@/components/ui/input";
 import { fetchFunnels } from "@/lib/data";
 
 export const Route = createFileRoute("/_authenticated/logs")({
-  head: () => ({ meta: [{ title: "System Logs — Lawtrack" }, { name: "description", content: "Logs e auditoria." }] }),
+  head: () => ({ meta: [{ title: "System Logs — Lawtrack" }, { name: "description", content: "Logs e auditoria." }, { property: "og:title", content: "System Logs — Lawtrack" }, { property: "og:description", content: "Logs e auditoria." }, { property: "og:type", content: "website" }, { name: "twitter:card", content: "summary" }] }),
   component: Logs,
 });
 

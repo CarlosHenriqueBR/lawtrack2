@@ -8,7 +8,7 @@ import { Button } from "@/components/ui/button";
 import { shortVisitor } from "@/lib/tracking";
 
 export const Route = createFileRoute("/_authenticated/conversions")({
-  head: () => ({ meta: [{ title: "Conversões — Lawtrack" }, { name: "description", content: "Vendas recebidas." }] }),
+  head: () => ({ meta: [{ title: "Conversões — Lawtrack" }, { name: "description", content: "Vendas recebidas." }, { property: "og:title", content: "Conversões — Lawtrack" }, { property: "og:description", content: "Vendas recebidas." }, { property: "og:type", content: "website" }, { name: "twitter:card", content: "summary" }] }),
   component: Conversions,
 });
 
