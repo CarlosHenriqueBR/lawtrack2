@@ -12,7 +12,8 @@ import { Label } from "@/components/ui/label";
 import { Switch } from "@/components/ui/switch";
 import { fetchFunnels } from "@/lib/data";
 import { createCheckoutWidget, getCheckoutCatalog, saveCheckoutLink } from "@/lib/checkout.functions";
-import { checkoutSchema } from "@/lib/checkout";
+import { checkoutSchema, trackingSchema } from "@/lib/checkout";
+import { Textarea } from "@/components/ui/textarea";
 
 export const Route = createFileRoute("/_authenticated/checkouts")({
   head: () => ({ meta: [
@@ -105,9 +106,37 @@ function Checkouts() {
           {links.isPending && <p className="text-muted-foreground">Carregando links…</p>}
           {links.error && <p role="alert" className="text-destructive">Não foi possível carregar os links.</p>}
           {links.data?.length === 0 && <div className="border-y py-12 text-center text-muted-foreground">Nenhum checkout criado.</div>}
-          <div className="space-y-4">{links.data?.map((link) => <article key={link.id} className="rounded-md border bg-card p-5"><div className="flex items-start justify-between gap-3"><h3 className="min-w-0 break-words text-base">{link.title}</h3><Switch aria-label={`Ativar ${link.title}`} checked={link.enabled} onCheckedChange={(v) => toggle(link.id, v)} /></div><p className="my-3 break-all text-xs text-muted-foreground">lawtrack2.lovable.app/checkout/{link.slug}</p><div className="flex flex-wrap gap-2"><Button variant="outline" size="sm" onClick={async () => { try { await navigator.clipboard.writeText(`https://lawtrack2.lovable.app/checkout/${link.slug}`); toast.success("Link copiado"); } catch { toast.error("Não foi possível copiar"); } }}><Copy />Copiar link</Button><Button variant="ghost" size="sm" asChild><Link to="/checkout/$slug" params={{ slug: link.slug }} target="_blank"><ExternalLink />Abrir checkout</Link></Button><span className={`self-center text-xs ${link.enabled ? "text-success" : "text-muted-foreground"}`}>{link.enabled ? "Ativo" : "Desativado"}</span></div></article>)}</div>
+          <div className="space-y-4">{links.data?.map((link) => <article key={link.id} className="rounded-md border bg-card p-5"><div className="flex items-start justify-between gap-3"><h3 className="min-w-0 break-words text-base">{link.title}</h3><Switch aria-label={`Ativar ${link.title}`} checked={link.enabled} onCheckedChange={(v) => toggle(link.id, v)} /></div><p className="my-3 break-all text-xs text-muted-foreground">lawtrack2.lovable.app/checkout/{link.slug}</p><div className="flex flex-wrap gap-2"><Button variant="outline" size="sm" onClick={async () => { try { await navigator.clipboard.writeText(`https://lawtrack2.lovable.app/checkout/${link.slug}`); toast.success("Link copiado"); } catch { toast.error("Não foi possível copiar"); } }}><Copy />Copiar link</Button><Button variant="ghost" size="sm" asChild><Link to="/checkout/$slug" params={{ slug: link.slug }} target="_blank"><ExternalLink />Abrir checkout</Link></Button><TrackingEditor link={link} /><span className={`self-center text-xs ${link.enabled ? "text-success" : "text-muted-foreground"}`}>{link.enabled ? "Ativo" : "Desativado"}</span></div></article>)}</div>
         </section>
       </div>
     </div>
+  );
+}
+function TrackingEditor({ link }: { link: { id: string; tiktok_pixel_id: string | null; custom_script: string | null } }) {
+  const qc = useQueryClient();
+  const [open, setOpen] = useState(false);
+  const [pixel, setPixel] = useState(link.tiktok_pixel_id ?? "");
+  const [script, setScript] = useState(link.custom_script ?? "");
+  const [saving, setSaving] = useState(false);
+  async function save() {
+    const parsed = trackingSchema.safeParse({ tiktokPixelId: pixel.trim() || null, customScript: script.trim() || null });
+    if (!parsed.success) { toast.error(parsed.error.issues[0]?.message ?? "Confira os campos"); return; }
+    setSaving(true);
+    const { error } = await supabase.from("checkout_links").update({ tiktok_pixel_id: parsed.data.tiktokPixelId, custom_script: parsed.data.customScript }).eq("id", link.id);
+    setSaving(false);
+    if (error) { toast.error("Não foi possível salvar os scripts"); return; }
+    await qc.invalidateQueries({ queryKey: ["checkout-links"] });
+    toast.success("Rastreamento salvo");
+    setOpen(false);
+  }
+  return (
+    <>
+      <Button variant="outline" size="sm" onClick={() => setOpen(!open)}>Rastreamento</Button>
+      {open && <div className="mt-3 w-full space-y-3 border-t pt-4">
+        <div className="space-y-2"><Label htmlFor={`px-${link.id}`}>ID do pixel do TikTok</Label><Input id={`px-${link.id}`} placeholder="C1A2B3C4D5E6F7G8H9" value={pixel} onChange={(e) => setPixel(e.target.value)} maxLength={40} /></div>
+        <div className="space-y-2"><Label htmlFor={`sc-${link.id}`}>Script próprio</Label><Textarea id={`sc-${link.id}`} rows={6} className="font-mono text-xs" placeholder={"<script>...</script>"} value={script} onChange={(e) => setScript(e.target.value)} /><p className="text-xs text-muted-foreground">Roda na página do checkout. Não tem acesso aos campos do formulário da Digistore24.</p></div>
+        <Button size="sm" onClick={save} disabled={saving}>{saving ? "Salvando…" : "Salvar"}</Button>
+      </div>}
+    </>
   );
 }
