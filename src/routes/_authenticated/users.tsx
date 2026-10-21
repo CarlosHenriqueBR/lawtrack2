@@ -9,7 +9,7 @@ import { Input } from "@/components/ui/input";
 import { inviteUser, listUsers, updateUser } from "@/lib/admin.functions";
 
 export const Route = createFileRoute("/_authenticated/users")({
-  head: () => ({ meta: [{ title: "Usuários — Lawtrack" }, { name: "description", content: "Usuários e perfis." }] }),
+  head: () => ({ meta: [{ title: "Usuários — Lawtrack" }, { name: "description", content: "Usuários e perfis." }, { property: "og:title", content: "Usuários — Lawtrack" }, { property: "og:description", content: "Usuários e perfis." }, { property: "og:type", content: "website" }, { name: "twitter:card", content: "summary" }] }),
   component: UsersPage,
 });
 

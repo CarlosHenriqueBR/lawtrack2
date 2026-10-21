@@ -7,7 +7,7 @@ import { Input } from "@/components/ui/input";
 import { shortVisitor } from "@/lib/tracking";
 
 export const Route = createFileRoute("/_authenticated/search")({
-  head: () => ({ meta: [{ title: "Pesquisa — Lawtrack" }, { name: "description", content: "Pesquisar visitantes e vendas." }] }),
+  head: () => ({ meta: [{ title: "Pesquisa — Lawtrack" }, { name: "description", content: "Pesquisar visitantes e vendas." }, { property: "og:title", content: "Pesquisa — Lawtrack" }, { property: "og:description", content: "Pesquisar visitantes e vendas." }, { property: "og:type", content: "website" }, { name: "twitter:card", content: "summary" }] }),
   component: SearchPage,
 });
 

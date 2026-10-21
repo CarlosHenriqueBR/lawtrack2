@@ -8,7 +8,7 @@ import { fetchFunnels, periodRange, type Period } from "@/lib/data";
 import { trafficSource } from "@/lib/tracking";
 
 export const Route = createFileRoute("/_authenticated/reports")({
-  head: () => ({ meta: [{ title: "Relatórios — Lawtrack" }, { name: "description", content: "Relatórios de conversão." }] }),
+  head: () => ({ meta: [{ title: "Relatórios — Lawtrack" }, { name: "description", content: "Relatórios de conversão." }, { property: "og:title", content: "Relatórios — Lawtrack" }, { property: "og:description", content: "Relatórios de conversão." }, { property: "og:type", content: "website" }, { name: "twitter:card", content: "summary" }] }),
   component: Reports,
 });
 

@@ -6,7 +6,7 @@ import { fetchFunnels, useNow, useRealtimeInvalidate } from "@/lib/data";
 import { flag, fmtDuration, sessionStatus, shortVisitor, trafficSource, type SessionStatus } from "@/lib/tracking";
 
 export const Route = createFileRoute("/_authenticated/live")({
-  head: () => ({ meta: [{ title: "Live Funnel — Lawtrack" }, { name: "description", content: "Visitantes ao vivo." }] }),
+  head: () => ({ meta: [{ title: "Live Funnel — Lawtrack" }, { name: "description", content: "Visitantes ao vivo." }, { property: "og:title", content: "Live Funnel — Lawtrack" }, { property: "og:description", content: "Visitantes ao vivo." }, { property: "og:type", content: "website" }, { name: "twitter:card", content: "summary" }] }),
   component: Live,
 });
 

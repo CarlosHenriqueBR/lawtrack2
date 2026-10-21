@@ -13,6 +13,7 @@ import { Route as IndexRouteImport } from './routes/index'
 import { Route as AuthenticatedRouteRouteImport } from './routes/_authenticated/route'
 import { Route as AuthRouteImport } from './routes/auth'
 import { Route as ResetPasswordRouteImport } from './routes/reset-password'
+import { Route as AuthenticatedCheckoutsRouteImport } from './routes/_authenticated/checkouts'
 import { Route as AuthenticatedConversionsRouteImport } from './routes/_authenticated/conversions'
 import { Route as AuthenticatedDashboardRouteImport } from './routes/_authenticated/dashboard'
 import { Route as AuthenticatedHealthRouteImport } from './routes/_authenticated/health'
@@ -22,6 +23,7 @@ import { Route as AuthenticatedLogsRouteImport } from './routes/_authenticated/l
 import { Route as AuthenticatedReportsRouteImport } from './routes/_authenticated/reports'
 import { Route as AuthenticatedSearchRouteImport } from './routes/_authenticated/search'
 import { Route as AuthenticatedUsersRouteImport } from './routes/_authenticated/users'
+import { Route as CheckoutSlugRouteImport } from './routes/checkout.$slug'
 import { Route as AuthenticatedFunnelsIndexRouteImport } from './routes/_authenticated/funnels.index'
 import { Route as AuthenticatedFunnelsIdRouteImport } from './routes/_authenticated/funnels.$id'
 import { Route as AuthenticatedJourneySessionIdRouteImport } from './routes/_authenticated/journey.$sessionId'
@@ -49,6 +51,11 @@ const ResetPasswordRoute = ResetPasswordRouteImport.update({
   id: '/reset-password',
   path: '/reset-password',
   getParentRoute: () => rootRouteImport,
+} as any)
+const AuthenticatedCheckoutsRoute = AuthenticatedCheckoutsRouteImport.update({
+  id: '/checkouts',
+  path: '/checkouts',
+  getParentRoute: () => AuthenticatedRouteRoute,
 } as any)
 const AuthenticatedConversionsRoute =
   AuthenticatedConversionsRouteImport.update({
@@ -96,6 +103,11 @@ const AuthenticatedUsersRoute = AuthenticatedUsersRouteImport.update({
   id: '/users',
   path: '/users',
   getParentRoute: () => AuthenticatedRouteRoute,
+} as any)
+const CheckoutSlugRoute = CheckoutSlugRouteImport.update({
+  id: '/checkout/$slug',
+  path: '/checkout/$slug',
+  getParentRoute: () => rootRouteImport,
 } as any)
 const AuthenticatedFunnelsIndexRoute =
   AuthenticatedFunnelsIndexRouteImport.update({
@@ -146,6 +158,7 @@ export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/auth': typeof AuthRoute
   '/reset-password': typeof ResetPasswordRoute
+  '/checkouts': typeof AuthenticatedCheckoutsRoute
   '/conversions': typeof AuthenticatedConversionsRoute
   '/dashboard': typeof AuthenticatedDashboardRoute
   '/health': typeof AuthenticatedHealthRoute
@@ -155,6 +168,7 @@ export interface FileRoutesByFullPath {
   '/reports': typeof AuthenticatedReportsRoute
   '/search': typeof AuthenticatedSearchRoute
   '/users': typeof AuthenticatedUsersRoute
+  '/checkout/$slug': typeof CheckoutSlugRoute
   '/funnels/$id': typeof AuthenticatedFunnelsIdRoute
   '/journey/$sessionId': typeof AuthenticatedJourneySessionIdRoute
   '/api/public/health': typeof ApiPublicHealthRoute
@@ -168,6 +182,7 @@ export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/auth': typeof AuthRoute
   '/reset-password': typeof ResetPasswordRoute
+  '/checkouts': typeof AuthenticatedCheckoutsRoute
   '/conversions': typeof AuthenticatedConversionsRoute
   '/dashboard': typeof AuthenticatedDashboardRoute
   '/health': typeof AuthenticatedHealthRoute
@@ -177,6 +192,7 @@ export interface FileRoutesByTo {
   '/reports': typeof AuthenticatedReportsRoute
   '/search': typeof AuthenticatedSearchRoute
   '/users': typeof AuthenticatedUsersRoute
+  '/checkout/$slug': typeof CheckoutSlugRoute
   '/funnels/$id': typeof AuthenticatedFunnelsIdRoute
   '/journey/$sessionId': typeof AuthenticatedJourneySessionIdRoute
   '/api/public/health': typeof ApiPublicHealthRoute
@@ -192,6 +208,7 @@ export interface FileRoutesById {
   '/_authenticated': typeof AuthenticatedRouteRouteWithChildren
   '/auth': typeof AuthRoute
   '/reset-password': typeof ResetPasswordRoute
+  '/_authenticated/checkouts': typeof AuthenticatedCheckoutsRoute
   '/_authenticated/conversions': typeof AuthenticatedConversionsRoute
   '/_authenticated/dashboard': typeof AuthenticatedDashboardRoute
   '/_authenticated/health': typeof AuthenticatedHealthRoute
@@ -201,6 +218,7 @@ export interface FileRoutesById {
   '/_authenticated/reports': typeof AuthenticatedReportsRoute
   '/_authenticated/search': typeof AuthenticatedSearchRoute
   '/_authenticated/users': typeof AuthenticatedUsersRoute
+  '/checkout/$slug': typeof CheckoutSlugRoute
   '/_authenticated/funnels/$id': typeof AuthenticatedFunnelsIdRoute
   '/_authenticated/journey/$sessionId': typeof AuthenticatedJourneySessionIdRoute
   '/api/public/health': typeof ApiPublicHealthRoute
@@ -216,6 +234,7 @@ export interface FileRouteTypes {
     | '/'
     | '/auth'
     | '/reset-password'
+    | '/checkouts'
     | '/conversions'
     | '/dashboard'
     | '/health'
@@ -225,6 +244,7 @@ export interface FileRouteTypes {
     | '/reports'
     | '/search'
     | '/users'
+    | '/checkout/$slug'
     | '/funnels/$id'
     | '/journey/$sessionId'
     | '/api/public/health'
@@ -238,6 +258,7 @@ export interface FileRouteTypes {
     | '/'
     | '/auth'
     | '/reset-password'
+    | '/checkouts'
     | '/conversions'
     | '/dashboard'
     | '/health'
@@ -247,6 +268,7 @@ export interface FileRouteTypes {
     | '/reports'
     | '/search'
     | '/users'
+    | '/checkout/$slug'
     | '/funnels/$id'
     | '/journey/$sessionId'
     | '/api/public/health'
@@ -261,6 +283,7 @@ export interface FileRouteTypes {
     | '/_authenticated'
     | '/auth'
     | '/reset-password'
+    | '/_authenticated/checkouts'
     | '/_authenticated/conversions'
     | '/_authenticated/dashboard'
     | '/_authenticated/health'
@@ -270,6 +293,7 @@ export interface FileRouteTypes {
     | '/_authenticated/reports'
     | '/_authenticated/search'
     | '/_authenticated/users'
+    | '/checkout/$slug'
     | '/_authenticated/funnels/$id'
     | '/_authenticated/journey/$sessionId'
     | '/api/public/health'
@@ -285,6 +309,7 @@ export interface RootRouteChildren {
   AuthenticatedRouteRoute: typeof AuthenticatedRouteRouteWithChildren
   AuthRoute: typeof AuthRoute
   ResetPasswordRoute: typeof ResetPasswordRoute
+  CheckoutSlugRoute: typeof CheckoutSlugRoute
   ApiPublicHealthRoute: typeof ApiPublicHealthRoute
   ApiPublicTrackRoute: typeof ApiPublicTrackRoute
   ApiPublicTrackerDotjsRoute: typeof ApiPublicTrackerDotjsRoute
@@ -321,6 +346,13 @@ declare module '@tanstack/react-router' {
       fullPath: '/reset-password'
       preLoaderRoute: typeof ResetPasswordRouteImport
       parentRoute: typeof rootRouteImport
+    }
+    '/_authenticated/checkouts': {
+      id: '/_authenticated/checkouts'
+      path: '/checkouts'
+      fullPath: '/checkouts'
+      preLoaderRoute: typeof AuthenticatedCheckoutsRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
     }
     '/_authenticated/conversions': {
       id: '/_authenticated/conversions'
@@ -385,6 +417,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedUsersRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
+    '/checkout/$slug': {
+      id: '/checkout/$slug'
+      path: '/checkout/$slug'
+      fullPath: '/checkout/$slug'
+      preLoaderRoute: typeof CheckoutSlugRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/_authenticated/funnels/': {
       id: '/_authenticated/funnels/'
       path: '/funnels'
@@ -445,6 +484,7 @@ declare module '@tanstack/react-router' {
 }
 
 interface AuthenticatedRouteRouteChildren {
+  AuthenticatedCheckoutsRoute: typeof AuthenticatedCheckoutsRoute
   AuthenticatedConversionsRoute: typeof AuthenticatedConversionsRoute
   AuthenticatedDashboardRoute: typeof AuthenticatedDashboardRoute
   AuthenticatedHealthRoute: typeof AuthenticatedHealthRoute
@@ -460,6 +500,7 @@ interface AuthenticatedRouteRouteChildren {
 }
 
 const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
+  AuthenticatedCheckoutsRoute: AuthenticatedCheckoutsRoute,
   AuthenticatedConversionsRoute: AuthenticatedConversionsRoute,
   AuthenticatedDashboardRoute: AuthenticatedDashboardRoute,
   AuthenticatedHealthRoute: AuthenticatedHealthRoute,
@@ -482,6 +523,7 @@ const rootRouteChildren: RootRouteChildren = {
   AuthenticatedRouteRoute: AuthenticatedRouteRouteWithChildren,
   AuthRoute: AuthRoute,
   ResetPasswordRoute: ResetPasswordRoute,
+  CheckoutSlugRoute: CheckoutSlugRoute,
   ApiPublicHealthRoute: ApiPublicHealthRoute,
   ApiPublicTrackRoute: ApiPublicTrackRoute,
   ApiPublicTrackerDotjsRoute: ApiPublicTrackerDotjsRoute,

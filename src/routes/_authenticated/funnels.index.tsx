@@ -9,7 +9,7 @@ import { Input } from "@/components/ui/input";
 import { fetchFunnels } from "@/lib/data";
 
 export const Route = createFileRoute("/_authenticated/funnels/")({
-  head: () => ({ meta: [{ title: "Funis — Lawtrack" }, { name: "description", content: "Gerencie seus funis." }] }),
+  head: () => ({ meta: [{ title: "Funis — Lawtrack" }, { name: "description", content: "Gerencie seus funis." }, { property: "og:title", content: "Funis — Lawtrack" }, { property: "og:description", content: "Gerencie seus funis." }, { property: "og:type", content: "website" }, { name: "twitter:card", content: "summary" }] }),
   component: Funnels,
 });
 

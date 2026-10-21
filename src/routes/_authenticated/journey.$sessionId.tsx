@@ -6,7 +6,7 @@ import { useNow, useRealtimeInvalidate } from "@/lib/data";
 import { flag, fmtDuration, sessionStatus, shortVisitor, trafficSource } from "@/lib/tracking";
 
 export const Route = createFileRoute("/_authenticated/journey/$sessionId")({
-  head: () => ({ meta: [{ title: "Visitor Journey — Lawtrack" }, { name: "description", content: "Jornada do visitante." }] }),
+  head: () => ({ meta: [{ title: "Visitor Journey — Lawtrack" }, { name: "description", content: "Jornada do visitante." }, { property: "og:title", content: "Visitor Journey — Lawtrack" }, { property: "og:description", content: "Jornada do visitante." }, { property: "og:type", content: "website" }, { name: "twitter:card", content: "summary" }] }),
   component: Journey,
 });
 

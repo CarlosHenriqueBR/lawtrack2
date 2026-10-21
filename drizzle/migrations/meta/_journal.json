@@ -36,6 +36,13 @@
       "when": 1792531752196,
       "tag": "0004_grant_admin_digitalprodutosbrasil",
       "breakpoints": true
+    },
+    {
+      "idx": 5,
+      "version": "7",
+      "when": 1792552827582,
+      "tag": "0005_digistore_checkout_links",
+      "breakpoints": true
     }
   ]
 }

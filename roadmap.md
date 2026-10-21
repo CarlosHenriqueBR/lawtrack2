@@ -1,5 +1,5 @@
 # Lawtrack roadmap
-- [ ] Checkout Digistore24 dentro da Lawtrack pelo Orderform Widget oficial (aguarda chave de API salva com segurança e seleção do produto/formulário)
+- [x] Checkout Digistore24 dentro da Lawtrack: catálogo, formulários oficiais e links; criação e campos de pagamento verificados sem cobrança
 - [x] Fase 1: login, funis/etapas, script tracker, Live Funnel, Dashboard, Visitor Journey
 - [x] Webhook Digistore24 + vendas (receita, ticket médio), deduplicação
 - [x] Fila TikTok Events API com retry/backoff/dead letter

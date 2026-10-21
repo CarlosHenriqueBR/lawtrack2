@@ -12,7 +12,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { fetchFunnels, type Step } from "@/lib/data";
 
 export const Route = createFileRoute("/_authenticated/funnels/$id")({
-  head: () => ({ meta: [{ title: "Configurar funil — Lawtrack" }, { name: "description", content: "Etapas e script do funil." }] }),
+  head: () => ({ meta: [{ title: "Configurar funil — Lawtrack" }, { name: "description", content: "Etapas e script do funil." }, { property: "og:title", content: "Configurar funil — Lawtrack" }, { property: "og:description", content: "Etapas e script do funil." }, { property: "og:type", content: "website" }, { name: "twitter:card", content: "summary" }] }),
   component: FunnelDetail,
 });
 

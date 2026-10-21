@@ -4,7 +4,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { PageHeader } from "@/components/AppShell";
 
 export const Route = createFileRoute("/_authenticated/health")({
-  head: () => ({ meta: [{ title: "System Health — Lawtrack" }, { name: "description", content: "Saúde do sistema." }] }),
+  head: () => ({ meta: [{ title: "System Health — Lawtrack" }, { name: "description", content: "Saúde do sistema." }, { property: "og:title", content: "System Health — Lawtrack" }, { property: "og:description", content: "Saúde do sistema." }, { property: "og:type", content: "website" }, { name: "twitter:card", content: "summary" }] }),
   component: Health,
 });
 

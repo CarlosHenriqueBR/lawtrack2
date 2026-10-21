@@ -44,6 +44,47 @@ export type Database = {
         }
         Relationships: []
       }
+      checkout_links: {
+        Row: {
+          created_at: string
+          enabled: boolean
+          funnel_id: string | null
+          id: string
+          orderform_id: string
+          product_id: string
+          slug: string
+          title: string
+        }
+        Insert: {
+          created_at?: string
+          enabled?: boolean
+          funnel_id?: string | null
+          id?: string
+          orderform_id: string
+          product_id: string
+          slug: string
+          title: string
+        }
+        Update: {
+          created_at?: string
+          enabled?: boolean
+          funnel_id?: string | null
+          id?: string
+          orderform_id?: string
+          product_id?: string
+          slug?: string
+          title?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "checkout_links_funnel_id_fkey"
+            columns: ["funnel_id"]
+            isOneToOne: false
+            referencedRelation: "funnels"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       event_queue: {
         Row: {
           attempts: number

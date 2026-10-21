@@ -6,6 +6,7 @@ import {
   BarChart3,
   BookOpen,
   DollarSign,
+  CreditCard,
   HeartPulse,
   LayoutDashboard,
   LogOut,
@@ -27,6 +28,7 @@ const nav = [
   { to: "/reports", label: "Relatórios", icon: BarChart3, min: 1 },
   { to: "/search", label: "Pesquisa", icon: Search, min: 2 },
   { to: "/integrations", label: "Integrações", icon: Plug, min: 3 },
+  { to: "/checkouts", label: "Checkouts", icon: CreditCard, min: 3 },
   { to: "/logs", label: "Logs", icon: ScrollText, min: 3 },
   { to: "/health", label: "System Health", icon: HeartPulse, min: 3 },
   { to: "/users", label: "Usuários", icon: Users, min: 3 },
@@ -39,7 +41,8 @@ export function useRoleLevel() {
     queryKey: ["role-level"],
     queryFn: async () => {
       const { data: u } = await supabase.auth.getUser();
-      const { data } = await supabase.rpc("user_role_level", { _uid: u.user!.id });
+      if (!u.user) return 0;
+      const { data } = await supabase.rpc("user_role_level", { _uid: u.user.id });
       return Number(data ?? 0);
     },
   });
