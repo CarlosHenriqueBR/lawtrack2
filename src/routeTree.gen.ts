@@ -28,6 +28,7 @@ import { Route as AuthenticatedFunnelsIndexRouteImport } from './routes/_authent
 import { Route as AuthenticatedFunnelsIdRouteImport } from './routes/_authenticated/funnels.$id'
 import { Route as AuthenticatedJourneySessionIdRouteImport } from './routes/_authenticated/journey.$sessionId'
 import { Route as ApiPublicHealthRouteImport } from './routes/api/public/health'
+import { Route as ApiPublicSaveLeadRouteImport } from './routes/api/public/save-lead'
 import { Route as ApiPublicTrackRouteImport } from './routes/api/public/track'
 import { Route as ApiPublicTrackerDotjsRouteImport } from './routes/api/public/tracker[.]js'
 import { Route as ApiPublicJobsProcessQueueRouteImport } from './routes/api/public/jobs/process-queue'
@@ -131,6 +132,11 @@ const ApiPublicHealthRoute = ApiPublicHealthRouteImport.update({
   path: '/api/public/health',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ApiPublicSaveLeadRoute = ApiPublicSaveLeadRouteImport.update({
+  id: '/api/public/save-lead',
+  path: '/api/public/save-lead',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const ApiPublicTrackRoute = ApiPublicTrackRouteImport.update({
   id: '/api/public/track',
   path: '/api/public/track',
@@ -172,6 +178,7 @@ export interface FileRoutesByFullPath {
   '/funnels/$id': typeof AuthenticatedFunnelsIdRoute
   '/journey/$sessionId': typeof AuthenticatedJourneySessionIdRoute
   '/api/public/health': typeof ApiPublicHealthRoute
+  '/api/public/save-lead': typeof ApiPublicSaveLeadRoute
   '/api/public/track': typeof ApiPublicTrackRoute
   '/api/public/tracker.js': typeof ApiPublicTrackerDotjsRoute
   '/funnels/': typeof AuthenticatedFunnelsIndexRoute
@@ -196,6 +203,7 @@ export interface FileRoutesByTo {
   '/funnels/$id': typeof AuthenticatedFunnelsIdRoute
   '/journey/$sessionId': typeof AuthenticatedJourneySessionIdRoute
   '/api/public/health': typeof ApiPublicHealthRoute
+  '/api/public/save-lead': typeof ApiPublicSaveLeadRoute
   '/api/public/track': typeof ApiPublicTrackRoute
   '/api/public/tracker.js': typeof ApiPublicTrackerDotjsRoute
   '/funnels': typeof AuthenticatedFunnelsIndexRoute
@@ -222,6 +230,7 @@ export interface FileRoutesById {
   '/_authenticated/funnels/$id': typeof AuthenticatedFunnelsIdRoute
   '/_authenticated/journey/$sessionId': typeof AuthenticatedJourneySessionIdRoute
   '/api/public/health': typeof ApiPublicHealthRoute
+  '/api/public/save-lead': typeof ApiPublicSaveLeadRoute
   '/api/public/track': typeof ApiPublicTrackRoute
   '/api/public/tracker.js': typeof ApiPublicTrackerDotjsRoute
   '/_authenticated/funnels/': typeof AuthenticatedFunnelsIndexRoute
@@ -248,6 +257,7 @@ export interface FileRouteTypes {
     | '/funnels/$id'
     | '/journey/$sessionId'
     | '/api/public/health'
+    | '/api/public/save-lead'
     | '/api/public/track'
     | '/api/public/tracker.js'
     | '/funnels/'
@@ -272,6 +282,7 @@ export interface FileRouteTypes {
     | '/funnels/$id'
     | '/journey/$sessionId'
     | '/api/public/health'
+    | '/api/public/save-lead'
     | '/api/public/track'
     | '/api/public/tracker.js'
     | '/funnels'
@@ -297,6 +308,7 @@ export interface FileRouteTypes {
     | '/_authenticated/funnels/$id'
     | '/_authenticated/journey/$sessionId'
     | '/api/public/health'
+    | '/api/public/save-lead'
     | '/api/public/track'
     | '/api/public/tracker.js'
     | '/_authenticated/funnels/'
@@ -311,6 +323,7 @@ export interface RootRouteChildren {
   ResetPasswordRoute: typeof ResetPasswordRoute
   CheckoutSlugRoute: typeof CheckoutSlugRoute
   ApiPublicHealthRoute: typeof ApiPublicHealthRoute
+  ApiPublicSaveLeadRoute: typeof ApiPublicSaveLeadRoute
   ApiPublicTrackRoute: typeof ApiPublicTrackRoute
   ApiPublicTrackerDotjsRoute: typeof ApiPublicTrackerDotjsRoute
   ApiPublicJobsProcessQueueRoute: typeof ApiPublicJobsProcessQueueRoute
@@ -452,6 +465,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ApiPublicHealthRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/api/public/save-lead': {
+      id: '/api/public/save-lead'
+      path: '/api/public/save-lead'
+      fullPath: '/api/public/save-lead'
+      preLoaderRoute: typeof ApiPublicSaveLeadRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/api/public/track': {
       id: '/api/public/track'
       path: '/api/public/track'
@@ -525,6 +545,7 @@ const rootRouteChildren: RootRouteChildren = {
   ResetPasswordRoute: ResetPasswordRoute,
   CheckoutSlugRoute: CheckoutSlugRoute,
   ApiPublicHealthRoute: ApiPublicHealthRoute,
+  ApiPublicSaveLeadRoute: ApiPublicSaveLeadRoute,
   ApiPublicTrackRoute: ApiPublicTrackRoute,
   ApiPublicTrackerDotjsRoute: ApiPublicTrackerDotjsRoute,
   ApiPublicJobsProcessQueueRoute: ApiPublicJobsProcessQueueRoute,

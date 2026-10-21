@@ -91,6 +91,51 @@ export type Database = {
           },
         ]
       }
+      checkout_leads: {
+        Row: {
+          access_email_sent_at: string | null
+          created_at: string
+          email: string
+          id: string
+          lead_key: string
+          session_key: string | null
+          transaction_email: string
+          utm_campaign: string | null
+          utm_content: string | null
+          utm_medium: string | null
+          utm_source: string | null
+          utm_term: string | null
+        }
+        Insert: {
+          access_email_sent_at?: string | null
+          created_at?: string
+          email: string
+          id?: string
+          lead_key: string
+          session_key?: string | null
+          transaction_email: string
+          utm_campaign?: string | null
+          utm_content?: string | null
+          utm_medium?: string | null
+          utm_source?: string | null
+          utm_term?: string | null
+        }
+        Update: {
+          access_email_sent_at?: string | null
+          created_at?: string
+          email?: string
+          id?: string
+          lead_key?: string
+          session_key?: string | null
+          transaction_email?: string
+          utm_campaign?: string | null
+          utm_content?: string | null
+          utm_medium?: string | null
+          utm_source?: string | null
+          utm_term?: string | null
+        }
+        Relationships: []
+      }
       event_queue: {
         Row: {
           attempts: number

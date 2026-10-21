@@ -6,7 +6,7 @@ No Lovable: Conectar ao GitHub → criar repositório.
 ## 2. Banco novo (supabase.com)
 1. Crie um projeto.
 2. No editor de SQL, rode **em ordem** os arquivos de `drizzle/migrations/`:
-   `0000` → `0001` → `0002` → `0003` → `0004` → `0005` → `0006`.
+   `0000` → `0001` → `0002` → `0003` → `0004` → `0005` → `0006` → `0007`.
    (O `0004` dá admin a um usuário pelo id do banco antigo; no banco novo pode ignorar — a lista de emails do `0003` já dá acesso ao criar a conta.)
 3. Authentication → URL Configuration: coloque o domínio da Vercel em **Site URL** e **Redirect URLs** (`https://SEU-DOMINIO/**`).
 4. Settings → API: copie URL, chave publishable/anon e chave service_role.
@@ -23,6 +23,9 @@ Importe o repositório. Em Settings → Environment Variables cadastre:
 | `SUPABASE_PUBLISHABLE_KEY` | mesma chave publishable |
 | `SUPABASE_SERVICE_ROLE_KEY` | chave service_role (secreta) |
 | `DIGISTORE24_API_KEY` | sua chave da Digistore24 |
+| `RESEND_API_KEY` | chave de API da Resend |
+| `RESEND_FROM_EMAIL` | remetente verificado na Resend (ex.: `Acesso <acesso@seudominio.com>`) |
+| `PRODUCT_ACCESS_URL` | URL HTTPS para onde o cliente acessa o produto após o pagamento aprovado |
 | `LOVABLE_CRON_SECRET` | um texto aleatório longo (protege o reenvio automático) |
 | `NITRO_PRESET` | `vercel` |
 
@@ -45,3 +48,4 @@ $$);
 - Cadastre de novo o token do TikTok e a senha IPN em Integrações.
 - Atualize o script de rastreio (`/api/public/tracker.js`) nas suas páginas de venda para o domínio novo.
 - Recrie os links de checkout em **Checkouts** (os dados do banco antigo não são copiados).
+- Configure e verifique o domínio remetente na Resend. No checkout, o e-mail é salvo antes de carregar o iframe da Digistore24; o webhook envia o acesso depois da aprovação.
