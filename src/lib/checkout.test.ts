@@ -1,7 +1,13 @@
 import { describe, expect, it } from "vitest";
-import { checkoutSchema, unwrapDigistore, widgetUrl } from "./checkout";
+import { checkoutSchema, nativeCheckoutUrl, unwrapDigistore, widgetUrl } from "./checkout";
 
 describe("Digistore24 checkout", () => {
+  it("uses the product's native form without a widget override", () => {
+    expect(nativeCheckoutUrl("723365")).toBe("https://www.checkout-ds24.com/product/723365/");
+  });
+  it("keeps attribution on the native form", () => {
+    expect(new URL(nativeCheckoutUrl("723365", "s123456")).searchParams.get("custom")).toBe("s123456");
+  });
   it("embeds the official checkout, without editor mode", () => {
     const url = new URL(widgetUrl("723365", "252970"));
     expect(url.origin).toBe("https://www.checkout-ds24.com");

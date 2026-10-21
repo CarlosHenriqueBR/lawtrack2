@@ -18,4 +18,4 @@
 - Integration secrets (TikTok token, Digistore webhook token/passphrase) live in `integration_secrets`, reachable only by service role; UI sees masked hints.
 - TikTok events go through `event_queue` (`src/lib/server/ops.ts`): sent immediately after enqueue, retried by a 15-min cron with exponential backoff, dead-lettered after MAX_ATTEMPTS.
 - Digistore24 IPN is deduped by `webhook_events.dedupe_key`; only `approved` sales enqueue CompletePayment.
-- Checkout links embed the official Digistore24 Orderform Widget; payment data stays in its iframe, while manager-only server functions use the encrypted account API key and validate product/widget ownership before saving links.
+- Public checkout links embed the product's native Digistore24 order form without a widget override or platform branding so the seller's existing design is preserved; payment fields remain provider-owned, and manager-only link creation validates account ownership server-side.

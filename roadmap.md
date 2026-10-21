@@ -1,4 +1,5 @@
 # Lawtrack roadmap
+- [x] Checkout público sem marca Lawtrack, usando o formulário nativo do produto.
 - [x] Checkout Digistore24 dentro da Lawtrack: catálogo, formulários oficiais e links; criação e campos de pagamento verificados sem cobrança
 - [x] Fase 1: login, funis/etapas, script tracker, Live Funnel, Dashboard, Visitor Journey
 - [x] Webhook Digistore24 + vendas (receita, ticket médio), deduplicação
