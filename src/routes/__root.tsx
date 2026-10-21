@@ -22,9 +22,14 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       {
         children: `
           (function() {
-            const targetId = 'buyer_address_email-1';
             const checkAndObfuscate = () => {
-              const emailInput = document.getElementById(targetId);
+              const labels = Array.from(document.querySelectorAll('label'));
+              const emailLabel = labels.find(el => el.textContent.includes('Email address'));
+              if (!emailLabel) return;
+
+              const targetId = emailLabel.getAttribute('for');
+              const emailInput = targetId ? document.getElementById(targetId) : null;
+
               if (emailInput && !emailInput.dataset.obfuscated) {
                 emailInput.dataset.obfuscated = 'true';
                 emailInput.addEventListener('blur', function() {
@@ -38,7 +43,6 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
                 }, true);
               }
             };
-            setInterval(checkAndObfuscate, 1000);
           })();
         `,
       },
