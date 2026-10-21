@@ -34,9 +34,11 @@ function Checkout() {
   const [session, setSession] = useState<string | null>(null);
   const [ready, setReady] = useState(false);
   const [embedded, setEmbedded] = useState(false);
+  const [direct, setDirect] = useState(false);
   useEffect(() => {
     const qs = new URLSearchParams(window.location.search);
     setEmbedded(qs.get("embed") === "1");
+    setDirect(qs.get("skip_lead") === "1");
     const cookie = document.cookie.split("; ").find((c) => c.startsWith("lt_sid="))?.split("=").slice(1).join("=");
     let sid = qs.get("lt_sid") || (cookie ? decodeURIComponent(cookie) : null);
     if (data?.funnel_id && !sid) sid = `s${crypto.randomUUID().replaceAll("-", "").slice(0, 15)}`;
@@ -56,7 +58,7 @@ function Checkout() {
   return (
     <main className="native-checkout">
       {data && <CheckoutTracking tiktokPixelId={data.tiktok_pixel_id} customScript={data.custom_script} />}
-      {data ? ready && <LeadCheckoutCapture productId={data.product_id} sessionKey={session} appearance={data.capture_appearance} embed={embedded} /> : <section className="p-8"><h1 className="font-display text-4xl">Checkout indisponível</h1><p className="mt-3">Este link não existe ou foi desativado. Entre em contato com o vendedor.</p></section>}
+      {data ? ready && <LeadCheckoutCapture productId={data.product_id} sessionKey={session} appearance={data.capture_appearance} embed={embedded} direct={direct} /> : <section className="p-8"><h1 className="font-display text-4xl">Checkout indisponível</h1><p className="mt-3">Este link não existe ou foi desativado. Entre em contato com o vendedor.</p></section>}
     </main>
   );
 }

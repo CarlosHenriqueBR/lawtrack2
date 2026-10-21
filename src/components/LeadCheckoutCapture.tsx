@@ -11,11 +11,13 @@ export function LeadCheckoutCapture({
   sessionKey,
   appearance,
   embed = false,
+  direct = false,
 }: {
   productId: string;
   sessionKey: string | null;
   appearance?: unknown;
   embed?: boolean;
+  direct?: boolean;
 }) {
   const [email, setEmail] = useState("");
   const [checkoutUrl, setCheckoutUrl] = useState<string | null>(null);
@@ -72,6 +74,10 @@ export function LeadCheckoutCapture({
     } finally {
       setSaving(false);
     }
+  }
+
+  if (direct) {
+    return <DigistoreWidget productId={productId} sessionKey={sessionKey} />;
   }
 
   if (checkoutUrl) {

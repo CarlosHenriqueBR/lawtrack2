@@ -41,8 +41,9 @@ function installCheckoutPopup() {
         try { url.searchParams.set("lt_sid", decodeURIComponent(cookie.slice(7))); } catch { /* Ignore malformed cookies. */ }
       }
     }
-    // The email capture renders as a small modal and the payment fills the screen.
+    // The payment opens fullscreen right away; the email capture step is skipped.
     url.searchParams.set("embed", "1");
+    url.searchParams.set("skip_lead", "1");
     previousFocus = document.activeElement instanceof HTMLElement ? document.activeElement : null;
     previousOverflow = document.documentElement.style.overflow;
     const dialog = document.createElement("dialog");
