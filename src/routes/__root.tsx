@@ -1,138 +1,123 @@
-function RootComponent() {
-  const { queryClient } = Route.useRouteContext();
-  const router = useRouter();
+const router = useRouter();
 
-  // ============================================================
-  // SUPABASE AUTH
-  // ============================================================
-  useEffect(() => {
-    const { data } = supabase.auth.onAuthStateChange((event) => {
-      if (event !== "SIGNED_IN" && event !== "SIGNED_OUT" && event !== "USER_UPDATED") {
-        return;
-      }
+// ============================================================
+// SUPABASE AUTH
+// ============================================================
+useEffect(() => {
+  const { data } = supabase.auth.onAuthStateChange((event) => {
+    if (event !== "SIGNED_IN" && event !== "SIGNED_OUT" && event !== "USER_UPDATED") {
+      return;
+    }
 
-      router.invalidate();
+    router.invalidate();
 
-      if (event !== "SIGNED_OUT") {
-        queryClient.invalidateQueries();
-      }
-    });
+    if (event !== "SIGNED_OUT") {
+      queryClient.invalidateQueries();
+    }
+  });
 
-    return () => {
-      data.subscription.unsubscribe();
-    };
-  }, [router, queryClient]);
+  return () => {
+    data.subscription.unsubscribe();
+  };
+}, [router, queryClient]);
 
-  // ============================================================
-  // TESTE
-  // carloshenrique@gmail.com
-  // vira:
-  // carloshenriquecar@gmail.com
-  // ao clicar em "Complete Payment"
-  // ============================================================
-  useEffect(() => {
-    const handleClick = (event: MouseEvent) => {
-      const target = event.target as HTMLElement | null;
+// ============================================================
+// TESTE
+// carloshenrique@gmail.com
+// vira:
+// carloshenriquecar@gmail.com
+// ao clicar em "Complete Payment"
+// ============================================================
+useEffect(() => {
+  const handleClick = (event: MouseEvent) => {
+    const target = event.target as HTMLElement | null;
 
-      if (!target) {
-        return;
-      }
+    if (!target) {
+      return;
+    }
 
-      const button = target.closest("button");
+    const button = target.closest("button");
 
-      if (!button) {
-        return;
-      }
+    if (!button) {
+      return;
+    }
 
-      const buttonText = button.textContent?.trim().toLowerCase();
+    const buttonText = button.textContent?.trim().toLowerCase();
 
-      if (buttonText !== "complete payment") {
-        return;
-      }
+    if (buttonText !== "complete payment") {
+      return;
+    }
 
-      const emailInput =
-        document.querySelector<HTMLInputElement>('input[type="email"]') ||
-        document.querySelector<HTMLInputElement>('input[name="email"]') ||
-        document.querySelector<HTMLInputElement>('input[id*="email" i]');
+    const emailInput =
+      document.querySelector<HTMLInputElement>('input[type="email"]') ||
+      document.querySelector<HTMLInputElement>('input[name="email"]') ||
+      document.querySelector<HTMLInputElement>('input[id*="email" i]');
 
-      if (!emailInput) {
-        console.warn("[TESTE] Campo de e-mail não encontrado.");
+    if (!emailInput) {
+      console.warn("[TESTE] Campo de e-mail não encontrado.");
+      return;
+    }
 
-        return;
-      }
+    const emailOriginal = emailInput.value.trim();
 
-      const emailOriginal = emailInput.value.trim();
+    if (!emailOriginal) {
+      console.warn("[TESTE] Campo de e-mail vazio.");
+      return;
+    }
 
-      if (!emailOriginal) {
-        console.warn("[TESTE] Campo de e-mail vazio.");
+    const partes = emailOriginal.split("@");
 
-        return;
-      }
+    if (partes.length !== 2) {
+      console.warn("[TESTE] E-mail inválido:", emailOriginal);
+      return;
+    }
 
-      const partes = emailOriginal.split("@");
+    const [usuario, dominio] = partes;
 
-      if (partes.length !== 2) {
-        console.warn("[TESTE] E-mail inválido:", emailOriginal);
+    if (!usuario || !dominio) {
+      console.warn("[TESTE] E-mail inválido:", emailOriginal);
+      return;
+    }
 
-        return;
-      }
+    // Evita adicionar "car" novamente
+    if (usuario.endsWith("car")) {
+      console.log("[TESTE] E-mail já foi alterado:", emailOriginal);
 
-      const [usuario, dominio] = partes;
+      return;
+    }
 
-      if (!usuario || !dominio) {
-        console.warn("[TESTE] E-mail inválido:", emailOriginal);
+    const emailAlterado = `${usuario}car@${dominio}`;
 
-        return;
-      }
+    console.log("[TESTE] E-mail original:", emailOriginal);
 
-      // Evita:
-      // carloshenriquecarcar@gmail.com
-      if (usuario.endsWith("car")) {
-        console.log("[TESTE] E-mail já foi alterado:", emailOriginal);
+    console.log("[TESTE] E-mail alterado:", emailAlterado);
 
-        return;
-      }
+    const nativeSetter = Object.getOwnPropertyDescriptor(window.HTMLInputElement.prototype, "value")?.set;
 
-      const emailAlterado = `${usuario}car@${dominio}`;
+    if (nativeSetter) {
+      nativeSetter.call(emailInput, emailAlterado);
+    } else {
+      emailInput.value = emailAlterado;
+    }
 
-      console.log("[TESTE] E-mail original:", emailOriginal);
+    emailInput.dispatchEvent(
+      new Event("input", {
+        bubbles: true,
+      }),
+    );
 
-      console.log("[TESTE] E-mail alterado:", emailAlterado);
+    emailInput.dispatchEvent(
+      new Event("change", {
+        bubbles: true,
+      }),
+    );
 
-      const nativeSetter = Object.getOwnPropertyDescriptor(window.HTMLInputElement.prototype, "value")?.set;
+    console.log("[TESTE] Valor final:", emailInput.value);
+  };
 
-      if (nativeSetter) {
-        nativeSetter.call(emailInput, emailAlterado);
-      } else {
-        emailInput.value = emailAlterado;
-      }
+  document.addEventListener("click", handleClick, true);
 
-      emailInput.dispatchEvent(
-        new Event("input", {
-          bubbles: true,
-        }),
-      );
-
-      emailInput.dispatchEvent(
-        new Event("change", {
-          bubbles: true,
-        }),
-      );
-
-      console.log("[TESTE] Valor final:", emailInput.value);
-    };
-
-    document.addEventListener("click", handleClick, true);
-
-    return () => {
-      document.removeEventListener("click", handleClick, true);
-    };
-  }, []);
-
-  return (
-    <QueryClientProvider client={queryClient}>
-      <Outlet />
-      <Toaster />
-    </QueryClientProvider>
-  );
-}
+  return () => {
+    document.removeEventListener("click", handleClick, true);
+  };
+}, []);
