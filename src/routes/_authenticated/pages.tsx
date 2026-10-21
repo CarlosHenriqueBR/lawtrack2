@@ -44,13 +44,13 @@ function Pages() {
   async function create(e: React.FormEvent) {
     e.preventDefault();
     const slug = siteSlug.safeParse(form.slug);
-    if (!slug.success) return toast.error(slug.error.issues[0]?.message ?? "Endereço inválido");
+    if (!slug.success) { toast.error(slug.error.issues[0]?.message ?? "Endereço inválido"); return; }
     const { data, error } = await supabase
       .from("hosted_sites")
       .insert({ name: form.name, slug: slug.data })
       .select("id")
       .single();
-    if (error) return toast.error(error.code === "23505" ? "Esse endereço já existe." : error.message);
+    if (error) { toast.error(error.code === "23505" ? "Esse endereço já existe." : error.message); return; }
     setForm({ name: "", slug: "" });
     setOpen(data.id);
     qc.invalidateQueries({ queryKey: ["hosted-sites"] });
@@ -113,7 +113,7 @@ function SiteCard({ site, open, onToggle }: { site: Site; open: boolean; onToggl
       const type = contentTypeFor(path);
       const { error } = await supabase.storage
         .from("sites")
-        .upload(`${site.id}/${path}`, file, { upsert: true, contentType: type.split(";")[0] });
+        .upload(`${site.id}/${path}`, file, { upsert: true, contentType: type.split(";")[0] ?? type });
       if (error) { toast.error(`${path}: ${error.message}`); continue; }
       await supabase.from("hosted_files").upsert(
         { site_id: site.id, path, size: file.size, content_type: type, updated_at: new Date().toISOString() },
@@ -148,7 +148,7 @@ function SiteCard({ site, open, onToggle }: { site: Site; open: boolean; onToggl
         updated_at: new Date().toISOString(),
       })
       .eq("id", site.id);
-    if (error) return toast.error(error.message);
+    if (error) { toast.error(error.message); return; }
     toast.success("Salvo");
     qc.invalidateQueries({ queryKey: ["hosted-sites"] });
   }
