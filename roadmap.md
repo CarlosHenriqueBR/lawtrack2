@@ -1,4 +1,5 @@
 # Lawtrack roadmap
+- [ ] Ajustar botão externo e janela de confirmação de email ao visual das imagens, preservando a lógica existente.
 - [x] Janela externa por script, reutilizando o checkout e preservando captura, UTMs e sessão; email salvo e consultado pela tela de acompanhamento em teste externo.
 - [x] Personalizar textos, cores e design da janela de email por checkout, com prévia e persistência.
 - [x] Tela somente de leitura para acompanhar emails salvos, sem alterar captura ou tratamento.

@@ -1,7 +1,7 @@
 export function checkoutEmbedSnippet(origin: string, slug: string) {
   const base = new URL(origin).origin;
   if (!/^[a-z0-9][a-z0-9-]{2,79}$/.test(slug)) throw new Error("Checkout inválido");
-  return `<script src="${base}/api/public/checkout-popup.js" data-checkout="${slug}" defer></script>\n<button type="button" data-lawtrack-checkout="${slug}">Comprar agora</button>`;
+  return `<style>\n[data-lawtrack-checkout="${slug}"] { --buy-background: #f43b59; --buy-text: #ffffff; display: block; width: 100%; max-width: 320px; min-height: 51px; padding: 14px 20px; border: 0; border-radius: 8px; background: var(--buy-background); color: var(--buy-text); font: 700 15px Arial, sans-serif; cursor: pointer; }\n[data-lawtrack-checkout="${slug}"]:focus-visible { outline: 2px solid var(--buy-background); outline-offset: 3px; }\n</style>\n<script src="${base}/api/public/checkout-popup.js" data-checkout="${slug}" defer></script>\n<button type="button" data-lawtrack-checkout="${slug}">Comprar agora</button>`;
 }
 
 // Serialized into the public script; keep this function self-contained and browser-only.
@@ -51,22 +51,22 @@ function installCheckoutPopup() {
     dialog.appendChild(container);
     const outerStyle = document.createElement("style");
     outerStyle.textContent = `
-      dialog[data-lawtrack-popup] { --popup-surface: #ffffff; --popup-ink: #303030; --popup-backdrop: #00000099;
-        position: fixed; inset: 0; margin: auto; padding: 0; border: 0; border-radius: 8px;
-        width: min(760px, calc(100vw - 24px)); height: min(900px, calc(100dvh - 24px));
+      dialog[data-lawtrack-popup] { --popup-surface: #ffffff; --popup-ink: #b5b5ba; --popup-backdrop: #00000099;
+        position: fixed; inset: 0; margin: auto; padding: 0; border: 0; border-radius: 24px;
+        width: min(600px, calc(100vw - 28px)); height: min(480px, calc(100dvh - 28px));
         max-width: none; max-height: none; background: var(--popup-surface); color: var(--popup-ink); overflow: hidden; }
-      dialog[data-lawtrack-popup]::backdrop { background: var(--popup-backdrop); }
+      dialog[data-lawtrack-popup]::backdrop { background: var(--popup-backdrop); backdrop-filter: blur(5px); }
       dialog[data-lawtrack-popup] > div { height: 100%; }
     `;
     dialog.appendChild(outerStyle);
     const style = document.createElement("style");
     style.textContent = `
       :host { display: block; height: 100%; }
-      .bar { height: 44px; display: flex; justify-content: flex-end; align-items: center; padding: 0 8px; background: var(--popup-surface); }
+      .bar { position: absolute; top: 10px; right: 10px; z-index: 1; display: flex; justify-content: flex-end; align-items: center; }
       button { display: grid; place-items: center; width: 36px; height: 36px; padding: 0; border: 0; border-radius: 4px;
-        background: var(--popup-surface); color: var(--popup-ink); cursor: pointer; font: 28px Arial, sans-serif; }
+        background: transparent; color: var(--popup-ink); cursor: pointer; font: 28px Arial, sans-serif; }
       button:focus-visible { outline: 2px solid var(--popup-ink); outline-offset: -2px; }
-      iframe { display: block; width: 100%; height: calc(100% - 44px); border: 0; background: var(--popup-surface); }
+      iframe { display: block; width: 100%; height: 100%; border: 0; background: var(--popup-surface); }
     `;
     const bar = document.createElement("div");
     bar.className = "bar";
