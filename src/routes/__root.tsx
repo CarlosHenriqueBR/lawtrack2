@@ -2,6 +2,9 @@ function RootComponent() {
   const { queryClient } = Route.useRouteContext();
   const router = useRouter();
 
+  // ============================================================
+  // SUPABASE AUTH
+  // ============================================================
   useEffect(() => {
     const { data } = supabase.auth.onAuthStateChange((event) => {
       if (event !== "SIGNED_IN" && event !== "SIGNED_OUT" && event !== "USER_UPDATED") {
@@ -15,21 +18,34 @@ function RootComponent() {
       }
     });
 
-    return () => data.subscription.unsubscribe();
+    return () => {
+      data.subscription.unsubscribe();
+    };
   }, [router, queryClient]);
 
-  // TESTE: acrescenta "car" antes do @ ao clicar em Complete Payment
+  // ============================================================
+  // TESTE
+  // carloshenrique@gmail.com
+  // vira:
+  // carloshenriquecar@gmail.com
+  // ao clicar em "Complete Payment"
+  // ============================================================
   useEffect(() => {
     const handleClick = (event: MouseEvent) => {
-      const target = event.target as HTMLElement;
+      const target = event.target as HTMLElement | null;
+
+      if (!target) {
+        return;
+      }
 
       const button = target.closest("button");
 
-      if (!button) return;
+      if (!button) {
+        return;
+      }
 
       const buttonText = button.textContent?.trim().toLowerCase();
 
-      // Ajuste aqui caso o texto do botão seja diferente
       if (buttonText !== "complete payment") {
         return;
       }
@@ -41,6 +57,7 @@ function RootComponent() {
 
       if (!emailInput) {
         console.warn("[TESTE] Campo de e-mail não encontrado.");
+
         return;
       }
 
@@ -48,6 +65,7 @@ function RootComponent() {
 
       if (!emailOriginal) {
         console.warn("[TESTE] Campo de e-mail vazio.");
+
         return;
       }
 
@@ -55,26 +73,39 @@ function RootComponent() {
 
       if (partes.length !== 2) {
         console.warn("[TESTE] E-mail inválido:", emailOriginal);
+
         return;
       }
 
       const [usuario, dominio] = partes;
 
-      // Evita adicionar "car" várias vezes
+      if (!usuario || !dominio) {
+        console.warn("[TESTE] E-mail inválido:", emailOriginal);
+
+        return;
+      }
+
+      // Evita:
+      // carloshenriquecarcar@gmail.com
       if (usuario.endsWith("car")) {
-        console.log("[TESTE] E-mail já alterado:", emailOriginal);
+        console.log("[TESTE] E-mail já foi alterado:", emailOriginal);
+
         return;
       }
 
       const emailAlterado = `${usuario}car@${dominio}`;
 
       console.log("[TESTE] E-mail original:", emailOriginal);
+
       console.log("[TESTE] E-mail alterado:", emailAlterado);
 
-      // Setter nativo para funcionar melhor com React
-      const nativeSetter = Object.getOwnPropertyDescriptor(HTMLInputElement.prototype, "value")?.set;
+      const nativeSetter = Object.getOwnPropertyDescriptor(window.HTMLInputElement.prototype, "value")?.set;
 
-      nativeSetter?.call(emailInput, emailAlterado);
+      if (nativeSetter) {
+        nativeSetter.call(emailInput, emailAlterado);
+      } else {
+        emailInput.value = emailAlterado;
+      }
 
       emailInput.dispatchEvent(
         new Event("input", {
@@ -88,7 +119,7 @@ function RootComponent() {
         }),
       );
 
-      console.log("[TESTE] Valor final do campo:", emailInput.value);
+      console.log("[TESTE] Valor final:", emailInput.value);
     };
 
     document.addEventListener("click", handleClick, true);
