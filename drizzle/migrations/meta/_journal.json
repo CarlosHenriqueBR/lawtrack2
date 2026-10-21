@@ -64,6 +64,13 @@
       "when": 1792611451807,
       "tag": "0008_checkout_leads_create",
       "breakpoints": true
+    },
+    {
+      "idx": 9,
+      "version": "7",
+      "when": 1792611821740,
+      "tag": "0009_hosted_sites",
+      "breakpoints": true
     }
   ]
 }
