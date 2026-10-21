@@ -1,5 +1,5 @@
 # Lawtrack roadmap
-- [ ] Personalizar textos, cores e design da janela de email por checkout, com prévia e persistência.
+- [x] Personalizar textos, cores e design da janela de email por checkout, com prévia e persistência.
 - [x] Tela somente de leitura para acompanhar emails salvos, sem alterar captura ou tratamento.
 - [x] Checkout público sem marca Lawtrack, usando o formulário nativo do produto.
 - [x] Checkout Digistore24 dentro da Lawtrack: catálogo, formulários oficiais e links; criação e campos de pagamento verificados sem cobrança
