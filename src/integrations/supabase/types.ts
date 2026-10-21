@@ -47,32 +47,38 @@ export type Database = {
       checkout_links: {
         Row: {
           created_at: string
+          custom_script: string | null
           enabled: boolean
           funnel_id: string | null
           id: string
           orderform_id: string
           product_id: string
           slug: string
+          tiktok_pixel_id: string | null
           title: string
         }
         Insert: {
           created_at?: string
+          custom_script?: string | null
           enabled?: boolean
           funnel_id?: string | null
           id?: string
           orderform_id: string
           product_id: string
           slug: string
+          tiktok_pixel_id?: string | null
           title: string
         }
         Update: {
           created_at?: string
+          custom_script?: string | null
           enabled?: boolean
           funnel_id?: string | null
           id?: string
           orderform_id?: string
           product_id?: string
           slug?: string
+          tiktok_pixel_id?: string | null
           title?: string
         }
         Relationships: [

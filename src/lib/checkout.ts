@@ -35,3 +35,7 @@ export function catalogRows(value: unknown) {
     return [{ id: String(parsed.data.id), name: parsed.data.name }];
   });
 }
+export const trackingSchema = z.object({
+  tiktokPixelId: z.string().trim().toUpperCase().regex(/^[A-Z0-9]{8,40}$/, "ID do pixel do TikTok inválido").nullable(),
+  customScript: z.string().max(20000, "Script muito grande (máx. 20.000 caracteres)").nullable(),
+});

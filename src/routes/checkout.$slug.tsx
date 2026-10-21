@@ -3,11 +3,12 @@ import { queryOptions, useSuspenseQuery } from "@tanstack/react-query";
 import { useEffect, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { DigistoreWidget } from "@/components/DigistoreWidget";
+import { CheckoutTracking } from "@/components/CheckoutTracking";
 
 const checkoutQuery = (slug: string) => queryOptions({
   queryKey: ["public-checkout", slug],
   queryFn: async () => {
-    const { data, error } = await supabase.from("checkout_links").select("title, product_id, orderform_id, funnel_id").eq("slug", slug).eq("enabled", true).maybeSingle();
+    const { data, error } = await supabase.from("checkout_links").select("title, product_id, orderform_id, funnel_id, tiktok_pixel_id, custom_script").eq("slug", slug).eq("enabled", true).maybeSingle();
     if (error) throw new Error("Não foi possível carregar este checkout.");
     return data;
   },
@@ -52,6 +53,7 @@ function Checkout() {
   }, [data?.funnel_id]);
   return (
     <main className="native-checkout">
+      {data && <CheckoutTracking tiktokPixelId={data.tiktok_pixel_id} customScript={data.custom_script} />}
       {data ? ready && <DigistoreWidget productId={data.product_id} sessionKey={session} /> : <section className="p-8"><h1 className="font-display text-4xl">Checkout indisponível</h1><p className="mt-3">Este link não existe ou foi desativado. Entre em contato com o vendedor.</p></section>}
     </main>
   );
