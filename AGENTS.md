@@ -10,6 +10,7 @@
 <!-- LOVABLE:END -->
 
 ## Architecture rules
+- External capture uses a public, self-contained popup script embedding the existing checkout in a native dialog with Shadow DOM; keep lead submission and payment logic in the existing checkout to avoid divergent behavior.
 - Checkout capture appearance is stored separately on checkout links and rendered through a shared preview/form view with scoped CSS tokens; presentation edits must not change submission logic.
 - Saved checkout emails are monitored through a read-only manager-authorized server function; keep capture and payment processing separate to preserve their behavior.
 - Visitor tracking enters only via public routes `/api/public/track` and `/api/public/tracker.js`; the track handler validates input and writes with the admin client because visitors are anonymous.

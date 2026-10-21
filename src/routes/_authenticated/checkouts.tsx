@@ -15,6 +15,7 @@ import { createCheckoutWidget, getCheckoutCatalog, saveCheckoutLink } from "@/li
 import { checkoutSchema, trackingSchema } from "@/lib/checkout";
 import { Textarea } from "@/components/ui/textarea";
 import { CaptureAppearanceEditor } from "@/components/CaptureAppearanceEditor";
+import { CheckoutEmbedDialog } from "@/components/CheckoutEmbedDialog";
 
 export const Route = createFileRoute("/_authenticated/checkouts")({
   head: () => ({ meta: [
@@ -107,7 +108,7 @@ function Checkouts() {
           {links.isPending && <p className="text-muted-foreground">Carregando links…</p>}
           {links.error && <p role="alert" className="text-destructive">Não foi possível carregar os links.</p>}
           {links.data?.length === 0 && <div className="border-y py-12 text-center text-muted-foreground">Nenhum checkout criado.</div>}
-          <div className="space-y-4">{links.data?.map((link) => <article key={link.id} className="rounded-md border bg-card p-5"><div className="flex items-start justify-between gap-3"><h3 className="min-w-0 break-words text-base">{link.title}</h3><Switch aria-label={`Ativar ${link.title}`} checked={link.enabled} onCheckedChange={(v) => toggle(link.id, v)} /></div><p className="my-3 break-all text-xs text-muted-foreground">lawtrack2.lovable.app/checkout/{link.slug}</p><div className="flex flex-wrap gap-2"><Button variant="outline" size="sm" onClick={async () => { try { await navigator.clipboard.writeText(`https://lawtrack2.lovable.app/checkout/${link.slug}`); toast.success("Link copiado"); } catch { toast.error("Não foi possível copiar"); } }}><Copy />Copiar link</Button><Button variant="ghost" size="sm" asChild><Link to="/checkout/$slug" params={{ slug: link.slug }} target="_blank"><ExternalLink />Abrir checkout</Link></Button><CaptureAppearanceEditor link={link} /><TrackingEditor link={link} /><span className={`self-center text-xs ${link.enabled ? "text-success" : "text-muted-foreground"}`}>{link.enabled ? "Ativo" : "Desativado"}</span></div></article>)}</div>
+          <div className="space-y-4">{links.data?.map((link) => <article key={link.id} className="rounded-md border bg-card p-5"><div className="flex items-start justify-between gap-3"><h3 className="min-w-0 break-words text-base">{link.title}</h3><Switch aria-label={`Ativar ${link.title}`} checked={link.enabled} onCheckedChange={(v) => toggle(link.id, v)} /></div><p className="my-3 break-all text-xs text-muted-foreground">lawtrack2.lovable.app/checkout/{link.slug}</p><div className="flex flex-wrap gap-2"><Button variant="outline" size="sm" onClick={async () => { try { await navigator.clipboard.writeText(`https://lawtrack2.lovable.app/checkout/${link.slug}`); toast.success("Link copiado"); } catch { toast.error("Não foi possível copiar"); } }}><Copy />Copiar link</Button><Button variant="ghost" size="sm" asChild><Link to="/checkout/$slug" params={{ slug: link.slug }} target="_blank"><ExternalLink />Abrir checkout</Link></Button><CheckoutEmbedDialog slug={link.slug} /><CaptureAppearanceEditor link={link} /><TrackingEditor link={link} /><span className={`self-center text-xs ${link.enabled ? "text-success" : "text-muted-foreground"}`}>{link.enabled ? "Ativo" : "Desativado"}</span></div></article>)}</div>
         </section>
       </div>
     </div>
