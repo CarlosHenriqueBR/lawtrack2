@@ -22,7 +22,7 @@ describe("external checkout", () => {
     const popup = install();
     popup.open();
     const host = document.querySelector("dialog > div");
-    expect(host?.shadowRoot?.querySelector("iframe")?.src).toBe("https://lawtrack2.lovable.app/checkout/ai-agents");
+    expect(host?.shadowRoot?.querySelector("iframe")?.src).toBe("https://lawtrack2.lovable.app/checkout/ai-agents?embed=1");
     expect(document.querySelector("input")).toBeNull();
     popup.close();
   });

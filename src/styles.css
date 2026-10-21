@@ -180,6 +180,20 @@
 .capture-preview { min-height: 540px; }
 .capture-preview .capture-form { min-height: auto; }
 .capture-preview .capture-submit:disabled { opacity: 1; }
+/* Opened through the external popup script: small modal card, then the payment fills the screen. */
+.capture-stage--popup {
+  display: grid;
+  place-items: center;
+  background: oklch(0.15 0 0 / 0.92);
+  padding: 32px 16px;
+}
+.capture-stage--popup .capture-form { min-height: auto; box-shadow: 0 30px 80px oklch(0 0 0 / 0.45); }
+.capture-stage--popup .capture-form:not(.capture-reference):not(.capture-panel) {
+  background: var(--capture-surface);
+  border: 1px solid var(--capture-border);
+  border-radius: var(--capture-radius);
+  padding: 32px 24px;
+}
 .capture-footer { color: var(--capture-secondary); }
 .capture-stage:has(.capture-reference) { display: grid; align-items: center; padding: 32px 20px; font-family: Arial, sans-serif; }
 .capture-reference { min-height: auto; padding: 30px 12px; background: var(--capture-surface); border-radius: 24px; }
