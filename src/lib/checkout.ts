@@ -10,7 +10,7 @@ export const checkoutSchema = z.object({
 });
 
 export function widgetUrl(productId: string, orderformId: string, sessionKey?: string | null) {
-  const url = new URL(`https://www.digistore24.com/product/${digistoreId.parse(productId)}/${digistoreId.parse(orderformId)}`);
+  const url = new URL(`https://www.checkout-ds24.com/product/${digistoreId.parse(productId)}/${digistoreId.parse(orderformId)}`);
   if (sessionKey && /^[A-Za-z0-9 .\,~_-]{1,1023}$/.test(sessionKey)) url.searchParams.set("custom", sessionKey);
   return url.toString();
 }

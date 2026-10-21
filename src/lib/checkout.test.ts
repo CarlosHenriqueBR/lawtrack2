@@ -4,7 +4,7 @@ import { checkoutSchema, unwrapDigistore, widgetUrl } from "./checkout";
 describe("Digistore24 checkout", () => {
   it("embeds the official checkout, without editor mode", () => {
     const url = new URL(widgetUrl("723365", "252970"));
-    expect(url.origin).toBe("https://www.digistore24.com");
+    expect(url.origin).toBe("https://www.checkout-ds24.com");
     expect(url.pathname).toBe("/product/723365/252970");
     expect(url.searchParams.has("editor_mode")).toBe(false);
   });
