@@ -22,6 +22,7 @@ import { Route as AuthenticatedLogsRouteImport } from './routes/_authenticated/l
 import { Route as AuthenticatedReportsRouteImport } from './routes/_authenticated/reports'
 import { Route as AuthenticatedSearchRouteImport } from './routes/_authenticated/search'
 import { Route as AuthenticatedUsersRouteImport } from './routes/_authenticated/users'
+import { Route as CheckoutSlugRouteImport } from './routes/checkout.$slug'
 import { Route as AuthenticatedFunnelsIndexRouteImport } from './routes/_authenticated/funnels.index'
 import { Route as AuthenticatedFunnelsIdRouteImport } from './routes/_authenticated/funnels.$id'
 import { Route as AuthenticatedJourneySessionIdRouteImport } from './routes/_authenticated/journey.$sessionId'
@@ -97,6 +98,11 @@ const AuthenticatedUsersRoute = AuthenticatedUsersRouteImport.update({
   path: '/users',
   getParentRoute: () => AuthenticatedRouteRoute,
 } as any)
+const CheckoutSlugRoute = CheckoutSlugRouteImport.update({
+  id: '/checkout/$slug',
+  path: '/checkout/$slug',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const AuthenticatedFunnelsIndexRoute =
   AuthenticatedFunnelsIndexRouteImport.update({
     id: '/funnels/',
@@ -155,6 +161,7 @@ export interface FileRoutesByFullPath {
   '/reports': typeof AuthenticatedReportsRoute
   '/search': typeof AuthenticatedSearchRoute
   '/users': typeof AuthenticatedUsersRoute
+  '/checkout/$slug': typeof CheckoutSlugRoute
   '/funnels/$id': typeof AuthenticatedFunnelsIdRoute
   '/journey/$sessionId': typeof AuthenticatedJourneySessionIdRoute
   '/api/public/health': typeof ApiPublicHealthRoute
@@ -177,6 +184,7 @@ export interface FileRoutesByTo {
   '/reports': typeof AuthenticatedReportsRoute
   '/search': typeof AuthenticatedSearchRoute
   '/users': typeof AuthenticatedUsersRoute
+  '/checkout/$slug': typeof CheckoutSlugRoute
   '/funnels/$id': typeof AuthenticatedFunnelsIdRoute
   '/journey/$sessionId': typeof AuthenticatedJourneySessionIdRoute
   '/api/public/health': typeof ApiPublicHealthRoute
@@ -201,6 +209,7 @@ export interface FileRoutesById {
   '/_authenticated/reports': typeof AuthenticatedReportsRoute
   '/_authenticated/search': typeof AuthenticatedSearchRoute
   '/_authenticated/users': typeof AuthenticatedUsersRoute
+  '/checkout/$slug': typeof CheckoutSlugRoute
   '/_authenticated/funnels/$id': typeof AuthenticatedFunnelsIdRoute
   '/_authenticated/journey/$sessionId': typeof AuthenticatedJourneySessionIdRoute
   '/api/public/health': typeof ApiPublicHealthRoute
@@ -225,6 +234,7 @@ export interface FileRouteTypes {
     | '/reports'
     | '/search'
     | '/users'
+    | '/checkout/$slug'
     | '/funnels/$id'
     | '/journey/$sessionId'
     | '/api/public/health'
@@ -247,6 +257,7 @@ export interface FileRouteTypes {
     | '/reports'
     | '/search'
     | '/users'
+    | '/checkout/$slug'
     | '/funnels/$id'
     | '/journey/$sessionId'
     | '/api/public/health'
@@ -270,6 +281,7 @@ export interface FileRouteTypes {
     | '/_authenticated/reports'
     | '/_authenticated/search'
     | '/_authenticated/users'
+    | '/checkout/$slug'
     | '/_authenticated/funnels/$id'
     | '/_authenticated/journey/$sessionId'
     | '/api/public/health'
@@ -285,6 +297,7 @@ export interface RootRouteChildren {
   AuthenticatedRouteRoute: typeof AuthenticatedRouteRouteWithChildren
   AuthRoute: typeof AuthRoute
   ResetPasswordRoute: typeof ResetPasswordRoute
+  CheckoutSlugRoute: typeof CheckoutSlugRoute
   ApiPublicHealthRoute: typeof ApiPublicHealthRoute
   ApiPublicTrackRoute: typeof ApiPublicTrackRoute
   ApiPublicTrackerDotjsRoute: typeof ApiPublicTrackerDotjsRoute
@@ -385,6 +398,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedUsersRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
+    '/checkout/$slug': {
+      id: '/checkout/$slug'
+      path: '/checkout/$slug'
+      fullPath: '/checkout/$slug'
+      preLoaderRoute: typeof CheckoutSlugRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/_authenticated/funnels/': {
       id: '/_authenticated/funnels/'
       path: '/funnels'
@@ -482,6 +502,7 @@ const rootRouteChildren: RootRouteChildren = {
   AuthenticatedRouteRoute: AuthenticatedRouteRouteWithChildren,
   AuthRoute: AuthRoute,
   ResetPasswordRoute: ResetPasswordRoute,
+  CheckoutSlugRoute: CheckoutSlugRoute,
   ApiPublicHealthRoute: ApiPublicHealthRoute,
   ApiPublicTrackRoute: ApiPublicTrackRoute,
   ApiPublicTrackerDotjsRoute: ApiPublicTrackerDotjsRoute,
