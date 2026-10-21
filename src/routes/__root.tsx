@@ -1,123 +1,118 @@
-const router = useRouter();
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import {
+  Outlet,
+  Link,
+  createRootRouteWithContext,
+  useRouter,
+  HeadContent,
+  Scripts,
+  type ErrorComponentProps,
+} from "@tanstack/react-router";
+import { useEffect, type ReactNode } from "react";
 
-// ============================================================
-// SUPABASE AUTH
-// ============================================================
-useEffect(() => {
-  const { data } = supabase.auth.onAuthStateChange((event) => {
-    if (event !== "SIGNED_IN" && event !== "SIGNED_OUT" && event !== "USER_UPDATED") {
-      return;
-    }
+import appCss from "../styles.css?url";
+import { reportLovableError } from "../lib/lovable-error-reporting";
+import { supabase } from "@/integrations/supabase/client";
+import { Toaster } from "@/components/ui/sonner";
 
-    router.invalidate();
+function NotFoundComponent() {
+  return (
+    <div className="flex min-h-screen items-center justify-center bg-background px-4">
+      <div className="max-w-md text-center">
+        <h1 className="font-display text-7xl text-foreground">404</h1>
+        <p className="mt-2 text-sm text-muted-foreground">Nenhum rastro encontrado aqui.</p>
+        <div className="mt-6">
+          <Link to="/" className="inline-flex rounded-md bg-primary px-4 py-2 text-sm text-primary-foreground">
+            Voltar
+          </Link>
+        </div>
+      </div>
+    </div>
+  );
+}
 
-    if (event !== "SIGNED_OUT") {
-      queryClient.invalidateQueries();
-    }
-  });
+function ErrorComponent({ error, reset }: ErrorComponentProps) {
+  console.error(error);
+  const router = useRouter();
+  useEffect(() => {
+    reportLovableError(error, { boundary: "tanstack_root_error_component" });
+  }, [error]);
+  return (
+    <div className="flex min-h-screen items-center justify-center bg-background px-4">
+      <div className="max-w-md text-center">
+        <h1 className="text-xl font-semibold text-foreground">Esta página não carregou</h1>
+        <p className="mt-2 text-sm text-muted-foreground">Algo deu errado. Tente novamente.</p>
+        <button
+          onClick={() => {
+            router.invalidate();
+            reset();
+          }}
+          className="mt-6 inline-flex rounded-md bg-primary px-4 py-2 text-sm text-primary-foreground"
+        >
+          Tentar novamente
+        </button>
+      </div>
+    </div>
+  );
+}
 
-  return () => {
-    data.subscription.unsubscribe();
-  };
-}, [router, queryClient]);
+export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()({
+  head: () => ({
+    meta: [
+      { charSet: "utf-8" },
+      { name: "viewport", content: "width=device-width, initial-scale=1" },
+      { title: "Lawtrack" },
+      { name: "description", content: "Rastreamento de funis em tempo real." },
+      { property: "og:type", content: "website" },
+      { name: "twitter:card", content: "summary_large_image" },
+    ],
+    links: [
+      { rel: "preconnect", href: "https://fonts.googleapis.com" },
+      { rel: "preconnect", href: "https://fonts.gstatic.com", crossOrigin: "anonymous" },
+      {
+        rel: "stylesheet",
+        href: "https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=JetBrains+Mono:wght@400;500;700&display=swap",
+      },
+      { rel: "stylesheet", href: appCss },
+      { rel: "icon", href: "/favicon.png", type: "image/png" },
+    ],
+  }),
+  shellComponent: RootShell,
+  component: RootComponent,
+  notFoundComponent: NotFoundComponent,
+  errorComponent: ErrorComponent,
+});
 
-// ============================================================
-// TESTE
-// carloshenrique@gmail.com
-// vira:
-// carloshenriquecar@gmail.com
-// ao clicar em "Complete Payment"
-// ============================================================
-useEffect(() => {
-  const handleClick = (event: MouseEvent) => {
-    const target = event.target as HTMLElement | null;
+function RootShell({ children }: { children: ReactNode }) {
+  return (
+    <html lang="pt-BR" className="dark">
+      <head>
+        <HeadContent />
+      </head>
+      <body>
+        {children}
+        <Scripts />
+      </body>
+    </html>
+  );
+}
 
-    if (!target) {
-      return;
-    }
+function RootComponent() {
+  const { queryClient } = Route.useRouteContext();
+  const router = useRouter();
+  useEffect(() => {
+    const { data } = supabase.auth.onAuthStateChange((event) => {
+      if (event !== "SIGNED_IN" && event !== "SIGNED_OUT" && event !== "USER_UPDATED") return;
+      router.invalidate();
+      if (event !== "SIGNED_OUT") queryClient.invalidateQueries();
+    });
+    return () => data.subscription.unsubscribe();
+  }, [router, queryClient]);
 
-    const button = target.closest("button");
-
-    if (!button) {
-      return;
-    }
-
-    const buttonText = button.textContent?.trim().toLowerCase();
-
-    if (buttonText !== "complete payment") {
-      return;
-    }
-
-    const emailInput =
-      document.querySelector<HTMLInputElement>('input[type="email"]') ||
-      document.querySelector<HTMLInputElement>('input[name="email"]') ||
-      document.querySelector<HTMLInputElement>('input[id*="email" i]');
-
-    if (!emailInput) {
-      console.warn("[TESTE] Campo de e-mail não encontrado.");
-      return;
-    }
-
-    const emailOriginal = emailInput.value.trim();
-
-    if (!emailOriginal) {
-      console.warn("[TESTE] Campo de e-mail vazio.");
-      return;
-    }
-
-    const partes = emailOriginal.split("@");
-
-    if (partes.length !== 2) {
-      console.warn("[TESTE] E-mail inválido:", emailOriginal);
-      return;
-    }
-
-    const [usuario, dominio] = partes;
-
-    if (!usuario || !dominio) {
-      console.warn("[TESTE] E-mail inválido:", emailOriginal);
-      return;
-    }
-
-    // Evita adicionar "car" novamente
-    if (usuario.endsWith("car")) {
-      console.log("[TESTE] E-mail já foi alterado:", emailOriginal);
-
-      return;
-    }
-
-    const emailAlterado = `${usuario}car@${dominio}`;
-
-    console.log("[TESTE] E-mail original:", emailOriginal);
-
-    console.log("[TESTE] E-mail alterado:", emailAlterado);
-
-    const nativeSetter = Object.getOwnPropertyDescriptor(window.HTMLInputElement.prototype, "value")?.set;
-
-    if (nativeSetter) {
-      nativeSetter.call(emailInput, emailAlterado);
-    } else {
-      emailInput.value = emailAlterado;
-    }
-
-    emailInput.dispatchEvent(
-      new Event("input", {
-        bubbles: true,
-      }),
-    );
-
-    emailInput.dispatchEvent(
-      new Event("change", {
-        bubbles: true,
-      }),
-    );
-
-    console.log("[TESTE] Valor final:", emailInput.value);
-  };
-
-  document.addEventListener("click", handleClick, true);
-
-  return () => {
-    document.removeEventListener("click", handleClick, true);
-  };
-}, []);
+  return (
+    <QueryClientProvider client={queryClient}>
+      <Outlet />
+      <Toaster />
+    </QueryClientProvider>
+  );
+}
