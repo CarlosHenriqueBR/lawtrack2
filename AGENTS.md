@@ -19,3 +19,4 @@
 - TikTok events go through `event_queue` (`src/lib/server/ops.ts`): sent immediately after enqueue, retried by a 15-min cron with exponential backoff, dead-lettered after MAX_ATTEMPTS.
 - Digistore24 IPN is deduped by `webhook_events.dedupe_key`; only `approved` sales enqueue CompletePayment.
 - Public checkout links embed the product's native Digistore24 order form without a widget override or platform branding so the seller's existing design is preserved; payment fields remain provider-owned, and manager-only link creation validates account ownership server-side.
+- Hosted pages: files live in the private `sites` storage bucket under `<site_id>/<path>` with an index in `hosted_files`; the public `$site.$` server route serves them (admin client, path-traversal checked) and picks the root page via `pickEntryPage` in `src/lib/sites.ts`; new app top-level paths must be added to `RESERVED_SLUGS`.
