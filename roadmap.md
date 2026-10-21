@@ -1,5 +1,4 @@
 # Lawtrack roadmap
-- [ ] Janela incorporável via script em site HTML, salvando email e abrindo pagamento na Lawtrack.
 - [x] Personalizar textos, cores e design da janela de email por checkout, com prévia e persistência.
 - [x] Tela somente de leitura para acompanhar emails salvos, sem alterar captura ou tratamento.
 - [x] Checkout público sem marca Lawtrack, usando o formulário nativo do produto.

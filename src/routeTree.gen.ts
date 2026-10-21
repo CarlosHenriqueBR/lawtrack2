@@ -24,13 +24,11 @@ import { Route as AuthenticatedLogsRouteImport } from './routes/_authenticated/l
 import { Route as AuthenticatedReportsRouteImport } from './routes/_authenticated/reports'
 import { Route as AuthenticatedSearchRouteImport } from './routes/_authenticated/search'
 import { Route as AuthenticatedUsersRouteImport } from './routes/_authenticated/users'
-import { Route as CaptureSlugRouteImport } from './routes/capture.$slug'
 import { Route as CheckoutSlugRouteImport } from './routes/checkout.$slug'
 import { Route as AuthenticatedFunnelsIndexRouteImport } from './routes/_authenticated/funnels.index'
 import { Route as AuthenticatedFunnelsIdRouteImport } from './routes/_authenticated/funnels.$id'
 import { Route as AuthenticatedJourneySessionIdRouteImport } from './routes/_authenticated/journey.$sessionId'
 import { Route as ApiPublicHealthRouteImport } from './routes/api/public/health'
-import { Route as ApiPublicLeadPopupDotjsRouteImport } from './routes/api/public/lead-popup[.]js'
 import { Route as ApiPublicSaveLeadRouteImport } from './routes/api/public/save-lead'
 import { Route as ApiPublicTrackRouteImport } from './routes/api/public/track'
 import { Route as ApiPublicTrackerDotjsRouteImport } from './routes/api/public/tracker[.]js'
@@ -113,11 +111,6 @@ const AuthenticatedUsersRoute = AuthenticatedUsersRouteImport.update({
   path: '/users',
   getParentRoute: () => AuthenticatedRouteRoute,
 } as any)
-const CaptureSlugRoute = CaptureSlugRouteImport.update({
-  id: '/capture/$slug',
-  path: '/capture/$slug',
-  getParentRoute: () => rootRouteImport,
-} as any)
 const CheckoutSlugRoute = CheckoutSlugRouteImport.update({
   id: '/checkout/$slug',
   path: '/checkout/$slug',
@@ -143,11 +136,6 @@ const AuthenticatedJourneySessionIdRoute =
 const ApiPublicHealthRoute = ApiPublicHealthRouteImport.update({
   id: '/api/public/health',
   path: '/api/public/health',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const ApiPublicLeadPopupDotjsRoute = ApiPublicLeadPopupDotjsRouteImport.update({
-  id: '/api/public/lead-popup.js',
-  path: '/api/public/lead-popup.js',
   getParentRoute: () => rootRouteImport,
 } as any)
 const ApiPublicSaveLeadRoute = ApiPublicSaveLeadRouteImport.update({
@@ -193,12 +181,10 @@ export interface FileRoutesByFullPath {
   '/reports': typeof AuthenticatedReportsRoute
   '/search': typeof AuthenticatedSearchRoute
   '/users': typeof AuthenticatedUsersRoute
-  '/capture/$slug': typeof CaptureSlugRoute
   '/checkout/$slug': typeof CheckoutSlugRoute
   '/funnels/$id': typeof AuthenticatedFunnelsIdRoute
   '/journey/$sessionId': typeof AuthenticatedJourneySessionIdRoute
   '/api/public/health': typeof ApiPublicHealthRoute
-  '/api/public/lead-popup.js': typeof ApiPublicLeadPopupDotjsRoute
   '/api/public/save-lead': typeof ApiPublicSaveLeadRoute
   '/api/public/track': typeof ApiPublicTrackRoute
   '/api/public/tracker.js': typeof ApiPublicTrackerDotjsRoute
@@ -221,12 +207,10 @@ export interface FileRoutesByTo {
   '/reports': typeof AuthenticatedReportsRoute
   '/search': typeof AuthenticatedSearchRoute
   '/users': typeof AuthenticatedUsersRoute
-  '/capture/$slug': typeof CaptureSlugRoute
   '/checkout/$slug': typeof CheckoutSlugRoute
   '/funnels/$id': typeof AuthenticatedFunnelsIdRoute
   '/journey/$sessionId': typeof AuthenticatedJourneySessionIdRoute
   '/api/public/health': typeof ApiPublicHealthRoute
-  '/api/public/lead-popup.js': typeof ApiPublicLeadPopupDotjsRoute
   '/api/public/save-lead': typeof ApiPublicSaveLeadRoute
   '/api/public/track': typeof ApiPublicTrackRoute
   '/api/public/tracker.js': typeof ApiPublicTrackerDotjsRoute
@@ -251,12 +235,10 @@ export interface FileRoutesById {
   '/_authenticated/reports': typeof AuthenticatedReportsRoute
   '/_authenticated/search': typeof AuthenticatedSearchRoute
   '/_authenticated/users': typeof AuthenticatedUsersRoute
-  '/capture/$slug': typeof CaptureSlugRoute
   '/checkout/$slug': typeof CheckoutSlugRoute
   '/_authenticated/funnels/$id': typeof AuthenticatedFunnelsIdRoute
   '/_authenticated/journey/$sessionId': typeof AuthenticatedJourneySessionIdRoute
   '/api/public/health': typeof ApiPublicHealthRoute
-  '/api/public/lead-popup.js': typeof ApiPublicLeadPopupDotjsRoute
   '/api/public/save-lead': typeof ApiPublicSaveLeadRoute
   '/api/public/track': typeof ApiPublicTrackRoute
   '/api/public/tracker.js': typeof ApiPublicTrackerDotjsRoute
@@ -281,12 +263,10 @@ export interface FileRouteTypes {
     | '/reports'
     | '/search'
     | '/users'
-    | '/capture/$slug'
     | '/checkout/$slug'
     | '/funnels/$id'
     | '/journey/$sessionId'
     | '/api/public/health'
-    | '/api/public/lead-popup.js'
     | '/api/public/save-lead'
     | '/api/public/track'
     | '/api/public/tracker.js'
@@ -309,12 +289,10 @@ export interface FileRouteTypes {
     | '/reports'
     | '/search'
     | '/users'
-    | '/capture/$slug'
     | '/checkout/$slug'
     | '/funnels/$id'
     | '/journey/$sessionId'
     | '/api/public/health'
-    | '/api/public/lead-popup.js'
     | '/api/public/save-lead'
     | '/api/public/track'
     | '/api/public/tracker.js'
@@ -338,12 +316,10 @@ export interface FileRouteTypes {
     | '/_authenticated/reports'
     | '/_authenticated/search'
     | '/_authenticated/users'
-    | '/capture/$slug'
     | '/checkout/$slug'
     | '/_authenticated/funnels/$id'
     | '/_authenticated/journey/$sessionId'
     | '/api/public/health'
-    | '/api/public/lead-popup.js'
     | '/api/public/save-lead'
     | '/api/public/track'
     | '/api/public/tracker.js'
@@ -357,10 +333,8 @@ export interface RootRouteChildren {
   AuthenticatedRouteRoute: typeof AuthenticatedRouteRouteWithChildren
   AuthRoute: typeof AuthRoute
   ResetPasswordRoute: typeof ResetPasswordRoute
-  CaptureSlugRoute: typeof CaptureSlugRoute
   CheckoutSlugRoute: typeof CheckoutSlugRoute
   ApiPublicHealthRoute: typeof ApiPublicHealthRoute
-  ApiPublicLeadPopupDotjsRoute: typeof ApiPublicLeadPopupDotjsRoute
   ApiPublicSaveLeadRoute: typeof ApiPublicSaveLeadRoute
   ApiPublicTrackRoute: typeof ApiPublicTrackRoute
   ApiPublicTrackerDotjsRoute: typeof ApiPublicTrackerDotjsRoute
@@ -475,13 +449,6 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedUsersRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
-    '/capture/$slug': {
-      id: '/capture/$slug'
-      path: '/capture/$slug'
-      fullPath: '/capture/$slug'
-      preLoaderRoute: typeof CaptureSlugRouteImport
-      parentRoute: typeof rootRouteImport
-    }
     '/checkout/$slug': {
       id: '/checkout/$slug'
       path: '/checkout/$slug'
@@ -515,13 +482,6 @@ declare module '@tanstack/react-router' {
       path: '/api/public/health'
       fullPath: '/api/public/health'
       preLoaderRoute: typeof ApiPublicHealthRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/api/public/lead-popup.js': {
-      id: '/api/public/lead-popup.js'
-      path: '/api/public/lead-popup.js'
-      fullPath: '/api/public/lead-popup.js'
-      preLoaderRoute: typeof ApiPublicLeadPopupDotjsRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/api/public/save-lead': {
@@ -604,10 +564,8 @@ const rootRouteChildren: RootRouteChildren = {
   AuthenticatedRouteRoute: AuthenticatedRouteRouteWithChildren,
   AuthRoute: AuthRoute,
   ResetPasswordRoute: ResetPasswordRoute,
-  CaptureSlugRoute: CaptureSlugRoute,
   CheckoutSlugRoute: CheckoutSlugRoute,
   ApiPublicHealthRoute: ApiPublicHealthRoute,
-  ApiPublicLeadPopupDotjsRoute: ApiPublicLeadPopupDotjsRoute,
   ApiPublicSaveLeadRoute: ApiPublicSaveLeadRoute,
   ApiPublicTrackRoute: ApiPublicTrackRoute,
   ApiPublicTrackerDotjsRoute: ApiPublicTrackerDotjsRoute,
