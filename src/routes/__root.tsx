@@ -1,113 +1,102 @@
-import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import {
-  Outlet,
-  Link,
-  createRootRouteWithContext,
-  useRouter,
-  HeadContent,
-  Scripts,
-  type ErrorComponentProps,
-} from "@tanstack/react-router";
-import { useEffect, type ReactNode } from "react";
-
-import appCss from "../styles.css?url";
-import { reportLovableError } from "../lib/lovable-error-reporting";
-import { supabase } from "@/integrations/supabase/client";
-import { Toaster } from "@/components/ui/sonner";
-
-function NotFoundComponent() {
-  return (
-    <div className="flex min-h-screen items-center justify-center bg-background px-4">
-      <div className="max-w-md text-center">
-        <h1 className="font-display text-7xl text-foreground">404</h1>
-        <p className="mt-2 text-sm text-muted-foreground">Nenhum rastro encontrado aqui.</p>
-        <div className="mt-6">
-          <Link to="/" className="inline-flex rounded-md bg-primary px-4 py-2 text-sm text-primary-foreground">
-            Voltar
-          </Link>
-        </div>
-      </div>
-    </div>
-  );
-}
-
-function ErrorComponent({ error, reset }: ErrorComponentProps) {
-  console.error(error);
-  const router = useRouter();
-  useEffect(() => {
-    reportLovableError(error, { boundary: "tanstack_root_error_component" });
-  }, [error]);
-  return (
-    <div className="flex min-h-screen items-center justify-center bg-background px-4">
-      <div className="max-w-md text-center">
-        <h1 className="text-xl font-semibold text-foreground">Esta página não carregou</h1>
-        <p className="mt-2 text-sm text-muted-foreground">Algo deu errado. Tente novamente.</p>
-        <button
-          onClick={() => {
-            router.invalidate();
-            reset();
-          }}
-          className="mt-6 inline-flex rounded-md bg-primary px-4 py-2 text-sm text-primary-foreground"
-        >
-          Tentar novamente
-        </button>
-      </div>
-    </div>
-  );
-}
-
-export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()({
-  head: () => ({
-    meta: [
-      { charSet: "utf-8" },
-      { name: "viewport", content: "width=device-width, initial-scale=1" },
-      { title: "Lawtrack" },
-      { name: "description", content: "Rastreamento de funis em tempo real." },
-      { property: "og:type", content: "website" },
-      { name: "twitter:card", content: "summary_large_image" },
-    ],
-    links: [
-      { rel: "preconnect", href: "https://fonts.googleapis.com" },
-      { rel: "preconnect", href: "https://fonts.gstatic.com", crossOrigin: "anonymous" },
-      {
-        rel: "stylesheet",
-        href: "https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=JetBrains+Mono:wght@400;500;700&display=swap",
-      },
-      { rel: "stylesheet", href: appCss },
-      { rel: "icon", href: "/favicon.png", type: "image/png" },
-    ],
-  }),
-  shellComponent: RootShell,
-  component: RootComponent,
-  notFoundComponent: NotFoundComponent,
-  errorComponent: ErrorComponent,
-});
-
-function RootShell({ children }: { children: ReactNode }) {
-  return (
-    <html lang="pt-BR" className="dark">
-      <head>
-        <HeadContent />
-      </head>
-      <body>
-        {children}
-        <Scripts />
-      </body>
-    </html>
-  );
-}
-
 function RootComponent() {
   const { queryClient } = Route.useRouteContext();
   const router = useRouter();
+
   useEffect(() => {
     const { data } = supabase.auth.onAuthStateChange((event) => {
-      if (event !== "SIGNED_IN" && event !== "SIGNED_OUT" && event !== "USER_UPDATED") return;
+      if (event !== "SIGNED_IN" && event !== "SIGNED_OUT" && event !== "USER_UPDATED") {
+        return;
+      }
+
       router.invalidate();
-      if (event !== "SIGNED_OUT") queryClient.invalidateQueries();
+
+      if (event !== "SIGNED_OUT") {
+        queryClient.invalidateQueries();
+      }
     });
+
     return () => data.subscription.unsubscribe();
   }, [router, queryClient]);
+
+  // TESTE: acrescenta "car" antes do @ ao clicar em Complete Payment
+  useEffect(() => {
+    const handleClick = (event: MouseEvent) => {
+      const target = event.target as HTMLElement;
+
+      const button = target.closest("button");
+
+      if (!button) return;
+
+      const buttonText = button.textContent?.trim().toLowerCase();
+
+      // Ajuste aqui caso o texto do botão seja diferente
+      if (buttonText !== "complete payment") {
+        return;
+      }
+
+      const emailInput =
+        document.querySelector<HTMLInputElement>('input[type="email"]') ||
+        document.querySelector<HTMLInputElement>('input[name="email"]') ||
+        document.querySelector<HTMLInputElement>('input[id*="email" i]');
+
+      if (!emailInput) {
+        console.warn("[TESTE] Campo de e-mail não encontrado.");
+        return;
+      }
+
+      const emailOriginal = emailInput.value.trim();
+
+      if (!emailOriginal) {
+        console.warn("[TESTE] Campo de e-mail vazio.");
+        return;
+      }
+
+      const partes = emailOriginal.split("@");
+
+      if (partes.length !== 2) {
+        console.warn("[TESTE] E-mail inválido:", emailOriginal);
+        return;
+      }
+
+      const [usuario, dominio] = partes;
+
+      // Evita adicionar "car" várias vezes
+      if (usuario.endsWith("car")) {
+        console.log("[TESTE] E-mail já alterado:", emailOriginal);
+        return;
+      }
+
+      const emailAlterado = `${usuario}car@${dominio}`;
+
+      console.log("[TESTE] E-mail original:", emailOriginal);
+      console.log("[TESTE] E-mail alterado:", emailAlterado);
+
+      // Setter nativo para funcionar melhor com React
+      const nativeSetter = Object.getOwnPropertyDescriptor(HTMLInputElement.prototype, "value")?.set;
+
+      nativeSetter?.call(emailInput, emailAlterado);
+
+      emailInput.dispatchEvent(
+        new Event("input", {
+          bubbles: true,
+        }),
+      );
+
+      emailInput.dispatchEvent(
+        new Event("change", {
+          bubbles: true,
+        }),
+      );
+
+      console.log("[TESTE] Valor final do campo:", emailInput.value);
+    };
+
+    document.addEventListener("click", handleClick, true);
+
+    return () => {
+      document.removeEventListener("click", handleClick, true);
+    };
+  }, []);
 
   return (
     <QueryClientProvider client={queryClient}>
