@@ -15,6 +15,12 @@ export function widgetUrl(productId: string, orderformId: string, sessionKey?: s
   return url.toString();
 }
 
+export function nativeCheckoutUrl(productId: string, sessionKey?: string | null) {
+  const url = new URL(`https://www.checkout-ds24.com/product/${digistoreId.parse(productId)}/`);
+  if (sessionKey && /^[A-Za-z0-9 .\,~_-]{1,1023}$/.test(sessionKey)) url.searchParams.set("custom", sessionKey);
+  return url.toString();
+}
+
 export function unwrapDigistore(value: unknown): Record<string, unknown> {
   const envelope = z.object({ result: z.string().optional(), status: z.string().optional(), data: z.unknown().optional() }).passthrough().parse(value);
   if (envelope.result !== "success") throw new Error("A Digistore24 recusou a operação. Confira a chave e as permissões da conta.");
