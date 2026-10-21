@@ -1,4 +1,5 @@
 # Lawtrack roadmap
+- [ ] Checkout Digistore24 dentro da Lawtrack (verificar suporte oficial e conectar a chave com segurança)
 - [x] Fase 1: login, funis/etapas, script tracker, Live Funnel, Dashboard, Visitor Journey
 - [x] Webhook Digistore24 + vendas (receita, ticket médio), deduplicação
 - [x] Fila TikTok Events API com retry/backoff/dead letter
