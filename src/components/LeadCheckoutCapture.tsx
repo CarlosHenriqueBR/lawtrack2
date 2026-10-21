@@ -53,8 +53,7 @@ export function LeadCheckoutCapture({
           );
         }
 
-        // Digistore24 always receives the buyer's real email; the lead key links the sale.
-        setCheckoutUrl(leadCheckoutUrl(productId, originalEmail, leadKey));
+        setCheckoutUrl(leadCheckoutUrl(productId, transactionEmail, leadKey));
         return;
       }
       throw new Error("Não foi possível gerar um identificador exclusivo para este e-mail.");

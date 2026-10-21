@@ -13,7 +13,6 @@ import { Route as IndexRouteImport } from './routes/index'
 import { Route as AuthenticatedRouteRouteImport } from './routes/_authenticated/route'
 import { Route as AuthRouteImport } from './routes/auth'
 import { Route as ResetPasswordRouteImport } from './routes/reset-password'
-import { Route as SiteSplatRouteImport } from './routes/$site.$'
 import { Route as AuthenticatedCheckoutsRouteImport } from './routes/_authenticated/checkouts'
 import { Route as AuthenticatedConversionsRouteImport } from './routes/_authenticated/conversions'
 import { Route as AuthenticatedDashboardRouteImport } from './routes/_authenticated/dashboard'
@@ -21,7 +20,6 @@ import { Route as AuthenticatedHealthRouteImport } from './routes/_authenticated
 import { Route as AuthenticatedIntegrationsRouteImport } from './routes/_authenticated/integrations'
 import { Route as AuthenticatedLiveRouteImport } from './routes/_authenticated/live'
 import { Route as AuthenticatedLogsRouteImport } from './routes/_authenticated/logs'
-import { Route as AuthenticatedPagesRouteImport } from './routes/_authenticated/pages'
 import { Route as AuthenticatedReportsRouteImport } from './routes/_authenticated/reports'
 import { Route as AuthenticatedSearchRouteImport } from './routes/_authenticated/search'
 import { Route as AuthenticatedUsersRouteImport } from './routes/_authenticated/users'
@@ -53,11 +51,6 @@ const AuthRoute = AuthRouteImport.update({
 const ResetPasswordRoute = ResetPasswordRouteImport.update({
   id: '/reset-password',
   path: '/reset-password',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const SiteSplatRoute = SiteSplatRouteImport.update({
-  id: '/$site/$',
-  path: '/$site/$',
   getParentRoute: () => rootRouteImport,
 } as any)
 const AuthenticatedCheckoutsRoute = AuthenticatedCheckoutsRouteImport.update({
@@ -95,11 +88,6 @@ const AuthenticatedLiveRoute = AuthenticatedLiveRouteImport.update({
 const AuthenticatedLogsRoute = AuthenticatedLogsRouteImport.update({
   id: '/logs',
   path: '/logs',
-  getParentRoute: () => AuthenticatedRouteRoute,
-} as any)
-const AuthenticatedPagesRoute = AuthenticatedPagesRouteImport.update({
-  id: '/pages',
-  path: '/pages',
   getParentRoute: () => AuthenticatedRouteRoute,
 } as any)
 const AuthenticatedReportsRoute = AuthenticatedReportsRouteImport.update({
@@ -176,7 +164,6 @@ export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/auth': typeof AuthRoute
   '/reset-password': typeof ResetPasswordRoute
-  '/$site/$': typeof SiteSplatRoute
   '/checkouts': typeof AuthenticatedCheckoutsRoute
   '/conversions': typeof AuthenticatedConversionsRoute
   '/dashboard': typeof AuthenticatedDashboardRoute
@@ -184,7 +171,6 @@ export interface FileRoutesByFullPath {
   '/integrations': typeof AuthenticatedIntegrationsRoute
   '/live': typeof AuthenticatedLiveRoute
   '/logs': typeof AuthenticatedLogsRoute
-  '/pages': typeof AuthenticatedPagesRoute
   '/reports': typeof AuthenticatedReportsRoute
   '/search': typeof AuthenticatedSearchRoute
   '/users': typeof AuthenticatedUsersRoute
@@ -203,7 +189,6 @@ export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/auth': typeof AuthRoute
   '/reset-password': typeof ResetPasswordRoute
-  '/$site/$': typeof SiteSplatRoute
   '/checkouts': typeof AuthenticatedCheckoutsRoute
   '/conversions': typeof AuthenticatedConversionsRoute
   '/dashboard': typeof AuthenticatedDashboardRoute
@@ -211,7 +196,6 @@ export interface FileRoutesByTo {
   '/integrations': typeof AuthenticatedIntegrationsRoute
   '/live': typeof AuthenticatedLiveRoute
   '/logs': typeof AuthenticatedLogsRoute
-  '/pages': typeof AuthenticatedPagesRoute
   '/reports': typeof AuthenticatedReportsRoute
   '/search': typeof AuthenticatedSearchRoute
   '/users': typeof AuthenticatedUsersRoute
@@ -232,7 +216,6 @@ export interface FileRoutesById {
   '/_authenticated': typeof AuthenticatedRouteRouteWithChildren
   '/auth': typeof AuthRoute
   '/reset-password': typeof ResetPasswordRoute
-  '/$site/$': typeof SiteSplatRoute
   '/_authenticated/checkouts': typeof AuthenticatedCheckoutsRoute
   '/_authenticated/conversions': typeof AuthenticatedConversionsRoute
   '/_authenticated/dashboard': typeof AuthenticatedDashboardRoute
@@ -240,7 +223,6 @@ export interface FileRoutesById {
   '/_authenticated/integrations': typeof AuthenticatedIntegrationsRoute
   '/_authenticated/live': typeof AuthenticatedLiveRoute
   '/_authenticated/logs': typeof AuthenticatedLogsRoute
-  '/_authenticated/pages': typeof AuthenticatedPagesRoute
   '/_authenticated/reports': typeof AuthenticatedReportsRoute
   '/_authenticated/search': typeof AuthenticatedSearchRoute
   '/_authenticated/users': typeof AuthenticatedUsersRoute
@@ -261,7 +243,6 @@ export interface FileRouteTypes {
     | '/'
     | '/auth'
     | '/reset-password'
-    | '/$site/$'
     | '/checkouts'
     | '/conversions'
     | '/dashboard'
@@ -269,7 +250,6 @@ export interface FileRouteTypes {
     | '/integrations'
     | '/live'
     | '/logs'
-    | '/pages'
     | '/reports'
     | '/search'
     | '/users'
@@ -288,7 +268,6 @@ export interface FileRouteTypes {
     | '/'
     | '/auth'
     | '/reset-password'
-    | '/$site/$'
     | '/checkouts'
     | '/conversions'
     | '/dashboard'
@@ -296,7 +275,6 @@ export interface FileRouteTypes {
     | '/integrations'
     | '/live'
     | '/logs'
-    | '/pages'
     | '/reports'
     | '/search'
     | '/users'
@@ -316,7 +294,6 @@ export interface FileRouteTypes {
     | '/_authenticated'
     | '/auth'
     | '/reset-password'
-    | '/$site/$'
     | '/_authenticated/checkouts'
     | '/_authenticated/conversions'
     | '/_authenticated/dashboard'
@@ -324,7 +301,6 @@ export interface FileRouteTypes {
     | '/_authenticated/integrations'
     | '/_authenticated/live'
     | '/_authenticated/logs'
-    | '/_authenticated/pages'
     | '/_authenticated/reports'
     | '/_authenticated/search'
     | '/_authenticated/users'
@@ -345,7 +321,6 @@ export interface RootRouteChildren {
   AuthenticatedRouteRoute: typeof AuthenticatedRouteRouteWithChildren
   AuthRoute: typeof AuthRoute
   ResetPasswordRoute: typeof ResetPasswordRoute
-  SiteSplatRoute: typeof SiteSplatRoute
   CheckoutSlugRoute: typeof CheckoutSlugRoute
   ApiPublicHealthRoute: typeof ApiPublicHealthRoute
   ApiPublicSaveLeadRoute: typeof ApiPublicSaveLeadRoute
@@ -383,13 +358,6 @@ declare module '@tanstack/react-router' {
       path: '/reset-password'
       fullPath: '/reset-password'
       preLoaderRoute: typeof ResetPasswordRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/$site/$': {
-      id: '/$site/$'
-      path: '/$site/$'
-      fullPath: '/$site/$'
-      preLoaderRoute: typeof SiteSplatRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/_authenticated/checkouts': {
@@ -439,13 +407,6 @@ declare module '@tanstack/react-router' {
       path: '/logs'
       fullPath: '/logs'
       preLoaderRoute: typeof AuthenticatedLogsRouteImport
-      parentRoute: typeof AuthenticatedRouteRoute
-    }
-    '/_authenticated/pages': {
-      id: '/_authenticated/pages'
-      path: '/pages'
-      fullPath: '/pages'
-      preLoaderRoute: typeof AuthenticatedPagesRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
     '/_authenticated/reports': {
@@ -550,7 +511,6 @@ interface AuthenticatedRouteRouteChildren {
   AuthenticatedIntegrationsRoute: typeof AuthenticatedIntegrationsRoute
   AuthenticatedLiveRoute: typeof AuthenticatedLiveRoute
   AuthenticatedLogsRoute: typeof AuthenticatedLogsRoute
-  AuthenticatedPagesRoute: typeof AuthenticatedPagesRoute
   AuthenticatedReportsRoute: typeof AuthenticatedReportsRoute
   AuthenticatedSearchRoute: typeof AuthenticatedSearchRoute
   AuthenticatedUsersRoute: typeof AuthenticatedUsersRoute
@@ -567,7 +527,6 @@ const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
   AuthenticatedIntegrationsRoute: AuthenticatedIntegrationsRoute,
   AuthenticatedLiveRoute: AuthenticatedLiveRoute,
   AuthenticatedLogsRoute: AuthenticatedLogsRoute,
-  AuthenticatedPagesRoute: AuthenticatedPagesRoute,
   AuthenticatedReportsRoute: AuthenticatedReportsRoute,
   AuthenticatedSearchRoute: AuthenticatedSearchRoute,
   AuthenticatedUsersRoute: AuthenticatedUsersRoute,
@@ -584,7 +543,6 @@ const rootRouteChildren: RootRouteChildren = {
   AuthenticatedRouteRoute: AuthenticatedRouteRouteWithChildren,
   AuthRoute: AuthRoute,
   ResetPasswordRoute: ResetPasswordRoute,
-  SiteSplatRoute: SiteSplatRoute,
   CheckoutSlugRoute: CheckoutSlugRoute,
   ApiPublicHealthRoute: ApiPublicHealthRoute,
   ApiPublicSaveLeadRoute: ApiPublicSaveLeadRoute,

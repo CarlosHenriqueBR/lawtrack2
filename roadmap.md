@@ -9,4 +9,3 @@
 - [x] Relatórios com CSV, Pesquisa, rate limit
 - [ ] API REST /api/v1 + OpenAPI (aguarda definição de uso / chaves de API)
 - [ ] MFA opcional
-- [x] Hospedagem de páginas (HTML/CSS/JS/imagens) em /endereço/ com teste A/B por parâmetro na URL
