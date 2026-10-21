@@ -52,10 +52,10 @@ function installCheckoutPopup() {
     const outerStyle = document.createElement("style");
     outerStyle.textContent = `
       dialog[data-lawtrack-popup] { --popup-surface: #ffffff; --popup-ink: #b5b5ba; --popup-backdrop: #00000099;
-        position: fixed; inset: 0; margin: auto; padding: 0; border: 0; border-radius: 24px;
-        width: min(600px, calc(100vw - 28px)); height: min(480px, calc(100dvh - 28px));
-        max-width: none; max-height: none; background: var(--popup-surface); color: var(--popup-ink); overflow: hidden; }
-      dialog[data-lawtrack-popup]::backdrop { background: var(--popup-backdrop); backdrop-filter: blur(5px); }
+        position: fixed; inset: 0; margin: 0; padding: 0; border: 0; border-radius: 0;
+        width: 100vw; height: 100dvh; max-width: none; max-height: none;
+        background: var(--popup-surface); color: var(--popup-ink); overflow: hidden; }
+      dialog[data-lawtrack-popup]::backdrop { background: var(--popup-backdrop); }
       dialog[data-lawtrack-popup] > div { height: 100%; }
     `;
     dialog.appendChild(outerStyle);
