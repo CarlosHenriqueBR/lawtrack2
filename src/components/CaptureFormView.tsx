@@ -3,7 +3,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { captureAppearanceVariables, type CaptureAppearance } from "@/lib/capture-appearance";
 
-export function CaptureFormView({ appearance, email = "", onEmailChange, onSubmit, saving = false, error = null, preview = false }: {
+export function CaptureFormView({ appearance, email = "", onEmailChange, onSubmit, saving = false, error = null, preview = false, popup = false }: {
   appearance: CaptureAppearance;
   email?: string;
   onEmailChange?: (email: string) => void;
@@ -11,9 +11,10 @@ export function CaptureFormView({ appearance, email = "", onEmailChange, onSubmi
   saving?: boolean;
   error?: string | null;
   preview?: boolean;
+  popup?: boolean;
 }) {
   const id = preview ? "preview-lead-email" : "lead-email";
-  return <div className={`capture-stage ${preview ? "capture-preview" : ""}`} style={captureAppearanceVariables(appearance)}>
+  return <div className={`capture-stage ${preview ? "capture-preview" : ""} ${popup ? "capture-stage--popup" : ""}`} style={captureAppearanceVariables(appearance)}>
     <section className={`capture-form capture-${appearance.layout} capture-align-${appearance.alignment}`}>
       <h1 className={`capture-title capture-font-${appearance.titleFont} break-words text-4xl`}>{appearance.title}</h1>
       {appearance.subtitle && <p className="capture-subtitle mt-3 break-words text-lg font-medium">{appearance.subtitle}</p>}

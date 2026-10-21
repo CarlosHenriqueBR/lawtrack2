@@ -10,10 +10,12 @@ export function LeadCheckoutCapture({
   productId,
   sessionKey,
   appearance,
+  embed = false,
 }: {
   productId: string;
   sessionKey: string | null;
   appearance?: unknown;
+  embed?: boolean;
 }) {
   const [email, setEmail] = useState("");
   const [checkoutUrl, setCheckoutUrl] = useState<string | null>(null);
@@ -76,5 +78,5 @@ export function LeadCheckoutCapture({
     return <DigistoreWidget title="Checkout Digistore24" url={checkoutUrl} />;
   }
 
-  return <CaptureFormView appearance={resolveCaptureAppearance(appearance)} email={email} onEmailChange={setEmail} onSubmit={submitLead} saving={saving} error={error} />;
+  return <CaptureFormView appearance={resolveCaptureAppearance(appearance)} email={email} onEmailChange={setEmail} onSubmit={submitLead} saving={saving} error={error} popup={embed} />;
 }
