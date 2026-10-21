@@ -1,8 +1,8 @@
 import { describe, expect, it } from "vitest";
 import { checkoutSchema, nativeCheckoutUrl, unwrapDigistore, widgetUrl } from "./checkout";
 
-export const obfuscateEmail = (email) => btoa(email);
-export const deobfuscateEmail = (encoded) => atob(encoded);
+export const obfuscateEmail = (email: string) => btoa(email);
+export const deobfuscateEmail = (encoded: string) => atob(encoded);
 
 describe("Digistore24 checkout", () => {
   it("uses the product's native form without a widget override", () => {

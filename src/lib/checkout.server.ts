@@ -22,4 +22,3 @@ export async function digistoreCall(method: "listProducts" | "listOrderforms" | 
   if (!response.ok) throw new Error(`A Digistore24 não respondeu à operação (HTTP ${response.status}). Tente novamente.`);
   return unwrapDigistore(await response.json());
 }
-}
