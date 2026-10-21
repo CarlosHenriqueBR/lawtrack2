@@ -44,6 +44,51 @@ export type Database = {
         }
         Relationships: []
       }
+      checkout_leads: {
+        Row: {
+          access_email_sent_at: string | null
+          created_at: string
+          email: string
+          id: string
+          lead_key: string
+          session_key: string | null
+          transaction_email: string
+          utm_campaign: string | null
+          utm_content: string | null
+          utm_medium: string | null
+          utm_source: string | null
+          utm_term: string | null
+        }
+        Insert: {
+          access_email_sent_at?: string | null
+          created_at?: string
+          email: string
+          id?: string
+          lead_key: string
+          session_key?: string | null
+          transaction_email: string
+          utm_campaign?: string | null
+          utm_content?: string | null
+          utm_medium?: string | null
+          utm_source?: string | null
+          utm_term?: string | null
+        }
+        Update: {
+          access_email_sent_at?: string | null
+          created_at?: string
+          email?: string
+          id?: string
+          lead_key?: string
+          session_key?: string | null
+          transaction_email?: string
+          utm_campaign?: string | null
+          utm_content?: string | null
+          utm_medium?: string | null
+          utm_source?: string | null
+          utm_term?: string | null
+        }
+        Relationships: []
+      }
       checkout_links: {
         Row: {
           created_at: string
@@ -90,51 +135,6 @@ export type Database = {
             referencedColumns: ["id"]
           },
         ]
-      }
-      checkout_leads: {
-        Row: {
-          access_email_sent_at: string | null
-          created_at: string
-          email: string
-          id: string
-          lead_key: string
-          session_key: string | null
-          transaction_email: string
-          utm_campaign: string | null
-          utm_content: string | null
-          utm_medium: string | null
-          utm_source: string | null
-          utm_term: string | null
-        }
-        Insert: {
-          access_email_sent_at?: string | null
-          created_at?: string
-          email: string
-          id?: string
-          lead_key: string
-          session_key?: string | null
-          transaction_email: string
-          utm_campaign?: string | null
-          utm_content?: string | null
-          utm_medium?: string | null
-          utm_source?: string | null
-          utm_term?: string | null
-        }
-        Update: {
-          access_email_sent_at?: string | null
-          created_at?: string
-          email?: string
-          id?: string
-          lead_key?: string
-          session_key?: string | null
-          transaction_email?: string
-          utm_campaign?: string | null
-          utm_content?: string | null
-          utm_medium?: string | null
-          utm_source?: string | null
-          utm_term?: string | null
-        }
-        Relationships: []
       }
       event_queue: {
         Row: {
@@ -340,6 +340,91 @@ export type Database = {
           updated_at?: string
         }
         Relationships: []
+      }
+      hosted_files: {
+        Row: {
+          content_type: string | null
+          id: string
+          path: string
+          site_id: string
+          size: number
+          updated_at: string
+        }
+        Insert: {
+          content_type?: string | null
+          id?: string
+          path: string
+          site_id: string
+          size?: number
+          updated_at?: string
+        }
+        Update: {
+          content_type?: string | null
+          id?: string
+          path?: string
+          site_id?: string
+          size?: number
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "hosted_files_site_id_fkey"
+            columns: ["site_id"]
+            isOneToOne: false
+            referencedRelation: "hosted_sites"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      hosted_sites: {
+        Row: {
+          ab_page: string | null
+          ab_param: string | null
+          ab_value: string | null
+          created_at: string
+          default_page: string
+          enabled: boolean
+          funnel_id: string | null
+          id: string
+          name: string
+          slug: string
+          updated_at: string
+        }
+        Insert: {
+          ab_page?: string | null
+          ab_param?: string | null
+          ab_value?: string | null
+          created_at?: string
+          default_page?: string
+          enabled?: boolean
+          funnel_id?: string | null
+          id?: string
+          name: string
+          slug: string
+          updated_at?: string
+        }
+        Update: {
+          ab_page?: string | null
+          ab_param?: string | null
+          ab_value?: string | null
+          created_at?: string
+          default_page?: string
+          enabled?: boolean
+          funnel_id?: string | null
+          id?: string
+          name?: string
+          slug?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "hosted_sites_funnel_id_fkey"
+            columns: ["funnel_id"]
+            isOneToOne: false
+            referencedRelation: "funnels"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       integration_secrets: {
         Row: {
