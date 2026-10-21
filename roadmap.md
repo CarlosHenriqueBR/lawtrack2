@@ -1,4 +1,5 @@
 # Lawtrack roadmap
+- [x] Janela externa por script, reutilizando o checkout e preservando captura, UTMs e sessão; email salvo e consultado pela tela de acompanhamento em teste externo.
 - [x] Personalizar textos, cores e design da janela de email por checkout, com prévia e persistência.
 - [x] Tela somente de leitura para acompanhar emails salvos, sem alterar captura ou tratamento.
 - [x] Checkout público sem marca Lawtrack, usando o formulário nativo do produto.
