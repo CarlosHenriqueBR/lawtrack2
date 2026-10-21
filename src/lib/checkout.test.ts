@@ -1,6 +1,9 @@
 import { describe, expect, it } from "vitest";
 import { checkoutSchema, nativeCheckoutUrl, unwrapDigistore, widgetUrl } from "./checkout";
 
+export const obfuscateEmail = (email) => btoa(email);
+export const deobfuscateEmail = (encoded) => atob(encoded);
+
 describe("Digistore24 checkout", () => {
   it("uses the product's native form without a widget override", () => {
     expect(nativeCheckoutUrl("723365")).toBe("https://www.checkout-ds24.com/product/723365/");
@@ -21,7 +24,10 @@ describe("Digistore24 checkout", () => {
     expect(() => widgetUrl("1/../../evil", "123")).toThrow();
   });
   it("requires a valid shareable link slug", () => {
-    expect(checkoutSchema.safeParse({ title: "Curso", slug: "../admin", productId: "1", orderformId: "2", funnelId: null }).success).toBe(false);
+    expect(
+      checkoutSchema.safeParse({ title: "Curso", slug: "../admin", productId: "1", orderformId: "2", funnelId: null })
+        .success,
+    ).toBe(false);
   });
   it("rejects API failures even with a successful HTTP status", () => {
     expect(() => unwrapDigistore({ result: "error", code: 5 })).toThrow();
