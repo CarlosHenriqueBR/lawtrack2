@@ -8,7 +8,7 @@ import { CheckoutTracking } from "@/components/CheckoutTracking";
 const checkoutQuery = (slug: string) => queryOptions({
   queryKey: ["public-checkout", slug],
   queryFn: async () => {
-    const { data, error } = await supabase.from("checkout_links").select("title, product_id, orderform_id, funnel_id, tiktok_pixel_id, custom_script").eq("slug", slug).eq("enabled", true).maybeSingle();
+    const { data, error } = await supabase.from("checkout_links").select("title, product_id, orderform_id, funnel_id, tiktok_pixel_id, custom_script, capture_appearance").eq("slug", slug).eq("enabled", true).maybeSingle();
     if (error) throw new Error("Não foi possível carregar este checkout.");
     return data;
   },
@@ -54,7 +54,7 @@ function Checkout() {
   return (
     <main className="native-checkout">
       {data && <CheckoutTracking tiktokPixelId={data.tiktok_pixel_id} customScript={data.custom_script} />}
-      {data ? ready && <LeadCheckoutCapture productId={data.product_id} sessionKey={session} /> : <section className="p-8"><h1 className="font-display text-4xl">Checkout indisponível</h1><p className="mt-3">Este link não existe ou foi desativado. Entre em contato com o vendedor.</p></section>}
+      {data ? ready && <LeadCheckoutCapture productId={data.product_id} sessionKey={session} appearance={data.capture_appearance} /> : <section className="p-8"><h1 className="font-display text-4xl">Checkout indisponível</h1><p className="mt-3">Este link não existe ou foi desativado. Entre em contato com o vendedor.</p></section>}
     </main>
   );
 }
