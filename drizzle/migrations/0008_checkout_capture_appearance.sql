@@ -1,0 +1,2 @@
+ALTER TABLE public.checkout_links ADD COLUMN capture_appearance jsonb NOT NULL DEFAULT '{}'::jsonb;
+ALTER TABLE public.checkout_links ADD CONSTRAINT checkout_capture_appearance_object CHECK (jsonb_typeof(capture_appearance) = 'object' AND octet_length(capture_appearance::text) <= 12000);

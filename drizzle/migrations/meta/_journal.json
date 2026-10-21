@@ -57,6 +57,13 @@
       "when": 1792609482946,
       "tag": "0007_checkout_leads",
       "breakpoints": true
+    },
+    {
+      "idx": 8,
+      "version": "7",
+      "when": 1792613406790,
+      "tag": "0008_checkout_capture_appearance",
+      "breakpoints": true
     }
   ]
 }
