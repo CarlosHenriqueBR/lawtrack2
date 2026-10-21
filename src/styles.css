@@ -137,6 +137,50 @@
   background: var(--background);
 }
 
+/* Per-checkout appearance values are scoped semantic tokens, not global theme changes. */
+.capture-stage {
+  --background: var(--capture-background);
+  --foreground: var(--capture-text);
+  --primary: var(--capture-button);
+  --primary-foreground: var(--capture-button-text);
+  --input: var(--capture-border);
+  --ring: var(--capture-button);
+  background: var(--capture-background);
+  color: var(--capture-text);
+  min-height: 100dvh;
+  padding: 0 16px;
+}
+.capture-form {
+  width: 100%;
+  max-width: var(--capture-width);
+  min-height: 70dvh;
+  margin: 0 auto;
+  padding: 48px 24px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+.capture-panel {
+  background: var(--capture-surface);
+  border: 1px solid var(--capture-border);
+  border-radius: var(--capture-radius);
+  min-height: auto;
+}
+.capture-stage:has(.capture-panel) { display: grid; place-items: center; padding: 32px 16px; }
+.capture-align-center { text-align: center; }
+.capture-align-left { text-align: left; }
+.capture-description { color: var(--capture-secondary); }
+.capture-font-serif { font-family: var(--font-display); }
+.capture-font-mono { font-family: var(--font-sans); }
+.capture-font-sans { font-family: Arial, sans-serif; }
+.capture-input { background: var(--capture-input); border-color: var(--capture-border); border-radius: var(--capture-radius); color: var(--capture-text); }
+.capture-input::placeholder { color: var(--capture-secondary); }
+.capture-submit { background: var(--capture-button); color: var(--capture-button-text); border-radius: var(--capture-radius); }
+.capture-submit:hover { background: var(--capture-button); filter: brightness(0.95); }
+.capture-preview { min-height: 540px; }
+.capture-preview .capture-form { min-height: auto; }
+.capture-preview .capture-submit:disabled { opacity: 1; }
+
 @utility pulse-dot {
   animation: pulse-dot 1.6s ease-in-out infinite;
 }

@@ -91,6 +91,7 @@ export type Database = {
       }
       checkout_links: {
         Row: {
+          capture_appearance: Json
           created_at: string
           custom_script: string | null
           enabled: boolean
@@ -103,6 +104,7 @@ export type Database = {
           title: string
         }
         Insert: {
+          capture_appearance?: Json
           created_at?: string
           custom_script?: string | null
           enabled?: boolean
@@ -115,6 +117,7 @@ export type Database = {
           title: string
         }
         Update: {
+          capture_appearance?: Json
           created_at?: string
           custom_script?: string | null
           enabled?: boolean
