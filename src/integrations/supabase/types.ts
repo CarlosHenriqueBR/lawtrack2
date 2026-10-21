@@ -341,6 +341,91 @@ export type Database = {
         }
         Relationships: []
       }
+      hosted_files: {
+        Row: {
+          content_type: string | null
+          id: string
+          path: string
+          site_id: string
+          size: number
+          updated_at: string
+        }
+        Insert: {
+          content_type?: string | null
+          id?: string
+          path: string
+          site_id: string
+          size?: number
+          updated_at?: string
+        }
+        Update: {
+          content_type?: string | null
+          id?: string
+          path?: string
+          site_id?: string
+          size?: number
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "hosted_files_site_id_fkey"
+            columns: ["site_id"]
+            isOneToOne: false
+            referencedRelation: "hosted_sites"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      hosted_sites: {
+        Row: {
+          ab_page: string | null
+          ab_param: string | null
+          ab_value: string | null
+          created_at: string
+          default_page: string
+          enabled: boolean
+          funnel_id: string | null
+          id: string
+          name: string
+          slug: string
+          updated_at: string
+        }
+        Insert: {
+          ab_page?: string | null
+          ab_param?: string | null
+          ab_value?: string | null
+          created_at?: string
+          default_page?: string
+          enabled?: boolean
+          funnel_id?: string | null
+          id?: string
+          name: string
+          slug: string
+          updated_at?: string
+        }
+        Update: {
+          ab_page?: string | null
+          ab_param?: string | null
+          ab_value?: string | null
+          created_at?: string
+          default_page?: string
+          enabled?: boolean
+          funnel_id?: string | null
+          id?: string
+          name?: string
+          slug?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "hosted_sites_funnel_id_fkey"
+            columns: ["funnel_id"]
+            isOneToOne: false
+            referencedRelation: "funnels"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       integration_secrets: {
         Row: {
           key: string
