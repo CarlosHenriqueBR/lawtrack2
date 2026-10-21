@@ -70,6 +70,27 @@ export const retryQueueItems = createServerFn({ method: "POST" })
   });
 
 // ---------- Users ----------
+// Read-only monitoring; capture and checkout processing remain unchanged.
+export const listCheckoutLeads = createServerFn({ method: "POST" })
+  .middleware([requireSupabaseAuth])
+  .inputValidator((input: unknown) => z.object({
+    page: z.number().int().min(0).max(100000),
+    search: z.string().trim().max(254),
+  }).parse(input))
+  .handler(async ({ data, context }) => {
+    const { db } = await requireManager(context);
+    let query = db.from("checkout_leads")
+      .select("id, email, transaction_email, created_at, utm_source, utm_campaign, access_email_sent_at", { count: "exact" })
+      .order("created_at", { ascending: false }).order("id", { ascending: false });
+    if (data.search) {
+      const literal = data.search.replace(/[\\%_]/g, "\\$&");
+      query = query.ilike("email", `%${literal}%`);
+    }
+    const { data: rows, count, error } = await query.range(data.page * 50, data.page * 50 + 49);
+    if (error) throw new Error("Não foi possível carregar os emails salvos.");
+    return { rows: rows ?? [], total: count ?? 0 };
+  });
+
 const ROLES = ["super_admin", "admin", "analyst", "viewer"] as const;
 
 export const listUsers = createServerFn({ method: "POST" })

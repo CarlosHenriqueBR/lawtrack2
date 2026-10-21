@@ -10,6 +10,7 @@
 <!-- LOVABLE:END -->
 
 ## Architecture rules
+- Saved checkout emails are monitored through a read-only manager-authorized server function; keep capture and payment processing separate to preserve their behavior.
 - Visitor tracking enters only via public routes `/api/public/track` and `/api/public/tracker.js`; the track handler validates input and writes with the admin client because visitors are anonymous.
 - Dashboard data is read in the browser through RLS restricted to `has_role(admin)`; roles are granted by an auth trigger (allow-listed initial emails become super_admin).
 - Step matching, session status windows and UA parsing live in `src/lib/tracking.ts` (pure, unit-tested) so the API and UI share one definition.
