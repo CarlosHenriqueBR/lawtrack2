@@ -10,6 +10,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Slider } from "@/components/ui/slider";
+import { Switch } from "@/components/ui/switch";
 import { CaptureFormView } from "@/components/CaptureFormView";
 import { captureAppearanceSchema, defaultCaptureAppearance, resolveCaptureAppearance, type CaptureAppearance } from "@/lib/capture-appearance";
 
@@ -58,6 +59,8 @@ export function CaptureAppearanceEditor({ link }: { link: { id: string; title: s
             <h3 className="font-medium">Textos</h3>
             {textFields.slice(0, 2).map(([key, label, max]) => <div key={key} className="space-y-2"><Label htmlFor={`capture-${key}`}>{label}</Label><Input id={`capture-${key}`} value={appearance[key]} maxLength={max} onChange={(event) => change(key, event.target.value)} /></div>)}
             <div className="space-y-2"><Label htmlFor="capture-description">Descrição</Label><Textarea id="capture-description" value={appearance.description} maxLength={600} rows={3} onChange={(event) => change("description", event.target.value)} /></div>
+            <div className="space-y-2"><Label htmlFor="capture-footer">Nota abaixo do botão</Label><Textarea id="capture-footer" value={appearance.footer} maxLength={240} rows={2} onChange={(event) => change("footer", event.target.value)} /></div>
+            <div className="flex items-center justify-between gap-3"><Label htmlFor="capture-hide-label">Ocultar nome do campo</Label><Switch id="capture-hide-label" checked={appearance.hideLabel} onCheckedChange={(value) => change("hideLabel", value)} /></div>
             {textFields.slice(2).map(([key, label, max]) => <div key={key} className="space-y-2"><Label htmlFor={`capture-${key}`}>{label}</Label><Input id={`capture-${key}`} value={appearance[key]} maxLength={max} onChange={(event) => change(key, event.target.value)} /></div>)}
           </section>
           <section className="space-y-3 border-t pt-4">
@@ -69,10 +72,11 @@ export function CaptureAppearanceEditor({ link }: { link: { id: string; title: s
           </section>
           <section className="space-y-4 border-t pt-4">
             <h3 className="font-medium">Design</h3>
-            <div className="space-y-2"><Label htmlFor="capture-layout">Formato</Label><Select value={appearance.layout} onValueChange={(value) => { if (value === "plain" || value === "panel") change("layout", value); }}><SelectTrigger id="capture-layout"><SelectValue /></SelectTrigger><SelectContent><SelectItem value="plain">Sem moldura</SelectItem><SelectItem value="panel">Janela com borda</SelectItem></SelectContent></Select></div>
+            <Button variant="outline" onClick={() => setAppearance({ ...defaultCaptureAppearance })}><Paintbrush />Usar modelo da imagem</Button>
+            <div className="space-y-2"><Label htmlFor="capture-layout">Formato</Label><Select value={appearance.layout} onValueChange={(value) => { if (value === "plain" || value === "panel" || value === "reference") change("layout", value); }}><SelectTrigger id="capture-layout"><SelectValue /></SelectTrigger><SelectContent><SelectItem value="plain">Sem moldura</SelectItem><SelectItem value="panel">Janela com borda</SelectItem><SelectItem value="reference">Modelo da imagem</SelectItem></SelectContent></Select></div>
             <div className="space-y-2"><Label htmlFor="capture-alignment">Alinhamento</Label><Select value={appearance.alignment} onValueChange={(value) => { if (value === "left" || value === "center") change("alignment", value); }}><SelectTrigger id="capture-alignment"><SelectValue /></SelectTrigger><SelectContent><SelectItem value="center">Centralizado</SelectItem><SelectItem value="left">À esquerda</SelectItem></SelectContent></Select></div>
             <div className="space-y-2"><Label htmlFor="capture-font">Fonte do título</Label><Select value={appearance.titleFont} onValueChange={(value) => { if (value === "serif" || value === "mono" || value === "sans") change("titleFont", value); }}><SelectTrigger id="capture-font"><SelectValue /></SelectTrigger><SelectContent><SelectItem value="serif">Clássica</SelectItem><SelectItem value="mono">Monoespaçada</SelectItem><SelectItem value="sans">Sem serifa</SelectItem></SelectContent></Select></div>
-            <div className="space-y-3"><Label>Arredondamento · {appearance.radius}px</Label><Slider aria-label="Arredondamento" value={[appearance.radius]} min={0} max={8} step={1} onValueChange={([value]) => { if (value !== undefined) change("radius", value); }} /></div>
+            <div className="space-y-3"><Label>Arredondamento · {appearance.radius}px</Label><Slider aria-label="Arredondamento" value={[appearance.radius]} min={0} max={32} step={1} onValueChange={([value]) => { if (value !== undefined) change("radius", value); }} /></div>
             <div className="space-y-3"><Label>Largura · {appearance.width}px</Label><Slider aria-label="Largura" value={[appearance.width]} min={360} max={640} step={8} onValueChange={([value]) => { if (value !== undefined) change("width", value); }} /></div>
           </section>
         </div>

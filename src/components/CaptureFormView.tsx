@@ -19,7 +19,7 @@ export function CaptureFormView({ appearance, email = "", onEmailChange, onSubmi
       {appearance.subtitle && <p className="capture-subtitle mt-3 break-words text-lg font-medium">{appearance.subtitle}</p>}
       {appearance.description && <p className="capture-description mt-3 break-words text-sm">{appearance.description}</p>}
       <form className="mx-auto mt-8 w-full max-w-md space-y-4 text-left" onSubmit={preview ? (event) => event.preventDefault() : onSubmit}>
-        <label htmlFor={id} className="block break-words text-sm font-medium">{appearance.emailLabel}</label>
+        <label htmlFor={id} className={appearance.hideLabel ? "sr-only" : "block break-words text-sm font-medium"}>{appearance.emailLabel}</label>
         <Input id={id} name="email" type="email" autoComplete={preview ? "off" : "email"} required maxLength={254} value={email}
           onChange={(event) => onEmailChange?.(event.target.value)} disabled={saving} className="capture-input h-11 text-base" placeholder={appearance.placeholder} />
         {error && <p role="alert" className="text-sm text-destructive">{error}</p>}
@@ -27,6 +27,7 @@ export function CaptureFormView({ appearance, email = "", onEmailChange, onSubmi
           {saving ? "Validando..." : appearance.buttonText}
         </Button>
       </form>
+      {appearance.footer && <p className="capture-footer mt-5 break-words text-sm">{appearance.footer}</p>}
     </section>
   </div>;
 }
