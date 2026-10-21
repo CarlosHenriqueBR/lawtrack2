@@ -46,7 +46,7 @@ function Checkout() {
     if (data?.funnel_id) {
       const script = document.createElement("script");
       script.src = "/api/public/tracker.js";
-      script.dataset.funnel = data.funnel_id;
+      script.dataset["funnel"] = data.funnel_id;
       document.body.appendChild(script);
       // The tracker is intentionally loaded once for this full checkout visit.
     }
