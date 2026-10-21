@@ -46,14 +46,22 @@ function installCheckoutPopup() {
     const dialog = document.createElement("dialog");
     dialog.setAttribute("aria-label", "Checkout");
     dialog.setAttribute("data-lawtrack-popup", "");
-    const shadow = dialog.attachShadow({ mode: "open" });
-    const style = document.createElement("style");
-    style.textContent = `
-      :host { --popup-surface: #ffffff; --popup-ink: #303030; --popup-backdrop: #00000099; --popup-border: #c8c8c8;
+    const container = document.createElement("div");
+    const shadow = container.attachShadow({ mode: "open" });
+    dialog.appendChild(container);
+    const outerStyle = document.createElement("style");
+    outerStyle.textContent = `
+      dialog[data-lawtrack-popup] { --popup-surface: #ffffff; --popup-ink: #303030; --popup-backdrop: #00000099;
         position: fixed; inset: 0; margin: auto; padding: 0; border: 0; border-radius: 8px;
         width: min(760px, calc(100vw - 24px)); height: min(900px, calc(100dvh - 24px));
         max-width: none; max-height: none; background: var(--popup-surface); color: var(--popup-ink); overflow: hidden; }
-      :host::backdrop { background: var(--popup-backdrop); }
+      dialog[data-lawtrack-popup]::backdrop { background: var(--popup-backdrop); }
+      dialog[data-lawtrack-popup] > div { height: 100%; }
+    `;
+    dialog.appendChild(outerStyle);
+    const style = document.createElement("style");
+    style.textContent = `
+      :host { display: block; height: 100%; }
       .bar { height: 44px; display: flex; justify-content: flex-end; align-items: center; padding: 0 8px; background: var(--popup-surface); }
       button { display: grid; place-items: center; width: 36px; height: 36px; padding: 0; border: 0; border-radius: 4px;
         background: var(--popup-surface); color: var(--popup-ink); cursor: pointer; font: 28px Arial, sans-serif; }
@@ -74,7 +82,7 @@ function installCheckoutPopup() {
     iframe.allow = "payment *; publickey-credentials-get *";
     shadow.append(style, bar, iframe);
     dialog.addEventListener("cancel", (event) => { event.preventDefault(); close(); });
-    dialog.addEventListener("click", (event) => { if (event.target === dialog) close(); });
+    dialog.addEventListener("click", (event) => { if (event.composedPath()[0] === dialog) close(); });
     document.body.appendChild(dialog);
     active = dialog;
     document.documentElement.style.overflow = "hidden";

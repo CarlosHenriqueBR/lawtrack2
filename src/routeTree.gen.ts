@@ -28,6 +28,7 @@ import { Route as CheckoutSlugRouteImport } from './routes/checkout.$slug'
 import { Route as AuthenticatedFunnelsIndexRouteImport } from './routes/_authenticated/funnels.index'
 import { Route as AuthenticatedFunnelsIdRouteImport } from './routes/_authenticated/funnels.$id'
 import { Route as AuthenticatedJourneySessionIdRouteImport } from './routes/_authenticated/journey.$sessionId'
+import { Route as ApiPublicCheckoutPopupDotjsRouteImport } from './routes/api/public/checkout-popup[.]js'
 import { Route as ApiPublicHealthRouteImport } from './routes/api/public/health'
 import { Route as ApiPublicSaveLeadRouteImport } from './routes/api/public/save-lead'
 import { Route as ApiPublicTrackRouteImport } from './routes/api/public/track'
@@ -133,6 +134,12 @@ const AuthenticatedJourneySessionIdRoute =
     path: '/journey/$sessionId',
     getParentRoute: () => AuthenticatedRouteRoute,
   } as any)
+const ApiPublicCheckoutPopupDotjsRoute =
+  ApiPublicCheckoutPopupDotjsRouteImport.update({
+    id: '/api/public/checkout-popup.js',
+    path: '/api/public/checkout-popup.js',
+    getParentRoute: () => rootRouteImport,
+  } as any)
 const ApiPublicHealthRoute = ApiPublicHealthRouteImport.update({
   id: '/api/public/health',
   path: '/api/public/health',
@@ -184,6 +191,7 @@ export interface FileRoutesByFullPath {
   '/checkout/$slug': typeof CheckoutSlugRoute
   '/funnels/$id': typeof AuthenticatedFunnelsIdRoute
   '/journey/$sessionId': typeof AuthenticatedJourneySessionIdRoute
+  '/api/public/checkout-popup.js': typeof ApiPublicCheckoutPopupDotjsRoute
   '/api/public/health': typeof ApiPublicHealthRoute
   '/api/public/save-lead': typeof ApiPublicSaveLeadRoute
   '/api/public/track': typeof ApiPublicTrackRoute
@@ -210,6 +218,7 @@ export interface FileRoutesByTo {
   '/checkout/$slug': typeof CheckoutSlugRoute
   '/funnels/$id': typeof AuthenticatedFunnelsIdRoute
   '/journey/$sessionId': typeof AuthenticatedJourneySessionIdRoute
+  '/api/public/checkout-popup.js': typeof ApiPublicCheckoutPopupDotjsRoute
   '/api/public/health': typeof ApiPublicHealthRoute
   '/api/public/save-lead': typeof ApiPublicSaveLeadRoute
   '/api/public/track': typeof ApiPublicTrackRoute
@@ -238,6 +247,7 @@ export interface FileRoutesById {
   '/checkout/$slug': typeof CheckoutSlugRoute
   '/_authenticated/funnels/$id': typeof AuthenticatedFunnelsIdRoute
   '/_authenticated/journey/$sessionId': typeof AuthenticatedJourneySessionIdRoute
+  '/api/public/checkout-popup.js': typeof ApiPublicCheckoutPopupDotjsRoute
   '/api/public/health': typeof ApiPublicHealthRoute
   '/api/public/save-lead': typeof ApiPublicSaveLeadRoute
   '/api/public/track': typeof ApiPublicTrackRoute
@@ -266,6 +276,7 @@ export interface FileRouteTypes {
     | '/checkout/$slug'
     | '/funnels/$id'
     | '/journey/$sessionId'
+    | '/api/public/checkout-popup.js'
     | '/api/public/health'
     | '/api/public/save-lead'
     | '/api/public/track'
@@ -292,6 +303,7 @@ export interface FileRouteTypes {
     | '/checkout/$slug'
     | '/funnels/$id'
     | '/journey/$sessionId'
+    | '/api/public/checkout-popup.js'
     | '/api/public/health'
     | '/api/public/save-lead'
     | '/api/public/track'
@@ -319,6 +331,7 @@ export interface FileRouteTypes {
     | '/checkout/$slug'
     | '/_authenticated/funnels/$id'
     | '/_authenticated/journey/$sessionId'
+    | '/api/public/checkout-popup.js'
     | '/api/public/health'
     | '/api/public/save-lead'
     | '/api/public/track'
@@ -334,6 +347,7 @@ export interface RootRouteChildren {
   AuthRoute: typeof AuthRoute
   ResetPasswordRoute: typeof ResetPasswordRoute
   CheckoutSlugRoute: typeof CheckoutSlugRoute
+  ApiPublicCheckoutPopupDotjsRoute: typeof ApiPublicCheckoutPopupDotjsRoute
   ApiPublicHealthRoute: typeof ApiPublicHealthRoute
   ApiPublicSaveLeadRoute: typeof ApiPublicSaveLeadRoute
   ApiPublicTrackRoute: typeof ApiPublicTrackRoute
@@ -477,6 +491,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedJourneySessionIdRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
+    '/api/public/checkout-popup.js': {
+      id: '/api/public/checkout-popup.js'
+      path: '/api/public/checkout-popup.js'
+      fullPath: '/api/public/checkout-popup.js'
+      preLoaderRoute: typeof ApiPublicCheckoutPopupDotjsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/api/public/health': {
       id: '/api/public/health'
       path: '/api/public/health'
@@ -565,6 +586,7 @@ const rootRouteChildren: RootRouteChildren = {
   AuthRoute: AuthRoute,
   ResetPasswordRoute: ResetPasswordRoute,
   CheckoutSlugRoute: CheckoutSlugRoute,
+  ApiPublicCheckoutPopupDotjsRoute: ApiPublicCheckoutPopupDotjsRoute,
   ApiPublicHealthRoute: ApiPublicHealthRoute,
   ApiPublicSaveLeadRoute: ApiPublicSaveLeadRoute,
   ApiPublicTrackRoute: ApiPublicTrackRoute,
