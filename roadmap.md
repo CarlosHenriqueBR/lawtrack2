@@ -4,6 +4,7 @@
 - [x] Personalizar textos, cores e design da janela de email por checkout, com prévia e persistência.
 - [x] Tela somente de leitura para acompanhar emails salvos, sem alterar captura ou tratamento.
 - [x] Checkout público sem marca Lawtrack, usando o formulário nativo do produto.
+- [x] Modal de email desabilitada: o link de checkout abre o formulário de pagamento em tela cheia; reativação só por ?skip_lead=0.
 - [x] Checkout Digistore24 dentro da Lawtrack: catálogo, formulários oficiais e links; criação e campos de pagamento verificados sem cobrança
 - [x] Fase 1: login, funis/etapas, script tracker, Live Funnel, Dashboard, Visitor Journey
 - [x] Webhook Digistore24 + vendas (receita, ticket médio), deduplicação
