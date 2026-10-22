@@ -39,3 +39,10 @@ export const trackingSchema = z.object({
   tiktokPixelId: z.string().trim().toUpperCase().regex(/^[A-Z0-9]{8,40}$/, "ID do pixel do TikTok inválido").nullable(),
   customScript: z.string().max(20000, "Script muito grande (máx. 20.000 caracteres)").nullable(),
 });
+
+// The email capture modal is disabled: a checkout link opens the payment form straight away.
+// It can be turned back on for a visit with ?skip_lead=0.
+export function showsEmailCaptureModal(query: URLSearchParams | string) {
+  const params = typeof query === "string" ? new URLSearchParams(query) : query;
+  return params.get("skip_lead") === "0";
+}
