@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { LeadCheckoutCapture } from "@/components/LeadCheckoutCapture";
 import { CheckoutTracking } from "@/components/CheckoutTracking";
+import { showsEmailCaptureModal } from "@/lib/checkout";
 
 const checkoutQuery = (slug: string) => queryOptions({
   queryKey: ["public-checkout", slug],
@@ -38,7 +39,7 @@ function Checkout() {
   useEffect(() => {
     const qs = new URLSearchParams(window.location.search);
     setEmbedded(qs.get("embed") === "1");
-    setDirect(qs.get("skip_lead") === "1");
+    setDirect(!showsEmailCaptureModal(qs));
     const cookie = document.cookie.split("; ").find((c) => c.startsWith("lt_sid="))?.split("=").slice(1).join("=");
     let sid = qs.get("lt_sid") || (cookie ? decodeURIComponent(cookie) : null);
     if (data?.funnel_id && !sid) sid = `s${crypto.randomUUID().replaceAll("-", "").slice(0, 15)}`;

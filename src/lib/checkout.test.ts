@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { checkoutSchema, nativeCheckoutUrl, unwrapDigistore, widgetUrl } from "./checkout";
+import { checkoutSchema, nativeCheckoutUrl, showsEmailCaptureModal, unwrapDigistore, widgetUrl } from "./checkout";
 
 export const obfuscateEmail = (email: string) => btoa(email);
 export const deobfuscateEmail = (encoded: string) => atob(encoded);
@@ -32,5 +32,14 @@ describe("Digistore24 checkout", () => {
   it("rejects API failures even with a successful HTTP status", () => {
     expect(() => unwrapDigistore({ result: "error", code: 5 })).toThrow();
     expect(unwrapDigistore({ result: "success", data: { products: [] } })).toEqual({ products: [] });
+  });
+  it("disables the email modal by default", () => {
+    expect(showsEmailCaptureModal("")).toBe(false);
+    expect(showsEmailCaptureModal("skip_lead=1")).toBe(false);
+    expect(showsEmailCaptureModal("utm_source=fb")).toBe(false);
+  });
+  it("re-enables the email modal only when asked for", () => {
+    expect(showsEmailCaptureModal("skip_lead=0")).toBe(true);
+    expect(showsEmailCaptureModal("?skip_lead=0&utm_source=fb")).toBe(true);
   });
 });
