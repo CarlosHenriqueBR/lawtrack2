@@ -13,6 +13,7 @@ import { Route as IndexRouteImport } from './routes/index'
 import { Route as AuthenticatedRouteRouteImport } from './routes/_authenticated/route'
 import { Route as AuthRouteImport } from './routes/auth'
 import { Route as ResetPasswordRouteImport } from './routes/reset-password'
+import { Route as AuthenticatedAdsRouteImport } from './routes/_authenticated/ads'
 import { Route as AuthenticatedCheckoutsRouteImport } from './routes/_authenticated/checkouts'
 import { Route as AuthenticatedConversionsRouteImport } from './routes/_authenticated/conversions'
 import { Route as AuthenticatedDashboardRouteImport } from './routes/_authenticated/dashboard'
@@ -34,6 +35,8 @@ import { Route as ApiPublicSaveLeadRouteImport } from './routes/api/public/save-
 import { Route as ApiPublicTrackRouteImport } from './routes/api/public/track'
 import { Route as ApiPublicTrackerDotjsRouteImport } from './routes/api/public/tracker[.]js'
 import { Route as ApiPublicJobsProcessQueueRouteImport } from './routes/api/public/jobs/process-queue'
+import { Route as ApiPublicJobsSyncAdsRouteImport } from './routes/api/public/jobs/sync-ads'
+import { Route as ApiPublicTiktokCallbackRouteImport } from './routes/api/public/tiktok/callback'
 import { Route as ApiPublicWebhooksDigistore24RouteImport } from './routes/api/public/webhooks/digistore24'
 
 const IndexRoute = IndexRouteImport.update({
@@ -54,6 +57,11 @@ const ResetPasswordRoute = ResetPasswordRouteImport.update({
   id: '/reset-password',
   path: '/reset-password',
   getParentRoute: () => rootRouteImport,
+} as any)
+const AuthenticatedAdsRoute = AuthenticatedAdsRouteImport.update({
+  id: '/ads',
+  path: '/ads',
+  getParentRoute: () => AuthenticatedRouteRoute,
 } as any)
 const AuthenticatedCheckoutsRoute = AuthenticatedCheckoutsRouteImport.update({
   id: '/checkouts',
@@ -166,6 +174,16 @@ const ApiPublicJobsProcessQueueRoute =
     path: '/api/public/jobs/process-queue',
     getParentRoute: () => rootRouteImport,
   } as any)
+const ApiPublicJobsSyncAdsRoute = ApiPublicJobsSyncAdsRouteImport.update({
+  id: '/api/public/jobs/sync-ads',
+  path: '/api/public/jobs/sync-ads',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ApiPublicTiktokCallbackRoute = ApiPublicTiktokCallbackRouteImport.update({
+  id: '/api/public/tiktok/callback',
+  path: '/api/public/tiktok/callback',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const ApiPublicWebhooksDigistore24Route =
   ApiPublicWebhooksDigistore24RouteImport.update({
     id: '/api/public/webhooks/digistore24',
@@ -177,6 +195,7 @@ export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/auth': typeof AuthRoute
   '/reset-password': typeof ResetPasswordRoute
+  '/ads': typeof AuthenticatedAdsRoute
   '/checkouts': typeof AuthenticatedCheckoutsRoute
   '/conversions': typeof AuthenticatedConversionsRoute
   '/dashboard': typeof AuthenticatedDashboardRoute
@@ -198,12 +217,15 @@ export interface FileRoutesByFullPath {
   '/api/public/tracker.js': typeof ApiPublicTrackerDotjsRoute
   '/funnels/': typeof AuthenticatedFunnelsIndexRoute
   '/api/public/jobs/process-queue': typeof ApiPublicJobsProcessQueueRoute
+  '/api/public/jobs/sync-ads': typeof ApiPublicJobsSyncAdsRoute
+  '/api/public/tiktok/callback': typeof ApiPublicTiktokCallbackRoute
   '/api/public/webhooks/digistore24': typeof ApiPublicWebhooksDigistore24Route
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/auth': typeof AuthRoute
   '/reset-password': typeof ResetPasswordRoute
+  '/ads': typeof AuthenticatedAdsRoute
   '/checkouts': typeof AuthenticatedCheckoutsRoute
   '/conversions': typeof AuthenticatedConversionsRoute
   '/dashboard': typeof AuthenticatedDashboardRoute
@@ -225,6 +247,8 @@ export interface FileRoutesByTo {
   '/api/public/tracker.js': typeof ApiPublicTrackerDotjsRoute
   '/funnels': typeof AuthenticatedFunnelsIndexRoute
   '/api/public/jobs/process-queue': typeof ApiPublicJobsProcessQueueRoute
+  '/api/public/jobs/sync-ads': typeof ApiPublicJobsSyncAdsRoute
+  '/api/public/tiktok/callback': typeof ApiPublicTiktokCallbackRoute
   '/api/public/webhooks/digistore24': typeof ApiPublicWebhooksDigistore24Route
 }
 export interface FileRoutesById {
@@ -233,6 +257,7 @@ export interface FileRoutesById {
   '/_authenticated': typeof AuthenticatedRouteRouteWithChildren
   '/auth': typeof AuthRoute
   '/reset-password': typeof ResetPasswordRoute
+  '/_authenticated/ads': typeof AuthenticatedAdsRoute
   '/_authenticated/checkouts': typeof AuthenticatedCheckoutsRoute
   '/_authenticated/conversions': typeof AuthenticatedConversionsRoute
   '/_authenticated/dashboard': typeof AuthenticatedDashboardRoute
@@ -254,6 +279,8 @@ export interface FileRoutesById {
   '/api/public/tracker.js': typeof ApiPublicTrackerDotjsRoute
   '/_authenticated/funnels/': typeof AuthenticatedFunnelsIndexRoute
   '/api/public/jobs/process-queue': typeof ApiPublicJobsProcessQueueRoute
+  '/api/public/jobs/sync-ads': typeof ApiPublicJobsSyncAdsRoute
+  '/api/public/tiktok/callback': typeof ApiPublicTiktokCallbackRoute
   '/api/public/webhooks/digistore24': typeof ApiPublicWebhooksDigistore24Route
 }
 export interface FileRouteTypes {
@@ -262,6 +289,7 @@ export interface FileRouteTypes {
     | '/'
     | '/auth'
     | '/reset-password'
+    | '/ads'
     | '/checkouts'
     | '/conversions'
     | '/dashboard'
@@ -283,12 +311,15 @@ export interface FileRouteTypes {
     | '/api/public/tracker.js'
     | '/funnels/'
     | '/api/public/jobs/process-queue'
+    | '/api/public/jobs/sync-ads'
+    | '/api/public/tiktok/callback'
     | '/api/public/webhooks/digistore24'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
     | '/auth'
     | '/reset-password'
+    | '/ads'
     | '/checkouts'
     | '/conversions'
     | '/dashboard'
@@ -310,6 +341,8 @@ export interface FileRouteTypes {
     | '/api/public/tracker.js'
     | '/funnels'
     | '/api/public/jobs/process-queue'
+    | '/api/public/jobs/sync-ads'
+    | '/api/public/tiktok/callback'
     | '/api/public/webhooks/digistore24'
   id:
     | '__root__'
@@ -317,6 +350,7 @@ export interface FileRouteTypes {
     | '/_authenticated'
     | '/auth'
     | '/reset-password'
+    | '/_authenticated/ads'
     | '/_authenticated/checkouts'
     | '/_authenticated/conversions'
     | '/_authenticated/dashboard'
@@ -338,6 +372,8 @@ export interface FileRouteTypes {
     | '/api/public/tracker.js'
     | '/_authenticated/funnels/'
     | '/api/public/jobs/process-queue'
+    | '/api/public/jobs/sync-ads'
+    | '/api/public/tiktok/callback'
     | '/api/public/webhooks/digistore24'
   fileRoutesById: FileRoutesById
 }
@@ -353,6 +389,8 @@ export interface RootRouteChildren {
   ApiPublicTrackRoute: typeof ApiPublicTrackRoute
   ApiPublicTrackerDotjsRoute: typeof ApiPublicTrackerDotjsRoute
   ApiPublicJobsProcessQueueRoute: typeof ApiPublicJobsProcessQueueRoute
+  ApiPublicJobsSyncAdsRoute: typeof ApiPublicJobsSyncAdsRoute
+  ApiPublicTiktokCallbackRoute: typeof ApiPublicTiktokCallbackRoute
   ApiPublicWebhooksDigistore24Route: typeof ApiPublicWebhooksDigistore24Route
 }
 
@@ -385,6 +423,13 @@ declare module '@tanstack/react-router' {
       fullPath: '/reset-password'
       preLoaderRoute: typeof ResetPasswordRouteImport
       parentRoute: typeof rootRouteImport
+    }
+    '/_authenticated/ads': {
+      id: '/_authenticated/ads'
+      path: '/ads'
+      fullPath: '/ads'
+      preLoaderRoute: typeof AuthenticatedAdsRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
     }
     '/_authenticated/checkouts': {
       id: '/_authenticated/checkouts'
@@ -533,6 +578,20 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ApiPublicJobsProcessQueueRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/api/public/jobs/sync-ads': {
+      id: '/api/public/jobs/sync-ads'
+      path: '/api/public/jobs/sync-ads'
+      fullPath: '/api/public/jobs/sync-ads'
+      preLoaderRoute: typeof ApiPublicJobsSyncAdsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/api/public/tiktok/callback': {
+      id: '/api/public/tiktok/callback'
+      path: '/api/public/tiktok/callback'
+      fullPath: '/api/public/tiktok/callback'
+      preLoaderRoute: typeof ApiPublicTiktokCallbackRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/api/public/webhooks/digistore24': {
       id: '/api/public/webhooks/digistore24'
       path: '/api/public/webhooks/digistore24'
@@ -544,6 +603,7 @@ declare module '@tanstack/react-router' {
 }
 
 interface AuthenticatedRouteRouteChildren {
+  AuthenticatedAdsRoute: typeof AuthenticatedAdsRoute
   AuthenticatedCheckoutsRoute: typeof AuthenticatedCheckoutsRoute
   AuthenticatedConversionsRoute: typeof AuthenticatedConversionsRoute
   AuthenticatedDashboardRoute: typeof AuthenticatedDashboardRoute
@@ -561,6 +621,7 @@ interface AuthenticatedRouteRouteChildren {
 }
 
 const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
+  AuthenticatedAdsRoute: AuthenticatedAdsRoute,
   AuthenticatedCheckoutsRoute: AuthenticatedCheckoutsRoute,
   AuthenticatedConversionsRoute: AuthenticatedConversionsRoute,
   AuthenticatedDashboardRoute: AuthenticatedDashboardRoute,
@@ -592,6 +653,8 @@ const rootRouteChildren: RootRouteChildren = {
   ApiPublicTrackRoute: ApiPublicTrackRoute,
   ApiPublicTrackerDotjsRoute: ApiPublicTrackerDotjsRoute,
   ApiPublicJobsProcessQueueRoute: ApiPublicJobsProcessQueueRoute,
+  ApiPublicJobsSyncAdsRoute: ApiPublicJobsSyncAdsRoute,
+  ApiPublicTiktokCallbackRoute: ApiPublicTiktokCallbackRoute,
   ApiPublicWebhooksDigistore24Route: ApiPublicWebhooksDigistore24Route,
 }
 export const routeTree = rootRouteImport

@@ -64,6 +64,13 @@
       "when": 1792613406790,
       "tag": "0008_checkout_capture_appearance",
       "breakpoints": true
+    },
+    {
+      "idx": 9,
+      "version": "7",
+      "when": 1793051004924,
+      "tag": "0009_tiktok_ads_spend",
+      "breakpoints": true
     }
   ]
 }
