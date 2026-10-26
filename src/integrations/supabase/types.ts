@@ -344,6 +344,24 @@ export type Database = {
         }
         Relationships: []
       }
+      fx_rates: {
+        Row: {
+          currency: string
+          rate_to_brl: number
+          updated_at: string
+        }
+        Insert: {
+          currency: string
+          rate_to_brl: number
+          updated_at?: string
+        }
+        Update: {
+          currency?: string
+          rate_to_brl?: number
+          updated_at?: string
+        }
+        Relationships: []
+      }
       hosted_files: {
         Row: {
           content_type: string | null
@@ -676,6 +694,121 @@ export type Database = {
           visitor_id?: string | null
         }
         Relationships: []
+      }
+      tiktok_ad_accounts: {
+        Row: {
+          advertiser_id: string
+          bc_id: string
+          created_at: string
+          currency: string
+          domains: string[]
+          enabled: boolean
+          last_error: string | null
+          last_sync_at: string | null
+          name: string | null
+          timezone: string | null
+        }
+        Insert: {
+          advertiser_id: string
+          bc_id: string
+          created_at?: string
+          currency?: string
+          domains?: string[]
+          enabled?: boolean
+          last_error?: string | null
+          last_sync_at?: string | null
+          name?: string | null
+          timezone?: string | null
+        }
+        Update: {
+          advertiser_id?: string
+          bc_id?: string
+          created_at?: string
+          currency?: string
+          domains?: string[]
+          enabled?: boolean
+          last_error?: string | null
+          last_sync_at?: string | null
+          name?: string | null
+          timezone?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "tiktok_ad_accounts_bc_id_fkey"
+            columns: ["bc_id"]
+            isOneToOne: false
+            referencedRelation: "tiktok_business_centers"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      tiktok_business_centers: {
+        Row: {
+          created_at: string
+          id: string
+          last_error: string | null
+          last_sync_at: string | null
+          name: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          last_error?: string | null
+          last_sync_at?: string | null
+          name: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          last_error?: string | null
+          last_sync_at?: string | null
+          name?: string
+        }
+        Relationships: []
+      }
+      tiktok_campaign_stats: {
+        Row: {
+          advertiser_id: string
+          campaign_id: string
+          campaign_name: string | null
+          clicks: number
+          conversions: number
+          impressions: number
+          spend: number
+          stat_date: string
+          updated_at: string
+        }
+        Insert: {
+          advertiser_id: string
+          campaign_id: string
+          campaign_name?: string | null
+          clicks?: number
+          conversions?: number
+          impressions?: number
+          spend?: number
+          stat_date: string
+          updated_at?: string
+        }
+        Update: {
+          advertiser_id?: string
+          campaign_id?: string
+          campaign_name?: string | null
+          clicks?: number
+          conversions?: number
+          impressions?: number
+          spend?: number
+          stat_date?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "tiktok_campaign_stats_advertiser_id_fkey"
+            columns: ["advertiser_id"]
+            isOneToOne: false
+            referencedRelation: "tiktok_ad_accounts"
+            referencedColumns: ["advertiser_id"]
+          },
+        ]
       }
       transactions: {
         Row: {
