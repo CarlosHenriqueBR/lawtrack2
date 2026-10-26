@@ -142,3 +142,19 @@ export function tiktokAuthUrl(appId: string, state: string, redirectUri: string)
   const q = new URLSearchParams({ app_id: appId, state, redirect_uri: redirectUri });
   return `https://business-api.tiktok.com/portal/auth?${q}`;
 }
+
+export type DiscoveredAccount = { advertiser_id: string; name: string | null };
+
+/** Accounts a BM token can read that the platform does not know yet: deduped, blank ids dropped. */
+export function newAccounts(found: DiscoveredAccount[], knownIds: Iterable<string>): DiscoveredAccount[] {
+  const known = new Set(knownIds);
+  const seen = new Set<string>();
+  const out: DiscoveredAccount[] = [];
+  for (const f of found) {
+    const id = String(f.advertiser_id ?? "").trim();
+    if (!id || known.has(id) || seen.has(id)) continue;
+    seen.add(id);
+    out.push({ advertiser_id: id, name: f.name?.trim() || null });
+  }
+  return out;
+}
