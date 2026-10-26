@@ -1,5 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { useQuery, useQueryClient } from "@tanstack/react-query";
+import { queryOptions, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useServerFn } from "@tanstack/react-start";
 import { useEffect, useMemo, useState } from "react";
 import { toast } from "sonner";
@@ -36,6 +36,18 @@ const STATUS: Record<Status, { l: string; c: string }> = {
 };
 const localDay = (d: Date) => `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}-${String(d.getDate()).padStart(2, "0")}`;
 
+const adsBaseOptions = queryOptions({
+  queryKey: ["ads-base"],
+  queryFn: async () => {
+    const [b, a, f] = await Promise.all([
+      supabase.from("tiktok_business_centers").select("*").order("created_at"),
+      supabase.from("tiktok_ad_accounts").select("*").order("name"),
+      supabase.from("fx_rates").select("currency, rate_to_brl"),
+    ]);
+    return { bcs: b.data ?? [], accounts: a.data ?? [], rates: Object.fromEntries((f.data ?? []).map((r) => [r.currency, Number(r.rate_to_brl)])) };
+  },
+});
+
 function Ads() {
   const qc = useQueryClient();
   const [period, setPeriod] = useState<Period>("today");
@@ -53,17 +65,7 @@ function Ads() {
     }
   }, []);
 
-  const base = useQuery({
-    queryKey: ["ads-base"],
-    queryFn: async () => {
-      const [b, a, f] = await Promise.all([
-        supabase.from("tiktok_business_centers").select("*").order("created_at"),
-        supabase.from("tiktok_ad_accounts").select("*").order("name"),
-        supabase.from("fx_rates").select("currency, rate_to_brl"),
-      ]);
-      return { bcs: b.data ?? [], accounts: a.data ?? [], rates: Object.fromEntries((f.data ?? []).map((r) => [r.currency, Number(r.rate_to_brl)])) };
-    },
-  });
+  const base = useQuery(adsBaseOptions);
 
   const data = useQuery({
     queryKey: ["ads-data", period],
@@ -98,7 +100,7 @@ function Ads() {
   async function syncNow() {
     try {
       const r = await sync({ data: bc ? { bcId: bc } : {} });
-      toast.success(`${r.synced} contas atualizadas${r.failed ? `, ${r.failed} com erro` : ""}`);
+      toast.success(`${r.synced} contas atualizadas${r.failed ? `, ${r.failed} com erro` : ""}${r.discovered ? `, ${r.discovered} conta(s) nova(s)` : ""}`);
       qc.invalidateQueries({ queryKey: ["ads-base"] });
       qc.invalidateQueries({ queryKey: ["ads-data"] });
     } catch (e) {
@@ -228,7 +230,7 @@ function Setup() {
   const connect = useServerFn(startTikTokConnect);
   const del = useServerFn(deleteBusinessCenter);
   const st = useQuery({ queryKey: ["ads-setup"], queryFn: () => status() });
-  const base = useQuery<{ bcs: { id: string; name: string; last_sync_at: string | null }[]; accounts: { advertiser_id: string; bc_id: string; name: string | null; currency: string; enabled: boolean; domains: string[]; last_error: string | null; last_sync_at: string | null }[] }>({ queryKey: ["ads-base"], enabled: false });
+  const base = useQuery(adsBaseOptions);
   const [name, setName] = useState("");
   const refresh = () => qc.invalidateQueries({ queryKey: ["ads-base"] });
 
