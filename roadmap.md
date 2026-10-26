@@ -12,5 +12,6 @@
 - [x] System Logs, Event Explorer, Auditoria, System Health, alertas
 - [x] Usuários + perfis (Super Admin/Admin/Analista/Viewer), convites, bloqueio
 - [x] Relatórios com CSV, Pesquisa, rate limit
+- [x] Painel de gastos/ROI das contas TikTok (4 BMs, contas e domínios editáveis) — falta cadastrar App ID/Secret e conectar as BMs
 - [ ] API REST /api/v1 + OpenAPI (aguarda definição de uso / chaves de API)
 - [ ] MFA opcional
