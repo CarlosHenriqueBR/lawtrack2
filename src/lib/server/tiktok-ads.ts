@@ -1,6 +1,7 @@
 // Server-only: TikTok Marketing API sync. Callers pass the admin client.
 import type { SupabaseClient } from "@supabase/supabase-js";
 import type { Database } from "@/integrations/supabase/types";
+import { newAccounts } from "@/lib/ads";
 import { getSecret, logSystem } from "./ops";
 
 type DB = SupabaseClient<Database>;
@@ -54,6 +55,38 @@ export async function saveBusinessCenter(db: DB, bcId: string, token: string, ad
   });
   if (rows.length) await db.from("tiktok_ad_accounts").upsert(rows, { onConflict: "advertiser_id" });
   return rows.length;
+}
+
+/** Re-lists every account the token can still read, so accounts added to the BM later show up by themselves. */
+export async function discoverAdvertisers(token: string) {
+  const app_id = process.env["TIKTOK_APP_ID"];
+  const secret = process.env["TIKTOK_APP_SECRET"];
+  if (!app_id || !secret) throw new Error("TIKTOK_APP_ID/TIKTOK_APP_SECRET não configurados");
+  const d = await call<{ list: { advertiser_id: string; advertiser_name?: string }[] }>("/oauth2/advertiser/get/", token, { query: { app_id, secret } });
+  return (d.list ?? []).map((x) => ({ advertiser_id: String(x.advertiser_id), name: x.advertiser_name ?? null }));
+}
+
+/** Registers the accounts a BM gained since it was connected. */
+async function discoverForBc(db: DB, bcId: string, token: string) {
+  try {
+    const found = await discoverAdvertisers(token);
+    const { data: known } = await db.from("tiktok_ad_accounts").select("advertiser_id");
+    const fresh = newAccounts(found, (known ?? []).map((k) => k.advertiser_id));
+    if (!fresh.length) return 0;
+    const info = await advertiserInfo(token, fresh.map((f) => f.advertiser_id));
+    await db.from("tiktok_ad_accounts").upsert(
+      fresh.map((f) => {
+        const i = info.find((x) => String(x.advertiser_id) === f.advertiser_id);
+        return { advertiser_id: f.advertiser_id, bc_id: bcId, name: f.name ?? i?.name ?? null, currency: i?.currency ?? "USD", timezone: i?.timezone ?? null };
+      }),
+      { onConflict: "advertiser_id" },
+    );
+    await logSystem(db, { level: "INFO", source: "tiktok-ads", message: `${fresh.length} conta(s) nova(s) na BM ${bcId}` });
+    return fresh.length;
+  } catch (e) {
+    await logSystem(db, { level: "WARNING", source: "tiktok-ads", message: `Busca de contas novas falhou: ${e instanceof Error ? e.message : String(e)}` });
+    return 0;
+  }
 }
 
 const day = (d: Date) => d.toISOString().slice(0, 10);
@@ -116,15 +149,24 @@ export async function refreshFx(db: DB) {
   }
 }
 
-/** Syncs the stalest enabled accounts (bounded batch, limited parallelism). */
+/** Syncs the stalest enabled accounts (bounded batch, limited parallelism), registering accounts the BMs gained. */
 export async function syncAds(db: DB, opts: { limit?: number; bcId?: string } = {}) {
   await refreshFx(db);
+  const tokens = new Map<string, string | null>();
+  let discovered = 0;
+  let bq = db.from("tiktok_business_centers").select("id");
+  if (opts.bcId) bq = bq.eq("id", opts.bcId);
+  const { data: bcs } = await bq;
+  for (const bc of bcs ?? []) {
+    const token = await getSecret(db, `tiktok_bc_token:${bc.id}`);
+    tokens.set(bc.id, token);
+    if (token) discovered += await discoverForBc(db, bc.id, token);
+  }
   let q = db.from("tiktok_ad_accounts").select("advertiser_id, bc_id, last_sync_at").eq("enabled", true).order("last_sync_at", { ascending: true, nullsFirst: true }).limit(opts.limit ?? 40);
   if (opts.bcId) q = q.eq("bc_id", opts.bcId);
   const { data: accounts } = await q;
-  if (!accounts?.length) return { synced: 0, failed: 0 };
-  const tokens = new Map<string, string | null>();
-  for (const bc of new Set(accounts.map((a) => a.bc_id))) tokens.set(bc, await getSecret(db, `tiktok_bc_token:${bc}`));
+  if (!accounts?.length) return { synced: 0, failed: 0, discovered };
+  for (const a of accounts) if (!tokens.has(a.bc_id)) tokens.set(a.bc_id, await getSecret(db, `tiktok_bc_token:${a.bc_id}`));
   let synced = 0;
   let failed = 0;
   const work = [...accounts];
@@ -148,5 +190,5 @@ export async function syncAds(db: DB, opts: { limit?: number; bcId?: string } = 
     }),
   );
   for (const bc of tokens.keys()) await db.from("tiktok_business_centers").update({ last_sync_at: new Date().toISOString() }).eq("id", bc);
-  return { synced, failed };
+  return { synced, failed, discovered };
 }

@@ -98,7 +98,7 @@ function Ads() {
   async function syncNow() {
     try {
       const r = await sync({ data: bc ? { bcId: bc } : {} });
-      toast.success(`${r.synced} contas atualizadas${r.failed ? `, ${r.failed} com erro` : ""}`);
+      toast.success(`${r.synced} contas atualizadas${r.failed ? `, ${r.failed} com erro` : ""}${r.discovered ? `, ${r.discovered} conta(s) nova(s)` : ""}`);
       qc.invalidateQueries({ queryKey: ["ads-base"] });
       qc.invalidateQueries({ queryKey: ["ads-data"] });
     } catch (e) {
